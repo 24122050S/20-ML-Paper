@@ -85,7 +85,7 @@ Lệnh trên chỉ cài thư viện; cần môi trường mở notebook để ch
 
 | ID | Mã nguồn | Kết quả | Kaggle version | Code commit | W&B |
 |---|---|---|---|---|---|
-| VERIFY-01 | notebooks/01_verify_analytic_update.ipynb | reports/verify_analytic_update_results.json | Chưa điền | Chưa điền | Chưa đồng bộ |
+| VERIFY-01 | notebooks/01_verify_analytic_update.ipynb | reports/verify_analytic_update_results.json | [(https://www.kaggle.com/code/hsangg206/01-verify-analytic-update6bf7e5ced7/notebook?scriptVersionId=364628854) | Chưa điền | Chưa đồng bộ |
 
 ## Kết luận kiểm chứng
 
