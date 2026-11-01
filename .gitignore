@@ -10,13 +10,13 @@ venv/
 .env.*
 !.env.example
 
-# Dữ liệu và trọng số
+# Dữ liệu và checkpoint
 data/
 checkpoints/
 *.pt
 *.pth
 
-# Output chạy cục bộ
+# Output cục bộ và W&B
 output/
 outputs/
 wandb/
