@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Môi trường và thông tin bí mật
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Dữ liệu và trọng số
+data/
+checkpoints/
+*.pt
+*.pth
+
+# Output chạy cục bộ
+output/
+outputs/
+wandb/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
