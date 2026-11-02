@@ -43,5 +43,6 @@
     }
   ],
   "verification_passed": true,
-  "wandb_status": "not_synced"
+  "wandb_status": "synced",
+  "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/b4shifg6"
 }
