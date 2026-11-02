@@ -20,6 +20,7 @@ checkpoints/
 output/
 outputs/
 wandb/
+reports/local/
 
 # Hệ điều hành
 .DS_Store
