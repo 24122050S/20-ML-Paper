@@ -27,6 +27,7 @@ from .analytic import initialize, incremental_update, joint_ridge
 from .cifar_data import CifarSubset, audit_data, load_cifar100, make_protocol, sha256_file
 from .reporting import collect_provenance, log_and_save_report, save_json
 from .resnet import ResNet32, freeze_backbone
+from .run_attempt import RunAttempt
 
 
 def fingerprint(model):
@@ -67,7 +68,7 @@ def make_loader(arrays, protocol, normalization, classes, split, config, augment
                       generator=torch.Generator().manual_seed(config["seed"]))
 
 
-def train_base(model, loader, config, device, output):
+def train_base(model, loader, config, device, output, *, progress=None):
     """Huấn luyện đúng base train; chọn epoch cuối theo config, không chọn bằng test."""
     optimizer = torch.optim.SGD(model.parameters(), lr=config["learning_rate"],
                                 momentum=config["momentum"], weight_decay=config["weight_decay"])
@@ -95,7 +96,10 @@ def train_base(model, loader, config, device, output):
             samples += len(labels)
             if step == 1 or step % 50 == 0 or step == len(loader):
                 print(f"Base epoch {epoch}/{config['epochs']}, batch {step}/{len(loader)}, loss={total_loss/samples:.4f}", flush=True)
-                save_json({"stage": "base_training", "epoch": epoch, "batch": step}, output / "progress.json")
+                if progress is None:
+                    save_json({"stage": "base_training", "epoch": epoch, "batch": step}, output / "progress.json")
+                else:
+                    progress("base_training", epoch=epoch, batch=step)
         history.append({"epoch": epoch, "train_loss": total_loss / samples,
                         "train_accuracy_pct": 100 * correct / samples, "samples": samples,
                         "learning_rate": learning_rate, "seconds": time.perf_counter() - start})
@@ -156,12 +160,48 @@ def validate_config(config):
 
 
 def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
-        entity="hsangg-2006", project="acil-reproduction", config_path=None):
-    """Chạy thử đầu-cuối, trả report sau khi kiểm tra và lưu JSON tracking hoàn tất."""
+        entity="hsangg-2006", project="acil-reproduction", config_path=None,
+        config_overrides=None, prepare_tracking=None):
+    """Chạy một attempt riêng; trả report complete hoặc ghi failed rồi raise.
+
+    output_dir là root chứa latest/progress/results summary và attempts/<id>/.
+    reuse_checkpoint là đường dẫn tường minh của checkpoint đã hoàn thành.
+    config=None đọc config_path bên trong attempt; config_overrides ghi các
+    tùy chọn CLI/notebook. prepare_tracking là callback đăng nhập, chỉ gọi khi
+    bật W&B và được bảo vệ bởi cùng trạng thái attempt.
+    """
+    seed = config.get("seed") if isinstance(config, dict) else None
+    with RunAttempt(output_dir, seed=seed) as attempt:
+        attempt.progress("config_load")
+        if config is None:
+            if config_path is None:
+                raise ValueError("Cần config hoặc config_path")
+            config = json.loads(Path(config_path).read_text(encoding="utf-8"))
+        config = {**config, **(config_overrides or {})}
+        seed = config.get("seed")
+        attempt.seed = seed if isinstance(seed, int) and not isinstance(seed, bool) else None
+        if log_wandb and prepare_tracking is not None:
+            attempt.progress("tracking_setup")
+            prepare_tracking()
+        report = _compute_report(config, data_dir=data_dir, output=attempt.directory,
+                                 reuse_checkpoint=reuse_checkpoint, config_path=config_path,
+                                 progress=attempt.progress)
+        report.update(attempt_id=attempt.id, artifacts_dir=attempt.relative_dir, status="running")
+        attempt.progress("tracking")
+        report = log_and_save_report(report, attempt.directory / "results.json", log_wandb=log_wandb,
+                                     entity=entity, project=project,
+                                     tags=["smoke", "cifar100", "float64", "minibatch"])
+        report = attempt.complete(report)
+        print(f"CIFAR SMOKE PASS; tracking={report['wandb_status']}; report={attempt.directory / 'results.json'}", flush=True)
+        return report
+
+
+def _compute_report(config, *, data_dir, output, reuse_checkpoint, config_path, progress):
+    """Tính numeric report vào output của attempt; progress nhận stage và metadata."""
+    progress("validating")
     validate_config(config)
+    save_json(config, output / "config.json")
     seed_everything(config["seed"], config["torch_threads"])
-    output = Path(output_dir).resolve()
-    output.mkdir(parents=True, exist_ok=True)
     device_name = config["device"]
     if device_name == "auto":
         device_name = "cuda" if torch.cuda.is_available() else "cpu"
@@ -175,11 +215,11 @@ def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
     provenance["effective_config_sha256"] = hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest()
     start = time.perf_counter()
     with threadpool_limits(limits=config["torch_threads"]):
+        progress("download_and_audit")
         arrays = load_cifar100(data_dir)
         protocol = make_protocol(config["seed"], config["incremental_phases"])
         audit = audit_data(arrays, protocol)
         normalization = audit["normalization"]
-        save_json(config, output / "config.json")
         save_json(protocol, output / "protocol.json")
         save_json(audit, output / "data_audit.json")
         print("Data PASS: 50000 train, 10000 test; shared mapping; disjoint 50+10 phases.", flush=True)
@@ -187,6 +227,7 @@ def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
         checkpoint_path = output / "base_checkpoint.pt"
         origin = {"reused": reuse_checkpoint is not None}
         if reuse_checkpoint is not None:
+            progress("checkpoint_load")
             reused = Path(reuse_checkpoint).resolve()
             checkpoint = torch.load(reused, map_location="cpu", weights_only=True)
             validate_checkpoint(checkpoint, config, protocol, normalization, arrays.source["revision"])
@@ -198,13 +239,15 @@ def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
                 shutil.copy2(reused, checkpoint_path)
             print("Reused checkpoint: protocol, normalization, revision and base config verified.", flush=True)
         else:
+            progress("base_training")
             loader = make_loader(arrays, protocol, normalization, range(50), "train", config, augment=True)
-            history, change = train_base(model, loader, config, device, output)
+            history, change = train_base(model, loader, config, device, output, progress=progress)
             torch.save({"model_state_dict": model.state_dict(), "config": config,
                         "class_order": protocol["class_order"], "normalization": normalization,
                         "dataset_revision": arrays.source["revision"], "training_history": history,
                         "parameter_change_l2": change}, checkpoint_path)
             origin["training_executed_this_run"] = True
+        progress("checkpoint_reload")
         model.eval()
         base_test = make_loader(arrays, protocol, normalization, range(50), "test", config)
         probe, _ = next(iter(base_test))
@@ -224,7 +267,7 @@ def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
         joint_features, joint_labels, rows = [], [], []
         r = w = None
         for phase in range(config["run_incremental_phases"] + 1):
-            save_json({"stage": "analytic", "phase": phase}, output / "progress.json")
+            progress("analytic", phase=phase)
             classes = protocol["phase_global_classes"][phase]
             n_classes = max(classes) + 1
             train_loader = make_loader(arrays, protocol, normalization, classes, "train", config)
@@ -297,11 +340,6 @@ def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
                   "backbone_sha256_before": frozen_before, "backbone_sha256_after": frozen_after,
                   "expansion_sha256": expansion_before, "results": rows, "checks": checks,
                   "verification_passed": all(checks.values()), "seconds_this_run": time.perf_counter()-start}
-    report = log_and_save_report(report, output / "results.json", log_wandb=log_wandb,
-                                 entity=entity, project=project,
-                                 tags=["smoke", "cifar100", "float64", "minibatch"])
-    save_json({"stage": "complete", "checks_passed": report["verification_passed"]}, output / "progress.json")
-    print(f"CIFAR SMOKE PASS; tracking={report['wandb_status']}; report={output / 'results.json'}", flush=True)
     return report
 
 
@@ -318,11 +356,10 @@ def main():
     parser.add_argument("--entity", default="hsangg-2006")
     parser.add_argument("--project", default="acil-reproduction")
     args = parser.parse_args()
-    config = json.loads(args.config.read_text(encoding="utf-8"))
-    if args.device:
-        config["device"] = args.device
-    run(config, data_dir=args.data_dir, output_dir=args.output_dir, reuse_checkpoint=args.reuse_checkpoint,
-        log_wandb=args.wandb, entity=args.entity, project=args.project, config_path=args.config)
+    overrides = {"device": args.device} if args.device else None
+    run(None, data_dir=args.data_dir, output_dir=args.output_dir, reuse_checkpoint=args.reuse_checkpoint,
+        log_wandb=args.wandb, entity=args.entity, project=args.project,
+        config_path=args.config, config_overrides=overrides)
 
 
 if __name__ == "__main__":
