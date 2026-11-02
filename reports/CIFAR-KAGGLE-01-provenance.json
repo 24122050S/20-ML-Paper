@@ -1,0 +1,23 @@
+{
+  "experiment": "CIFAR-KAGGLE-01",
+  "result_experiment": "CIFAR-SMOKE-01",
+  "kaggle_version": 2,
+  "kaggle_script_version_id": 364942764,
+  "kaggle_url": "https://www.kaggle.com/code/hsangg206/notebook7e7946d4ee?scriptVersionId=364942764",
+  "kaggle_visibility_observed": "Private",
+  "kaggle_hardware_label": "GPU T4 x2",
+  "kaggle_runtime_display": "1m 42s",
+  "source_bundle_sha256": "9e3ecde627cfea29d25cb5bc8254a59f57f8445d2a28402bb9b23e32bc370d10",
+  "source_bundle_carrier": "../notebooks/02_cifar100_smoke.ipynb",
+  "source_git_commit": null,
+  "result_file": "cifar100_kaggle_results.json",
+  "result_sha256": "1b1849d84f9ddef6233c3eaba8d40c60816c0ee7afc26e4279110b0c5dc42b72",
+  "wandb_run_id": "o2r63pj2",
+  "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2",
+  "wandb_state_observed": "Finished",
+  "verification_passed": true,
+  "source_hashes_verified_against": "Raw files in embedded ZIP; index source text also compared after newline normalization",
+  "files_normalized_by_git": [],
+  "reviewed_date_client": "2026-11-02",
+  "note": "Notebook output and its Output JSON were inspected on Kaggle; matching run was inspected on W&B. JSON is unchanged. Notebook template distributes the matching source bundle; it is not claimed to contain the saved Kaggle outputs."
+}
