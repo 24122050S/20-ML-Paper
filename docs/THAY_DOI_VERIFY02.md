@@ -33,3 +33,11 @@ Kaggle đồng bộ notebook có output thành commit `eddd50d`; đây là commi
 ## Giới hạn còn lại
 
 Feature map/gamma phải cố định; module hiện chỉ dùng float64 và gamma>0. Test nhiều cấu hình nhỏ không thay chứng minh tổng quát. Accuracy tổng hợp không so với benchmark ảnh. Pipeline dataset/CNN/ablation gamma=0 vẫn là phần cần phát triển tiếp.
+
+## Thu gọn thư mục sau kiểm chứng
+
+- Gộp nội dung cần thiết của các README trong `configs/`, `src/`, `tests/`, `notebooks/` vào README gốc; bỏ `docs/README.md` chỉ có một dòng mô tả chung. Mỗi thư mục không cần thêm một trang chỉ lặp lại hướng dẫn đã có.
+- Chuyển `kaggle/README.md` thành `docs/HUONG_DAN_KAGGLE.md`; hướng dẫn thuộc nhóm tài liệu, không cần một thư mục riêng chỉ chứa README.
+- Bỏ `scripts/build_verification_notebook.py`, là công cụ đã dùng để tạo notebook ban đầu. Chạy notebook hiện tại không cần script này; giữ notebook có output làm artifact được review. Muốn tra công cụ tạo file vẫn có thể xem trong lịch sử Git.
+- Giữ `configs/`, các module dùng chung, test reporting và ba file requirements: đây là dependency thực của quy trình kiểm chứng và tracking, không phải file thừa. Giữ JSON lịch sử và manifest để không làm mất bằng chứng đã đối chiếu.
+- Giữ nguyên phần đặc tả đang được Sang chỉnh sửa. Việc dọn cấu trúc không thay đổi thuật toán, config, notebook output hoặc số liệu.

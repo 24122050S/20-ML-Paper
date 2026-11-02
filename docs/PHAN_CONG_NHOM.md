@@ -1,5 +1,8 @@
 # Phân công ACIL: Sang, Vỹ, Phát
 
+> Cập nhật cách làm hiện tại: Sang đang thực hiện một mình. Các vai trò Sang/Vỹ/Phát bên dưới là kế hoạch phân công của nhóm, không phải điều kiện phải chờ người khác. Thứ tự cá nhân: chốt analytic → chạy CIFAR smoke 50+10 → đưa lên Kaggle → mở rộng đủ phase và thí nghiệm. Xem [hướng dẫn chạy một mình](HUONG_DAN_CIFAR_SMOKE.md).
+
+
 Cập nhật **02/11/2026**, giờ Việt Nam. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
 Mốc nộp nội bộ: **20/11** và **04/12**. Mốc trung gian dưới đây là kế hoạch nhóm đề xuất; cần điều chỉnh theo thời gian thực tế của cả ba.

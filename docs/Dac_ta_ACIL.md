@@ -95,36 +95,76 @@ Dùng danh sách lớp đã lưu để chuyển chỉ số cột thành nhãn th
 - Với cùng đặc trưng, thứ tự lớp và $\gamma$, nghiệm cập nhật phải gần nghiệm ridge học gộp trong sai số số học.
 - Quá trình cập nhật không truy cập dữ liệu của các phase trước.
 
-## 9. Ánh xạ sang API dùng chung và minibatch
+## 9. Hợp đồng giữa pipeline CNN và analytic head
 
-Phần trên dùng $Y_k$ kích thước $N_k\times c_k$ cho riêng các lớp mới, phù hợp
-với công thức ghép khối khi cập nhật trọn một phase mới.
+### 9.1. Đặc trưng H
 
-Trong `src/analytic.py`, đầu vào là vector **ID lớp toàn cục**, không phải
-one-hot cục bộ. Module tạo $Y_{global}$ kích thước $N_k\times C_k$, với các
-cột lớp không có trong batch bằng 0, và đệm W cũ để có đủ $C_k$ cột:
+ResNet-32 trả `F` kích thước `(n,64)` sau global average pooling. Backbone tính bằng float32; pipeline chuyển F sang float64 trước bước analytic:
 
 $$
-W_{pad}=[W_{old}\quad 0],\qquad
+H=\operatorname{ReLU}(F W_{\mathrm{fe}}),\qquad H\in\mathbb{R}^{n\times d}.
+$$
+
+Smoke test dùng `d=256`, nên `W_fe` có shape `(64,256)`. Ma trận này sinh một lần bằng RNG riêng `seed+1000`; giữ nguyên qua mọi phase. H phải hữu hạn, không rỗng. Trích feature không crop/flip ngẫu nhiên; normalization được tính từ base train và dùng chung train/test.
+
+### 9.2. Nhãn y và class_order
+
+Pipeline sinh một hoán vị cố định `class_order` của 100 nhãn CIFAR gốc, rồi xây ánh xạ nghịch đảo:
+
+```python
+original_to_global[class_order] = np.arange(100)
+y_global = original_to_global[y_original]
+```
+
+Train và test dùng **cùng** mapping. Với seed 42: nhãn CIFAR 59 ánh xạ thành 0; 21 thành 1; 83 thành 50. Base dùng ID `0..49`, phase mới đầu tiên dùng `50..59`. Không đặt lại nhãn phase mới thành `0..9`.
+
+Cấu hình chia 50 lớp còn lại thành 5 phase × 10 lớp; smoke hiện chỉ thực thi phase mới đầu tiên. `protocol.json` lưu đủ permutation, mapping và nhóm lớp để chạy lại.
+
+### 9.3. Ai quản lý class_ids?
+
+**API analytic chỉ trả hai mảng `(R,W)`.** `class_ids` không phải giá trị trả về hoặc trường trạng thái bên trong `src/analytic.py`. Pipeline quản lý metadata lớp bằng `class_order` và `original_to_global`, lưu riêng trong protocol/checkpoint.
+
+Với C lớp đã thấy, `class_order[:C]` là nhãn CIFAR gốc tương ứng với C cột của W. Dự đoán cột `j` được đổi lại nhãn CIFAR bằng `class_order[j]`.
+
+Module không tự nén nhãn rời rạc: truyền trực tiếp nhãn gốc `[3,97]` có thể làm W cần tới 98 cột. Vì vậy pipeline phải remap trước khi gọi analytic. Module suy số cột từ nhãn lớn nhất hoặc tham số `n_classes`, không suy từ số nhãn khác nhau trong từng minibatch.
+
+### 9.4. API cho base và minibatch
+
+```python
+r, w = initialize(h_base, y_base_global, gamma=0.1, n_classes=50)
+# Phase đầu: dù batch chỉ có một số lớp, giữ nguyên 60 cột cho toàn phase.
+r, w = incremental_update(r, w, h_batch, y_batch_global, n_classes=60)
+```
+
+| Mốc | R | W | Nhãn train hiện tại | Nhãn test |
+|---|---|---|---|---|
+| Analytic base | `(d,d)` | `(d,50)` | `0..49` | `0..49` |
+| Sau phase mới đầu tiên | `(d,d)` | `(d,60)` | `50..59` | `0..59` |
+
+Một lớp xuất hiện lại trong nhiều minibatch tiếp tục dùng đúng cột cũ. Không nối thêm một nhóm cột sau mỗi lần gọi. Gamma chỉ được cộng ở khởi tạo, không cộng lại theo batch.
+
+### 9.5. Công thức dùng nhãn toàn cục
+
+Mục 6 dùng one-hot cục bộ của các lớp mới và ghép hai khối khi cập nhật trọn phase. API thực tế tạo one-hot toàn cục Y có C cột, đệm W cũ bằng 0 thành W_pad rồi dùng:
+
+$$
+R_{new}=R_{old}-R_{old}H^T(I+HR_{old}H^T)^{-1}HR_{old},
+$$
+
+$$
 W_{new}=W_{pad}+R_{new}H^T(Y_{global}-HW_{pad}).
 $$
 
-Khi batch chỉ có lớp mới, công thức residual này tương đương hai khối ở mục 6.
-Khi cùng lớp xuất hiện lại ở minibatch sau, nó tiếp tục dùng cột cũ.
+Công thức residual tương đương công thức ghép khối khi batch chỉ có lớp mới và xử lý được lớp xuất hiện lại. Hàm không sửa các mảng trạng thái đầu vào.
 
-Ví dụ base có lớp 0,1; phase tiếp có lớp 2,3. Mẫu lớp 3 có one-hot cục bộ
-`[0,1]`, còn one-hot toàn cục là `[0,0,0,1]`. Dù chia phase thành bao nhiêu
-batch, sau cùng W chỉ có 4 cột. `n_classes` tùy chọn cho phép mở trước số cột
-của toàn phase; nếu bỏ qua, module suy từ nhãn đã gặp và không thu hẹp W cũ.
+### 9.6. Điều kiện giữ nguyên và checkpoint
 
-Các API:
+Sau base training, tắt gradient **và** chuyển mọi module sang `eval()`. BatchNorm không được cập nhật running statistics. Kiểm tra fingerprint của toàn bộ tham số/buffer trước và sau analytic; expansion cũng có checksum. Giữ nguyên feature map, gamma và preprocessing trong suốt chuỗi cập nhật.
 
-```python
-r, w = initialize(h_base, labels_global, gamma=1.0)
-r, w = incremental_update(r, w, h_batch, labels_global_batch)
-```
+Chỉ tái sử dụng checkpoint khi cấu hình base, class order, normalization và revision dữ liệu khớp. Nếu reuse, JSON phải ghi rõ base training không được thực thi lại trong lượt này.
 
-Module hiện cố định float64 và yêu cầu gamma>0. Cùng feature map/gamma là điều
-kiện của đối chiếu joint; không cập nhật CNN giữa các phase rồi áp dụng lại R cũ.
-Trạng thái phương pháp không giữ mẫu cũ; bộ kiểm chứng ngoài phương pháp giữ
-lịch sử riêng để xây nghiệm joint tham chiếu.
+### 9.7. Phạm vi kiểm chứng
+
+`incremental_update` chỉ nhận R/W cũ và batch hiện tại. Bộ kiểm tra bên ngoài giữ feature train lịch sử để giải joint ridge làm tham chiếu; phần lịch sử này không nằm trong trạng thái analytic được lưu.
+
+Đối chiếu R, W, score và argmax trên cùng feature map/gamma. Sau 50+10 lớp, đánh giá toàn bộ **6.000 ảnh test của 60 lớp**, gồm cả 50 lớp cũ; W phải có 60 cột. Smoke dùng float64 ở analytic và ngưỡng trong config. Kết quả này chưa phải tái lập benchmark paper.

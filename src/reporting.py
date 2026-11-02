@@ -21,7 +21,7 @@ def collect_provenance(root):
     commit, dirty = None, None
     try:
         current = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, timeout=5, check=True)
-        status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"], cwd=root, capture_output=True, text=True, timeout=5, check=True)
+        status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=normal"], cwd=root, capture_output=True, text=True, timeout=5, check=True)
         commit, dirty = current.stdout.strip(), bool(status.stdout.strip())
     except (OSError, subprocess.SubprocessError):
         pass
@@ -36,7 +36,7 @@ def save_json(report, output_path):
     return output_path
 
 
-def log_and_save_report(report, output_path, *, log_wandb=False, entity=None, project=None, wandb_client=None):
+def log_and_save_report(report, output_path, *, log_wandb=False, entity=None, project=None, wandb_client=None, tags=None):
     """Log run khi được bật rồi xuất JSON với ID/URL lấy từ chính SDK.
 
     report chứa config, environment và các result rows đã kiểm tra. output_path
@@ -54,7 +54,7 @@ def log_and_save_report(report, output_path, *, log_wandb=False, entity=None, pr
                 import wandb as wandb_client
             with wandb_client.init(
                 entity=entity, project=project, job_type="verification", mode="online",
-                tags=["verification", "synthetic", "float64", "minibatch"],
+                tags=tags if tags is not None else ["verification", "synthetic", "float64", "minibatch"],
                 config={**result["config"], "numpy_version": result["environment"]["numpy"],
                         "source_commit": result.get("provenance", {}).get("git_commit"),
                         "source_sha256": result.get("provenance", {}).get("source_sha256", {})},
