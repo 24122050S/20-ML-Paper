@@ -1,0 +1,18 @@
+{
+  "experiment": "VERIFY-02",
+  "kaggle_version": 9,
+  "kaggle_version_name": "VERIFY-02 global labels + minibatch",
+  "kaggle_script_version_id": 364788888,
+  "kaggle_url": "https://www.kaggle.com/code/hsangg206/01-verify-analytic-update6bf7e5ced7/output?scriptVersionId=364788888",
+  "kaggle_visibility_at_review": "Private",
+  "source_commit": "217684f02566c9d0a34cea0071a26dbfda7b5582",
+  "notebook_output_commit": "eddd50d20a3d7f11bf6b24efd7d15916a1581bd2",
+  "result_file": "verify_analytic_update_v2_results.json",
+  "result_sha256": "80ac85c4abef47afaab41c5b46ea695f3de1cd2e865fff313501b49ef8af3eb1",
+  "wandb_run_id": "wi4wau2d",
+  "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/wi4wau2d",
+  "wandb_state_observed": "Finished",
+  "tests_passed": 11,
+  "reviewed_on": "2026-11-02",
+  "note": "Manifest bổ sung sau khi kiểm tra UI Version 9 và W&B. JSON kết quả giữ nguyên nội dung đọc từ artifact Kaggle; không sửa số liệu hay điền URL thành công bằng tay."
+}

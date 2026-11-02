@@ -26,8 +26,8 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 | Số 32,68%/29,37% thuộc lượt CPU hỗ trợ cục bộ | Không phải VERIFY-01/VERIFY-02 và không phải benchmark hoàn chỉnh | Giữ tách khỏi bảng kết quả public cho đến khi nhập đúng source/config/artifact |
 | Đã có test độc lập trong repo | `tests/test_analytic_update.py`, `tests/test_reporting.py` | Chạy một lệnh unittest; không dùng số 13 tests của workspace khác để mô tả suite hiện tại |
 | Đã có đặc tả và bản giải thích minibatch | `docs/Dac_ta_ACIL.md`, `docs/THAY_DOI_VERIFY02.md` | Sang tự giải thích, Vỹ/Phát kiểm chéo |
-| Project W&B đã Public | `hsangg-2006/acil-reproduction`, VERIFY-01 run `7aeaupq7` | Phát kiểm ID/URL từng run; VERIFY-02 lấy URL tự động sau logging |
-| Đã có VERIFY-01 chạy trên Kaggle CPU | Version 8, source 23af76f; pipeline ảnh GPU vẫn chưa công bố | Vỹ chuẩn bị notebook ảnh; không coi kiểm chứng NumPy là run CIFAR |
+| Project W&B đã Public | `hsangg-2006/acil-reproduction`, VERIFY-01 run `7aeaupq7`; VERIFY-02 run `wi4wau2d` Finished | Phát kiểm ID/URL từng run; VERIFY-02 lấy URL tự động sau logging |
+| Đã có VERIFY-01 và VERIFY-02 chạy trên Kaggle CPU | Version 8/source 23af76f; Version 9/source 217684f, 11 tests đạt; pipeline ảnh GPU vẫn chưa công bố | Vỹ chuẩn bị notebook ảnh; không coi kiểm chứng NumPy là run CIFAR |
 | Repository đã Public | https://github.com/24122050S/20-ML-Paper | Cả ba dùng PR và cập nhật bằng chứng của phần mình |
 
 ## 3. Sang: phương pháp và analytic head
@@ -217,7 +217,7 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang:** mở `docs/Dac_ta_ACIL.md`, giải thích ví dụ nhãn cục bộ/toàn cục và chạy test minibatch; chốt bằng chứng VERIFY-02 khi có run mới.
+**Sang:** mở `docs/Dac_ta_ACIL.md`, giải thích ví dụ nhãn cục bộ/toàn cục và chạy test minibatch; đối chiếu bằng chứng VERIFY-02 đã có (Version 9, source 217684f, run wi4wau2d); giải thích vì sao chia batch không làm tăng thêm cột lớp.
 
 **Vỹ:** chuẩn bị PR pipeline ảnh/notebook 02 rồi chạy smoke K=5 trên Kaggle GPU. Bàn giao notebook URL/version và JSON; chưa khởi chạy 160 epochs trước khi run thử và protocol đạt.
 

@@ -24,6 +24,12 @@ VERIFY-01 Version 5 được archive. Bản chuẩn lịch sử Version 8 lấy 
 
 VERIFY-02 là lần kiểm chứng API mới. Kết quả mới chỉ được ghi lên bảng README khi có output thật và đã đối chiếu version/source/run; không tái sử dụng URL VERIFY-01.
 
+## Kết quả đã kiểm tra ngày 02/11/2026
+
+Bản sửa đã merge qua PR #3. Kaggle Version 9 (`364788888`) chạy source sạch `217684f`, cả 11 tests đạt và W sau ba phase là 24×2, 24×4, 24×6. Minibatch có sai lệch W tương đối lớn nhất khoảng 3.43e-13 so với joint; không có dự đoán khác nhau. Run W&B `wi4wau2d` đã Finished. JSON chỉ ghi `logged` sau khi SDK kết thúc.
+
+Kaggle đồng bộ notebook có output thành commit `eddd50d`; đây là commit artifact, còn `217684f` là source thực thi. JSON kết quả được giữ nguyên và manifest riêng ghi liên kết version/commit/run cùng SHA-256. README và phân công đã phản ánh lượt chạy này. Kaggle vẫn Private, vì vậy nhóm cần tính đến quyền xem khi bàn giao; notebook output và JSON được lưu trên GitHub.
+
 ## Giới hạn còn lại
 
 Feature map/gamma phải cố định; module hiện chỉ dùng float64 và gamma>0. Test nhiều cấu hình nhỏ không thay chứng minh tổng quát. Accuracy tổng hợp không so với benchmark ảnh. Pipeline dataset/CNN/ablation gamma=0 vẫn là phần cần phát triển tiếp.
