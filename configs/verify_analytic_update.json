@@ -1,0 +1,14 @@
+{
+  "experiment": "VERIFY-02",
+  "seed": 42,
+  "gamma": 1.0,
+  "d_input": 16,
+  "d_feature": 24,
+  "n_phases": 3,
+  "classes_per_phase": 2,
+  "n_train_per_class": 20,
+  "n_test_per_class": 10,
+  "minibatch_size": 7,
+  "rtol": 1e-8,
+  "atol": 1e-10
+}

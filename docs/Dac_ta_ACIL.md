@@ -94,3 +94,37 @@ Dùng danh sách lớp đã lưu để chuyển chỉ số cột thành nhãn th
 - Sau mỗi phase, đánh giá trên **toàn bộ lớp đã gặp**.
 - Với cùng đặc trưng, thứ tự lớp và $\gamma$, nghiệm cập nhật phải gần nghiệm ridge học gộp trong sai số số học.
 - Quá trình cập nhật không truy cập dữ liệu của các phase trước.
+
+## 9. Ánh xạ sang API dùng chung và minibatch
+
+Phần trên dùng $Y_k$ kích thước $N_k\times c_k$ cho riêng các lớp mới, phù hợp
+với công thức ghép khối khi cập nhật trọn một phase mới.
+
+Trong `src/analytic.py`, đầu vào là vector **ID lớp toàn cục**, không phải
+one-hot cục bộ. Module tạo $Y_{global}$ kích thước $N_k\times C_k$, với các
+cột lớp không có trong batch bằng 0, và đệm W cũ để có đủ $C_k$ cột:
+
+$$
+W_{pad}=[W_{old}\quad 0],\qquad
+W_{new}=W_{pad}+R_{new}H^T(Y_{global}-HW_{pad}).
+$$
+
+Khi batch chỉ có lớp mới, công thức residual này tương đương hai khối ở mục 6.
+Khi cùng lớp xuất hiện lại ở minibatch sau, nó tiếp tục dùng cột cũ.
+
+Ví dụ base có lớp 0,1; phase tiếp có lớp 2,3. Mẫu lớp 3 có one-hot cục bộ
+`[0,1]`, còn one-hot toàn cục là `[0,0,0,1]`. Dù chia phase thành bao nhiêu
+batch, sau cùng W chỉ có 4 cột. `n_classes` tùy chọn cho phép mở trước số cột
+của toàn phase; nếu bỏ qua, module suy từ nhãn đã gặp và không thu hẹp W cũ.
+
+Các API:
+
+```python
+r, w = initialize(h_base, labels_global, gamma=1.0)
+r, w = incremental_update(r, w, h_batch, labels_global_batch)
+```
+
+Module hiện cố định float64 và yêu cầu gamma>0. Cùng feature map/gamma là điều
+kiện của đối chiếu joint; không cập nhật CNN giữa các phase rồi áp dụng lại R cũ.
+Trạng thái phương pháp không giữ mẫu cũ; bộ kiểm chứng ngoài phương pháp giữ
+lịch sử riêng để xây nghiệm joint tham chiếu.

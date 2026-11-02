@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vỹ, Phát
 
-Cập nhật **01/11/2026**, giờ Việt Nam. Nền tảng chạy chính: **Kaggle**.
+Cập nhật **02/11/2026**, giờ Việt Nam. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
 Mốc nộp nội bộ: **20/11** và **04/12**. Mốc trung gian dưới đây là kế hoạch nhóm đề xuất; cần điều chỉnh theo thời gian thực tế của cả ba.
 
@@ -20,22 +20,22 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 
 | Hiện trạng | Bằng chứng | Việc tiếp tục |
 |---|---|---|
-| Đã có analytic head và kiểm tra toy | `acil_toy.py`, notebook 01, test | Sang đọc, giải thích, rà soát và phát triển R3; không cần viết lại từ đầu |
-| Đã có dữ liệu/protocol và ResNet-32 | `acil_cifar/data.py`, `resnet.py` | Vỹ rà soát cấu hình và chuyển sang Kaggle |
-| Đã chạy CPU smoke 2 epochs, d=256, một phase mới | `output/cifar100_smoke/results.json` | Dùng làm bằng chứng vận hành; chưa coi là tái lập benchmark |
-| Base analytic 32,68%; sau phase mới 29,37% trên 60 lớp | `reports/BAO_CAO_PIPELINE_CIFAR100.md` | Phát hiểu đúng test set và scope; không so trực tiếp với A-bar đủ K của paper |
-| Đã có 13 test và môi trường kiểm tra | `tests/`, `delivery_validation.json` | Chạy lại khi thay đổi phương pháp/protocol hoặc môi trường |
-| Đã có đặc tả do người học viết | `Dac_ta_ACIL.md` | Sang rà soát bằng ghi chú `planning/RA_SOAT_DAC_TA_ACIL.md` |
-| W&B đang offline, nhóm chưa có project | Log run `n7a5u364` | Phát tạo project công khai, ghi entity/project và đồng bộ có kiểm tra |
-| Chưa có bằng chứng chạy Kaggle trong workspace | Notebook khởi động chuẩn bị sẵn trong `kaggle/` | Vỹ import notebook, chọn GPU/Internet, chạy và bàn giao artifact |
-| Chưa có URL repository công khai được cung cấp | Cần điền link | Phát mở repo; cả ba commit công việc thực tế của mình |
+| Đã có analytic head dùng chung, hỗ trợ minibatch | `src/analytic.py`, `src/verification.py`, notebook 01 | Sang hiểu và kiểm tra; tiếp tục thiết kế R3 |
+| Dataset/protocol ảnh và ResNet-32 chưa công bố trong repo này | Thư mục src hiện mới có analytic/verification/reporting | Vỹ đưa pipeline ảnh đã kiểm tra lên repo bằng PR riêng |
+| Có lượt CPU smoke ở workspace hỗ trợ cục bộ trước đây | Chưa có artifact của lượt đó trong repo public | Không trình bày như kết quả đã công bố của repo; Phát kiểm tra trước khi nhập bằng chứng |
+| Số 32,68%/29,37% thuộc lượt CPU hỗ trợ cục bộ | Không phải VERIFY-01/VERIFY-02 và không phải benchmark hoàn chỉnh | Giữ tách khỏi bảng kết quả public cho đến khi nhập đúng source/config/artifact |
+| Đã có test độc lập trong repo | `tests/test_analytic_update.py`, `tests/test_reporting.py` | Chạy một lệnh unittest; không dùng số 13 tests của workspace khác để mô tả suite hiện tại |
+| Đã có đặc tả và bản giải thích minibatch | `docs/Dac_ta_ACIL.md`, `docs/THAY_DOI_VERIFY02.md` | Sang tự giải thích, Vỹ/Phát kiểm chéo |
+| Project W&B đã Public | `hsangg-2006/acil-reproduction`, VERIFY-01 run `7aeaupq7` | Phát kiểm ID/URL từng run; VERIFY-02 lấy URL tự động sau logging |
+| Đã có VERIFY-01 chạy trên Kaggle CPU | Version 8, source 23af76f; pipeline ảnh GPU vẫn chưa công bố | Vỹ chuẩn bị notebook ảnh; không coi kiểm chứng NumPy là run CIFAR |
+| Repository đã Public | https://github.com/24122050S/20-ML-Paper | Cả ba dùng PR và cập nhật bằng chứng của phần mình |
 
 ## 3. Sang: phương pháp và analytic head
 
 ### S01 — Rà soát đặc tả và hiểu code
 
 - **Hạn:** 03/11, 21:00. Dự kiến 2–3 giờ tập trung.
-- **Đọc:** `Dac_ta_ACIL.md`; `acil_toy.py`; notebook 01; mục 3 và phụ lục chứng minh của paper.
+- **Đọc:** `docs/Dac_ta_ACIL.md`; `src/analytic.py`; notebook 01; mục 3 và phụ lục chứng minh của paper.
 - **Làm:** ghi bảng ký hiệu và kích thước; giải thích khởi tạo R/W, Woodbury, thêm cột cho lớp mới; phân biệt nhãn one-hot cục bộ trong công thức khối với one-hot toàn cục trong code.
 - **Bàn giao:** cập nhật đặc tả bằng lời của mình; ghi nguồn công thức và một ví dụ base 2 lớp, phase mới 2 lớp.
 - **Đạt khi:** tự giải thích 10 phút không nhìn PDF; chạy toy và chỉ được dòng code tương ứng từng công thức; Vỹ đọc và kiểm được kích thước.
@@ -55,7 +55,7 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 - **Làm trước:** sweep batch size 32/128/512, giữ cùng checkpoint, expansion, class order, gamma, precision và thứ tự mẫu. Đo sai lệch W, score, số nhãn khác nhau, thời gian; giải thích vì sao batching lý tưởng không đổi nghiệm.
 - **Bàn giao:** script/config R3, JSON/CSV kết quả, W&B runs, một hình và phần diễn giải.
 - **Đạt khi:** mỗi điểm số có config/run; không dùng các backbone khác nhau để kết luận về batch size. Nhánh giữ lịch sử tính joint phải được tách khỏi thuật toán incremental.
-- **Điểm hiện còn thiếu:** `acil_toy.py` ép float64; chưa thể chỉ đổi tên config thành float32 để coi là precision sweep. Muốn thử precision phải hỗ trợ dtype thực sự và kiểm tra lại.
+- **Điểm hiện còn thiếu:** `src/analytic.py` ép float64; chưa thể chỉ đổi tên config thành float32 để coi là precision sweep. Muốn thử precision phải hỗ trợ dtype thực sự và kiểm tra lại.
 - **Kiểm tra:** Vỹ chạy lại một cấu hình; Phát kiểm bảng thống kê.
 
 ### S04 — Phần nội dung giữa kỳ
@@ -76,7 +76,7 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 ### V01 — Có một run Kaggle tái lập được
 
 - **Hạn:** 03/11, 21:00. Dự kiến 2–4 giờ gồm setup và chạy thử.
-- **Làm:** import `kaggle/ACIL_KAGGLE_START.ipynb`; chọn GPU và bật Internet; chạy từ đầu. Notebook dựng code từ gói đính kèm, giữ Torch/CUDA của Kaggle.
+- **Làm:** chuẩn bị notebook 02 cho dữ liệu ảnh/backbone, đưa source lên repo và chạy trên Kaggle GPU. Notebook 01 hiện chỉ kiểm chứng NumPy; file khởi động GPU ở workspace hỗ trợ trước đây chưa nằm trong repo này.
 - **Bàn giao:** URL notebook/version, tên GPU, Python/Torch/CUDA, config, log, checkpoint và `results.json` của run; giữ output trong `/kaggle/working` và lưu version.
 - **Đạt khi:** thật sự nhận `torch.cuda.is_available() == True`; test chạy được; smoke K=5 có base + đủ 5 phase, kết thúc ở 100 lớp/10.000 ảnh test. Nếu chưa chạy được, bàn giao log lỗi cụ thể thay vì đánh dấu hoàn thành.
 - **Kiểm tra:** Phát đọc output/config; Sang kiểm R/W và test class-incremental.
@@ -94,7 +94,7 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 - **Hạn checkpoint seed đầu:** 07/11; các seed tiếp theo theo ngân sách, mục tiêu 11/11.
 - **Làm:** sau khi V02 đạt, huấn luyện đủ cấu hình đã chốt, mục tiêu 160 epochs với mốc LR 80/120. Lưu run và checkpoint cuối; checkpoint tạm cho phiên dài cần hỗ trợ và kiểm tra resume đúng optimizer/scheduler/RNG.
 - **Bàn giao:** checkpoint cho từng seed, hash, history, run URL, config, thời gian. Chia checkpoint cho Sang/Phát bằng input/artifact có version.
-- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. Pipeline hiện `--reuse-base` tái sử dụng base đã xong, **không phải resume giữa epoch**.
+- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. Khi đưa pipeline ảnh vào repo, phân biệt dùng lại base hoàn chỉnh với resume training bị ngắt; hai thao tác cần kiểm tra khác nhau.
 
 ### V04 — Kết quả chính R1
 
@@ -121,7 +121,7 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 ### P01 — Repository, W&B và bảng run
 
 - **Hạn tạo:** 03/11; cập nhật sau mỗi lượt chạy.
-- **Làm:** tạo repo công khai, project W&B công khai, ghi entity/project. Cả ba dùng tài khoản của mình có quyền phù hợp, không chia sẻ API key trong chat/source.
+- **Làm:** repo và project W&B đã được tạo; tiếp tục kiểm public access và bảng run/config/source, không tạo trùng project. Cả ba dùng tài khoản của mình có quyền phù hợp, không chia sẻ API key trong chat/source.
 - **Bàn giao:** hai URL; bảng `experiment -> config/script -> checkpoint -> run -> kết luận`; hướng dẫn chạy và bổ sung nguồn tái sử dụng vào README.
 - **Đạt khi:** kiểm tra link bằng cửa sổ không đăng nhập; ít nhất một run đã xem được công khai. Các run offline đã có được giữ lại và sync có kiểm tra.
 
@@ -138,7 +138,7 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 - **Thiết kế:** 06/11; run thử 09/11; chốt 13/11.
 - **Làm:** tái lập các hàng Table 2 về feature expansion và regularization trên K=5, dùng checkpoint/mapping của Vỹ. Giữ các yếu tố khác cố định khi đổi một yếu tố.
 - **Bàn giao:** ma trận config, script, run links, bảng/hình và giải thích cơ chế cùng Sang.
-- **Điểm phải xử lý:** pipeline hiện bắt gamma>0 và luôn có expansion d>=64. Cần hỗ trợ đường không FE đúng nghĩa; hàng gamma=0 cần Sang kiểm tra điều kiện khả nghịch/phương pháp giải trước. Không thay bằng gamma rất nhỏ rồi gắn nhãn là gamma=0. Nếu chưa hỗ trợ được một hàng, ghi rõ hàng chưa tái lập và lý do.
+- **Điểm phải xử lý:** module analytic hiện nhận H trực tiếp và yêu cầu gamma>0. Với no-FE, dùng đúng feature backbone làm H, không thay bằng một random expansion cùng chiều. Hàng gamma=0 cần Sang kiểm tra điều kiện khả nghịch/phương pháp giải trước; không thay bằng gamma rất nhỏ rồi gắn nhãn gamma=0. Nếu chưa hỗ trợ được một hàng, ghi rõ hàng chưa tái lập và lý do.
 - **Đạt khi:** mô tả được mỗi cấu hình đã bỏ/thay thành phần nào; dùng cùng backbone và dữ liệu. Không chọn hyperparameter dựa trên test để làm đẹp kết quả.
 
 ### P04 — Phân tích sai lệch, hình và nguồn
@@ -209,7 +209,7 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 ## 9. Cách phối hợp để không làm trùng
 
 - Một repository chuẩn, một project W&B chuẩn. Có thể dùng nhánh `sang/analytic`, `vy/kaggle-backbone`, `phat/evaluation`; đây là tên đề xuất, chưa khẳng định nhánh đã tồn tại.
-- Sang chủ trì thay `acil_toy.py`; Vỹ chủ trì `data.py`, `resnet.py` và phần chạy Kaggle; Phát chủ trì metric, tổng hợp và hình. `experiment.py` là điểm ghép chung: thống nhất thay đổi hoặc review trước khi merge.
+- Sang chủ trì `src/analytic.py` và verification; Vỹ chủ trì các module dữ liệu/backbone sẽ thêm; Phát chủ trì metric/reporting và hình. Thống nhất API trước khi ghép, review thay đổi ở file chung.
 - Chia quota bằng **run ID/config đã giao**. Một checkpoint/seed/protocol chuẩn được Vỹ tạo rồi dùng lại cho R2/R3; chỉ train lại khi seed/representation/protocol cần đổi.
 - Mỗi ngày đồng bộ 10–15 phút: đã tạo artifact nào, còn vướng gì, đầu ra ngày mai là gì. Chốt vào bảng task, không chỉ báo bằng lời.
 - Mỗi run ghi seed, checkpoint hash, class order hash, normalization, d, gamma, K, dtype, batch size, nguồn số liệu và URL/version Kaggle/W&B.
@@ -217,10 +217,10 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang:** mở `Dac_ta_ACIL.md` và ghi chú rà soát, giải thích ví dụ ghép nhãn cục bộ/toàn cục.
+**Sang:** mở `docs/Dac_ta_ACIL.md`, giải thích ví dụ nhãn cục bộ/toàn cục và chạy test minibatch; chốt bằng chứng VERIFY-02 khi có run mới.
 
-**Vỹ:** import notebook Kaggle đã đóng gói, chọn GPU/Internet, chạy smoke K=5. Bàn giao notebook URL/version và `results.json`; chưa khởi chạy 160 epochs trước khi run thử và protocol đạt.
+**Vỹ:** chuẩn bị PR pipeline ảnh/notebook 02 rồi chạy smoke K=5 trên Kaggle GPU. Bàn giao notebook URL/version và JSON; chưa khởi chạy 160 epochs trước khi run thử và protocol đạt.
 
-**Phát:** tạo repo/W&B, đồng thời lập bảng metric từ run CPU hiện có để hiểu dữ liệu cần nhận. Nếu tài khoản chưa xong, vẫn chuẩn bị bảng config/run và định nghĩa metric cục bộ.
+**Phát:** kiểm repo/W&B đã có và ghép đúng version/source/JSON/run; chuẩn bị định nghĩa metric cho pipeline ảnh. Không gộp các lượt local hỗ trợ vào VERIFY-01/02.
 
-**Phần đã hỗ trợ trong phiên này:** tạo phân công, ma trận thí nghiệm, ghi chú rà đặc tả và gói khởi động Kaggle. Run Kaggle phải được xác nhận từ môi trường thật; không đánh dấu hoàn thành dựa trên việc notebook đã được tạo.
+**Quy ước hiện trạng:** README và bảng run phản ánh artifact thật trong repo. Source hoặc kết quả chỉ có tại workspace hỗ trợ được ghi rõ chưa công bố; run Kaggle cần xác nhận bằng version và output thực tế.
