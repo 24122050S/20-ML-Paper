@@ -4,3 +4,4 @@ huggingface_hub==1.10.1
 pyarrow==23.0.1
 Pillow==11.1.0
 threadpoolctl==3.6.0
+filelock==4.2.6

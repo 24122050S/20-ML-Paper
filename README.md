@@ -26,6 +26,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── Dac_ta_ACIL.md
 │   ├── HUONG_DAN_KAGGLE.md
 │   ├── HUONG_DAN_CIFAR_SMOKE.md
+│   ├── SUA_LOI_TRANG_THAI_RUN.md
 │   ├── PHAN_CONG_NHOM.md
 │   ├── THAY_DOI_VERIFY02.md
 │   └── THAY_DOI_CIFAR_SMOKE.md
@@ -38,14 +39,18 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── cifar_data.py
 │   ├── resnet.py
 │   ├── cifar_smoke.py
+│   ├── run_attempt.py
 │   └── notebook_bundle.py
 ├── tests/
 │   ├── test_analytic_update.py
 │   ├── test_reporting.py
-│   └── test_cifar_pipeline.py
+│   ├── test_cifar_pipeline.py
+│   ├── test_run_attempts.py
+│   └── test_notebook_distribution.py
 ├── notebooks/
 │   ├── 01_verify_analytic_update.ipynb
-│   └── 02_cifar100_smoke.ipynb
+│   ├── 02_cifar100_smoke.ipynb
+│   └── 03_cifar100_safe_attempts.ipynb
 ├── configs/
 │   ├── verify_analytic_update.json
 │   └── cifar100_smoke.json
@@ -122,9 +127,13 @@ python -m pip install -r requirements-cifar.txt
 python -B -m src.cifar_smoke
 ```
 
-Lệnh mặc định tải dữ liệu, train base 2 epochs, freeze ResNet-32/BatchNorm, expansion 256, chạy một phase mới theo minibatch và kiểm tra joint trên đủ 60 lớp. API dùng chính `src/analytic.py`; metadata mapping nằm trong pipeline. Kết quả local ở `reports/local/cifar100_smoke/`; đây là smoke test. Khi chưa cài dependency CIFAR, 9 test ảnh được skip có thông báo; 11 test core/tracking vẫn chạy với NumPy.
+Lệnh mặc định tải dữ liệu, train base 2 epochs, freeze ResNet-32/BatchNorm, expansion256, chạy một phase mới và kiểm joint trên đủ 60 lớp. API dùng chính `src/analytic.py`; metadata mapping thuộc pipeline. Root output là `reports/local/cifar100_smoke/`; artifact đầy đủ nằm trong `attempts/<attempt_id>/`. Các test ảnh/attempt được skip rõ ràng nếu thiếu dependency CIFAR; 11 test core/tracking vẫn chạy với NumPy.
 
-Notebook 02 có source bundle để upload độc lập lên Kaggle. Tạo lại bằng `python -m src.notebook_bundle` sau mỗi lần sửa source/config/test; không cần đưa source lên GitHub trước để chạy thử.
+Để dùng quản lý trạng thái mới trên Kaggle, import [notebook 03](notebooks/03_cifar100_safe_attempts.ipynb). Cell đầu có `LOG_WANDB`, `RUN_INCREMENTAL_PHASES` và `REUSE_CHECKPOINT`. Generator `python -m src.notebook_bundle` tạo lại bản 03; bản 02 được giữ nguyên làm source snapshot cho bằng chứng Kaggle Version 2.
+
+Mỗi lần gọi pipeline tạo một attempt riêng. Root `latest.json`, `progress.json`, `results.json` có cùng attempt ID và trạng thái mới nhất: `running`, `complete` hoặc `failed`. Chỉ nhận kết quả khi `status=complete` và `verification_passed=true`; lấy checkpoint/state từ `output_dir` trong report. Nếu lượt mới lỗi, root ghi failed/false; dữ liệu lượt trước vẫn ở thư mục riêng. [Giải thích và test hồi quy](docs/SUA_LOI_TRANG_THAI_RUN.md).
+
+`filelock` bảo vệ metadata root khi nhiều lượt cùng ghi; JSON trạng thái được ghi qua file tạm rồi replace. Đây là hạ tầng lưu kết quả, không tham gia công thức analytic. [Tài liệu filelock](https://py-filelock.readthedocs.io/en/latest/).
 
 ## Bằng chứng thí nghiệm
 
