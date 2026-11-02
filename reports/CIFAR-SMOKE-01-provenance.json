@@ -1,0 +1,23 @@
+{
+  "experiment": "CIFAR-SMOKE-01",
+  "execution_date": "2026-11-02",
+  "execution_platform": "local Windows CPU",
+  "kaggle_version": null,
+  "source_commit_at_run": "8e2a14368d1b5acb3948e9c5529ae1e753872e28",
+  "source_dirty_at_run": true,
+  "source_identity": "Use source_sha256 in results; uncommitted source is not represented by parent commit alone",
+  "results_file": "cifar100_smoke_results.json",
+  "results_sha256": "c64bfac8d21635938e0a08d9732556d28b9ce84ea45594c5f2e6b3127850223e",
+  "artifacts_directory_local": "reports/local/cifar100_smoke",
+  "artifact_sha256": {
+    "base_checkpoint.pt": "539417f7e0cda767f7cbdf02c003fd9269e7acc460b204abe133787c7469f5da",
+    "analytic_state.npz": "8d3b0fdd853b3ed12055fc3833f217d6219dad24998bc455bdccdf0ad052af05",
+    "protocol.json": "dc14e08a9dd7743733422baa1f4bf67edc288dab02026b74b14687607ab23808",
+    "data_audit.json": "bbd8118a14fba7609b699ea9f2235edbed65089900ef211effb48cf4561508b4"
+  },
+  "unit_tests_passed": 20,
+  "wandb_status": "not_logged",
+  "wandb_run_id": null,
+  "wandb_run_url": null,
+  "note": "Fresh 2-epoch training using previously prepared immutable-revision CIFAR cache. Not a Kaggle run or full paper benchmark."
+}

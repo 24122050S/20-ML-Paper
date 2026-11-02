@@ -6,3 +6,5 @@
 - `local/`: output kiểm tra trên máy, bị Git bỏ qua. File local không mặc nhiên là kết quả Kaggle đã công khai.
 
 Mỗi bản kết quả phải có config, môi trường, source commit/hashes, metrics và trạng thái tracking rõ ràng. Không dùng accuracy dữ liệu tổng hợp như benchmark ảnh của paper.
+
+- `cifar100_smoke_results.json`: lượt CPU local train mới 2 epochs, source chưa commit; 50+10 lớp, 20 unit tests và mọi check đạt. `CIFAR-SMOKE-01-provenance.json` ghi checksum và trạng thái chưa chạy Kaggle/W&B. Checkpoint/state ở `local/cifar100_smoke/` bị Git bỏ qua.
