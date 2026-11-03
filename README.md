@@ -2,11 +2,11 @@
 
 Đồ án Nhập môn Máy học: đọc, tự triển khai, tái lập và phản biện **ACIL**, NeurIPS 2022.
 
-| Thành viên | Phụ trách chính |
-|---|---|
-| Sang | Phương pháp, analytic head, kiểm chứng joint/phase/minibatch và R3 |
-| Vỹ | Dataset, protocol, backbone, Kaggle và R1 |
-| Phát | Metrics, W&B, ablation R2, bằng chứng và tổng hợp kết quả |
+| Thành viên | Phụ trách chính                                                       |
+| ------------ | ------------------------------------------------------------------------ |
+| Sang         | Phương pháp, analytic head, kiểm chứng joint/phase/minibatch và R3 |
+| Vĩ          | Dataset, protocol, backbone, Kaggle và R1                               |
+| Phát        | Metrics, W&B, ablation R2, bằng chứng và tổng hợp kết quả         |
 
 ## Hiện trạng
 
@@ -76,16 +76,16 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 
 `.git/`, `.venv/` và `reports/local/` là thư mục dùng trên máy; không đưa lên GitHub. `configs/`, các module reporting/verification và test tracking được giữ vì notebook VERIFY-02 đang dùng chúng.
 
-| Đường dẫn | Nội dung thực sự có |
-|---|---|
-| `src/analytic.py` | Joint ridge, khởi tạo R/W, cập nhật theo nhãn toàn cục |
-| `src/verification.py` | Dữ liệu tổng hợp và kiểm chứng ba cách học |
-| `src/reporting.py` | Source hashes, run ID/URL động, xuất JSON sau logging |
-| `configs/verify_analytic_update.json` | Config VERIFY-02 |
-| `tests/` | Test phương pháp và lỗi logging/finish của tracking |
-| `notebooks/01_verify_analytic_update.ipynb` | Notebook dùng module, chạy local hoặc import riêng trên Kaggle |
-| `docs/` | Đặc tả và phân công theo hiện trạng repo |
-| `reports/` | Kết quả lịch sử/đã công bố; `reports/local/` bị Git bỏ qua |
+| Đường dẫn                                 | Nội dung thực sự có                                                |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| `src/analytic.py`                           | Joint ridge, khởi tạo R/W, cập nhật theo nhãn toàn cục          |
+| `src/verification.py`                       | Dữ liệu tổng hợp và kiểm chứng ba cách học                    |
+| `src/reporting.py`                          | Source hashes, run ID/URL động, xuất JSON sau logging               |
+| `configs/verify_analytic_update.json`       | Config VERIFY-02                                                       |
+| `tests/`                                    | Test phương pháp và lỗi logging/finish của tracking              |
+| `notebooks/01_verify_analytic_update.ipynb` | Notebook dùng module, chạy local hoặc import riêng trên Kaggle    |
+| `docs/`                                     | Đặc tả và phân công theo hiện trạng repo                       |
+| `reports/`                                  | Kết quả lịch sử/đã công bố; `reports/local/` bị Git bỏ qua |
 
 Từ thư mục gốc, Python 3.10 trở lên; môi trường local được kiểm tra bằng Python 3.12:
 
@@ -121,7 +121,7 @@ Bộ test phương pháp kiểm tra ba seed, joint/phase/minibatch, lớp xuất
 
 ## Chạy CIFAR một mình
 
-Sang hiện thực hiện một mình; không cần chờ bàn giao từ Vỹ để chạy smoke. [Hướng dẫn CIFAR 50+10](docs/HUONG_DAN_CIFAR_SMOKE.md) có bước chạy local/Kaggle và cách đọc kết quả.
+Sang hiện thực hiện một mình; không cần chờ bàn giao từ Vĩ để chạy smoke. [Hướng dẫn CIFAR 50+10](docs/HUONG_DAN_CIFAR_SMOKE.md) có bước chạy local/Kaggle và cách đọc kết quả.
 
 ```bash
 python -m pip install -r requirements-cifar.txt
@@ -138,12 +138,12 @@ Mỗi lần gọi pipeline tạo một attempt riêng. Root `latest.json`, `prog
 
 ## Bằng chứng thí nghiệm
 
-| ID | Source snapshot | Kết quả | Kaggle version | W&B |
-|---|---|---|---|---|
-| VERIFY-01 | [23af76f](https://github.com/24122050S/20-ML-Paper/commit/23af76f9615a0b7e81ff5d8cc373acab45ec4398) | [JSON đã đối chiếu log](reports/verify_analytic_update_results.json) | [Version 8](https://www.kaggle.com/code/hsangg206/01-verify-analytic-update6bf7e5ced7/notebook?scriptVersionId=364773332) | [7aeaupq7](https://wandb.ai/hsangg-2006/acil-reproduction/runs/7aeaupq7) |
-| VERIFY-02 | [217684f](https://github.com/24122050S/20-ML-Paper/commit/217684f02566c9d0a34cea0071a26dbfda7b5582) | [JSON nguyên bản Kaggle](reports/verify_analytic_update_v2_results.json) | [Version 9](https://www.kaggle.com/code/hsangg206/01-verify-analytic-update6bf7e5ced7/output?scriptVersionId=364788888) | [wi4wau2d](https://wandb.ai/hsangg-2006/acil-reproduction/runs/wi4wau2d) |
-| CIFAR-SMOKE-01 | Local working tree có source hashes; chưa commit tại thời điểm chạy | [JSON local đã kiểm tra](reports/cifar100_smoke_results.json) | Run local CPU | Tắt tracking, ID/URL null |
-| CIFAR-KAGGLE-01 | Source bundle; hashes trong JSON đã đối chiếu | [JSON Kaggle](reports/cifar100_kaggle_results.json) | [Version 2](https://www.kaggle.com/code/hsangg206/notebook7e7946d4ee?scriptVersionId=364942764) | [o2r63pj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2) |
+| ID              | Source snapshot                                                                                    | Kết quả                                                                 | Kaggle version                                                                                                           | W&B                                                                     |
+| --------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| VERIFY-01       | [23af76f](https://github.com/24122050S/20-ML-Paper/commit/23af76f9615a0b7e81ff5d8cc373acab45ec4398) | [JSON đã đối chiếu log](reports/verify_analytic_update_results.json)  | [Version 8](https://www.kaggle.com/code/hsangg206/01-verify-analytic-update6bf7e5ced7/notebook?scriptVersionId=364773332) | [7aeaupq7](https://wandb.ai/hsangg-2006/acil-reproduction/runs/7aeaupq7) |
+| VERIFY-02       | [217684f](https://github.com/24122050S/20-ML-Paper/commit/217684f02566c9d0a34cea0071a26dbfda7b5582) | [JSON nguyên bản Kaggle](reports/verify_analytic_update_v2_results.json) | [Version 9](https://www.kaggle.com/code/hsangg206/01-verify-analytic-update6bf7e5ced7/output?scriptVersionId=364788888)   | [wi4wau2d](https://wandb.ai/hsangg-2006/acil-reproduction/runs/wi4wau2d) |
+| CIFAR-SMOKE-01  | Local working tree có source hashes; chưa commit tại thời điểm chạy                         | [JSON local đã kiểm tra](reports/cifar100_smoke_results.json)           | Run local CPU                                                                                                            | Tắt tracking, ID/URL null                                              |
+| CIFAR-KAGGLE-01 | Source bundle; hashes trong JSON đã đối chiếu                                                 | [JSON Kaggle](reports/cifar100_kaggle_results.json)                        | [Version 2](https://www.kaggle.com/code/hsangg206/notebook7e7946d4ee?scriptVersionId=364942764)                           | [o2r63pj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2) |
 
 CIFAR-KAGGLE-01: Python 3.13.15, NumPy 2.1.3, PyTorch 2.11.0+cu128, CUDA, train mới 2 epochs, expansion 256, seed42. Base 50 lớp đạt 32,58%; sau phase mới 60 lớp đạt 29,70% trên đủ 6.000 ảnh test. W là 256×50 rồi 256×60, dự đoán khớp joint, mọi check đạt. Đã đối chiếu output và JSON của Version 2 với run W&B Finished. JSON ghi `logged`; git_commit null do source được giải nén từ bundle. [Manifest](reports/CIFAR-KAGGLE-01-provenance.json) liên kết version, source bundle và checksum JSON. Kaggle hiển thị môi trường GPU T4 x2, runtime notebook 1m42s; notebook được ghi nhận Private lúc đối chiếu. Đây là smoke test.
 
@@ -170,6 +170,6 @@ Trạng thái cập nhật **03/11/2026**: pipeline CIFAR đã lên main qua PR 
 - NumPy cho đại số; W&B cho tracking; GitHub/Kaggle cho source và môi trường chạy.
 - Notebook/code khởi đầu và các sửa đổi được hỗ trợ bởi ChatGPT. Nhóm chịu trách nhiệm đọc, kiểm chứng và giải thích toàn bộ sản phẩm.
 
-[Phân công Sang/Vỹ/Phát](docs/PHAN_CONG_NHOM.md) · [Đặc tả analytic](docs/Dac_ta_ACIL.md) · [Báo cáo thay đổi](docs/THAY_DOI_VERIFY02.md)
+[Phân công Sang/Vĩ/Phát](docs/PHAN_CONG_NHOM.md) · [Đặc tả analytic](docs/Dac_ta_ACIL.md) · [Báo cáo thay đổi](docs/THAY_DOI_VERIFY02.md)
 
 [Báo cáo thay đổi CIFAR smoke](docs/THAY_DOI_CIFAR_SMOKE.md) · [Hướng dẫn tự chạy](docs/HUONG_DAN_CIFAR_SMOKE.md)
