@@ -6,7 +6,7 @@
 
 Đã hoàn thành một implementation analytic được kiểm chứng và một pipeline ảnh chạy thử đầu-cuối. Chưa hoàn thành bộ thí nghiệm tái lập theo phạm vi nộp, slide deck giữa kỳ hoặc poster cuối kỳ.
 
-Sang hiện tự thực hiện công việc; không cần chờ bàn giao từ Vỹ/Phát. Đã xác nhận với Sang rằng bài ACIL được giảng viên duyệt. Các phân công ba người trước đây là kế hoạch lịch sử, không phải danh sách việc đã hoàn tất.
+Sang hiện tự thực hiện công việc; không cần chờ bàn giao từ Vĩ/Phát. Đã xác nhận với Sang rằng bài ACIL được giảng viên duyệt. Các phân công ba người trước đây là kế hoạch lịch sử, không phải danh sách việc đã hoàn tất.
 
 Không quy đổi số file hoặc số test thành phần trăm hoàn thành đồ án. Các bài kiểm tra số học chứng minh tính nhất quán trong những trường hợp đã kiểm, còn các thí nghiệm tái lập và phân tích trả lời câu hỏi khác.
 
