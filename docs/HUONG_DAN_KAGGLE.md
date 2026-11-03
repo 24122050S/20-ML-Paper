@@ -9,4 +9,4 @@
 
 SDK khóa `wandb==0.28.1`. `logged` chỉ ghi sau khi run context kết thúc; lỗi logging/finish ghi `failed` rồi dừng notebook. Nếu tắt tracking, report có `not_logged` và URL null.
 
-Notebook này không huấn luyện CIFAR-100 và không cần GPU. Notebook/pipeline dữ liệu ảnh là nhiệm vụ tiếp theo của Vỹ, chưa phải thành phần đã công bố trong repo.
+Notebook 01 chỉ kiểm chứng analytic tổng hợp và không cần GPU. Pipeline CIFAR-100/ResNet-32 đã có trên main; notebook 02 Version 2 đã chạy CUDA 50+10 và có W&B o2r63pj2. Để chạy ảnh thật bằng source mới, dùng [notebook 03](../notebooks/03_cifar100_safe_attempts.ipynb) và [hướng dẫn CIFAR](HUONG_DAN_CIFAR_SMOKE.md). Bản 02 giữ snapshot của lượt đã công bố; bản 03 có trạng thái từng attempt và kiểm kích thước theo config.

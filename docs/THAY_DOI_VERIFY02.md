@@ -1,6 +1,6 @@
 # Vì sao thay đổi từ VERIFY-01 sang VERIFY-02?
 
-Cập nhật 02/11/2026. Đây là sửa phần kiểm chứng analytic, chưa triển khai thêm pipeline CIFAR-100 vào repo.
+Báo cáo thay đổi VERIFY-02 ngày 02/11/2026. Phạm vi của lần sửa này là kiểm chứng analytic. Cập nhật trạng thái 03/11: pipeline CIFAR-100 đã lên main qua PR #5; notebook 03 và quản lý attempt đã lên main qua PR #7. Xem [bằng chứng hiện có](../reports/README.md).
 
 ## Lỗi cần giải quyết
 
@@ -32,7 +32,7 @@ Kaggle đồng bộ notebook có output thành commit `eddd50d`; đây là commi
 
 ## Giới hạn còn lại
 
-Feature map/gamma phải cố định; module hiện chỉ dùng float64 và gamma>0. Test nhiều cấu hình nhỏ không thay chứng minh tổng quát. Accuracy tổng hợp không so với benchmark ảnh. Pipeline dataset/CNN/ablation gamma=0 vẫn là phần cần phát triển tiếp.
+Feature map/gamma phải cố định; module hiện chỉ dùng float64 và gamma>0. Test nhiều cấu hình nhỏ không thay chứng minh tổng quát. Accuracy tổng hợp không so với benchmark ảnh. Dataset/CNN đã có smoke CIFAR 50+10 với tracking; benchmark đầy đủ và ablation gamma=0 vẫn cần phát triển tiếp.
 
 ## Thu gọn thư mục sau kiểm chứng
 
