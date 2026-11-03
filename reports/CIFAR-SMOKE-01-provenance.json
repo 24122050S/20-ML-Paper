@@ -7,7 +7,22 @@
   "source_dirty_at_run": true,
   "source_identity": "Use source_sha256 in results; uncommitted source is not represented by parent commit alone",
   "results_file": "cifar100_smoke_results.json",
-  "results_sha256": "c64bfac8d21635938e0a08d9732556d28b9ce84ea45594c5f2e6b3127850223e",
+  "results_sha256": "31b43db9b024f3e55895ff6d76e0475afc63e115ec9efdf2525866d4717a9b10",
+  "results_serialization": {
+    "encoding": "utf-8",
+    "newline": "LF"
+  },
+  "results_original_raw_sha256": "c64bfac8d21635938e0a08d9732556d28b9ce84ea45594c5f2e6b3127850223e",
+  "results_original_raw_serialization": {
+    "encoding": "utf-8",
+    "newline": "CRLF"
+  },
+  "results_checksum_correction": {
+    "date_client": "2026-11-03",
+    "reason": "results_sha256 identifies the published Git blob after CRLF-to-LF normalization; the original raw checksum is preserved separately",
+    "data_changed": false,
+    "training_rerun": false
+  },
   "artifacts_directory_local": "reports/local/cifar100_smoke",
   "artifact_sha256": {
     "base_checkpoint.pt": "539417f7e0cda767f7cbdf02c003fd9269e7acc460b204abe133787c7469f5da",

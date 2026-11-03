@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from src.reporting import log_and_save_report
+from src.reporting import log_and_save_report, save_json
 
 
 class FakeRun:
@@ -38,6 +38,17 @@ class ReportingTests(unittest.TestCase):
         return {"experiment":"VERIFY-02","config":{"seed":42},"environment":{"numpy":"2.1.3"},
                 "results":[{"phase":0,"relative_w_error":1e-12}],"verification_passed":True,
                 "wandb_status":"synced","wandb_run_url":"https://old.invalid/run"}
+
+    def test_json_bytes_are_utf8_lf_on_every_platform(self):
+        """Checksum không đổi khi Git chuẩn hóa newline, kể cả trên Windows."""
+        report = {"ghi_chu": "Tiếng Việt\nDòng hai", "accuracy_pct": 29.7}
+        expected = ('{\n  "ghi_chu": "Tiếng Việt\\nDòng hai",\n'
+                    '  "accuracy_pct": 29.7\n}\n').encode("utf-8")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "nested/result.json"
+            self.assertEqual(save_json(report, path), path)
+            self.assertEqual(path.read_bytes(), expected)
+            self.assertEqual(json.loads(path.read_bytes()), report)
 
     def test_offline_local_export_has_no_fake_wandb_url(self):
         with tempfile.TemporaryDirectory() as directory:
