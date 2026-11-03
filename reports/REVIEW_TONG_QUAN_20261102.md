@@ -14,8 +14,9 @@ Không quy đổi số file hoặc số test thành phần trăm hoàn thành đ
 
 - Đọc lại [trang tổng quan chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/) và đủ năm trang selection/reading/reproduction/analysis/empirics ngày 02/11/2026.
 - Mốc GitHub đối chiếu cho bản cập nhật này: [main sau PR #7, f6d1459](https://github.com/24122050S/20-ML-Paper/commit/f6d145986314f21ddc7aa4bb6565a6699ccb6a94). Pipeline đã được đưa lên qua [PR #5](https://github.com/24122050S/20-ML-Paper/pull/5); README ghép bằng chứng Kaggle qua [PR #6](https://github.com/24122050S/20-ML-Paper/pull/6).
-- Đối chiếu code/config, JSON CPU và [JSON Kaggle](cifar100_kaggle_results.json), [manifest Kaggle](CIFAR-KAGGLE-01-provenance.json), source bundle và W&B URL. VERIFY-02 và manifest Kaggle khớp checksum; manifest CPU vẫn ghi checksum bản raw CRLF trong khi Git blob JSON dùng LF. Điểm checksum CPU còn cần sửa riêng, số liệu JSON không thay đổi.
+- Đối chiếu code/config, JSON CPU và [JSON Kaggle](cifar100_kaggle_results.json), [manifest Kaggle](CIFAR-KAGGLE-01-provenance.json), source bundle và W&B URL. VERIFY-02, manifest Kaggle và manifest CPU hiện khớp file được công bố. [Bản sửa checksum CPU](../docs/SUA_LOI_CHECKSUM_JSON.md) dùng Git blob LF, giữ checksum raw CRLF cũ riêng; số liệu JSON không đổi và không train lại.
 - Kiểm tra bản sửa PR #7 ngày 03/11: 37 tests đạt trên local; bootstrap bundle trong kernel mới có 36 tests đạt và 1 test snapshot 02 skip vì bundle không chứa notebook lịch sử. Cell cuối nhận đúng W256×60, W256×100 và W128×100; config 100 lớp từ chối W256×60. Đây là kiểm tra code/notebook, không phải một lượt training Kaggle mới.
+- Sau bản sửa UTF-8/LF: suite đầy đủ có 38 tests đạt trên local, gồm test tái hiện CRLF trên Windows; notebook 03 được đóng gói lại với bộ ghi report mới. Số 37 tests phía trên thuộc lần kiểm PR #7.
 - Chưa có artifact deck/poster `.pptx` hoàn chỉnh được ghi nhận. Kaggle Version 2 của notebook 02 đã có bằng chứng; bản notebook 03 chưa có version training được xác nhận.
 
 ## 1. Những gì đã làm được
@@ -30,7 +31,7 @@ Không quy đổi số file hoặc số test thành phần trăm hoàn thành đ
 | CIFAR-100 loader/protocol | Đã lên main và chạy local/Kaggle | HF revision cố định, kiểm 50.000 train/10.000 test, mapping dùng chung, chia base 50 và 5 nhóm mới x 10 |
 | ResNet-32/base training | Có lượt train mới 2 epochs trên CPU và CUDA | 25.000 ảnh base; trọng số đổi, reload checkpoint khớp, freeze đúng; JSON của hai môi trường giữ riêng |
 | Ghép analytic trên ảnh thật | Kaggle 50+10 đã hoàn tất và có tracking | W 256×50 → 256×60, test 5.000 → 6.000 ảnh; mọi check đạt, W&B o2r63pj2 Finished |
-| Tests | Suite đầy đủ đã kiểm tra 37 tests trên local | Analytic, reporting, CIFAR, attempt và notebook distribution; 11/20 tests thuộc snapshot VERIFY-02/CPU cũ |
+| Tests | Suite đầy đủ đã kiểm tra 38 tests trên local | Analytic, reporting gồm UTF-8/LF, CIFAR, attempt và notebook distribution; 11/20 tests thuộc snapshot VERIFY-02/CPU cũ |
 | Notebook 02 | Có run Kaggle Version 2 đã đối chiếu | JSON CUDA, source hashes trong bundle, manifest và W&B; giữ bản 02 làm snapshot lịch sử |
 | Notebook 03 | Source mới đã lên main qua PR #7 | Artifact riêng mỗi attempt; running/failed/complete; cell cuối theo config; bootstrap đã kiểm, chưa có run training Kaggle mới |
 | Repo/tracking nền tảng | Đã có | GitHub và project W&B đã public; repo local có Git độc lập, requirements, hướng dẫn và manifest |
@@ -108,7 +109,7 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 
 1. **Dùng source mới:** import [notebook 03](../notebooks/03_cifar100_safe_attempts.ipynb) vào Kaggle. Pipeline và mốc 60 lớp đã công bố, không cần dựng lại hoặc chạy lại chỉ để có W&B đầu tiên.
 2. **Lưu đủ chuỗi 100 lớp:** đặt `RUN_INCREMENTAL_PHASES=5`, bật tracking, tiếp tục cấu hình nhỏ 2 epochs/d=256. Có thể reuse checkpoint base đã kiểm tương thích và ghi rõ reused. Kiểm đủ 6 điểm tính cả base, W256×100, 10.000 ảnh test và status complete/verification true cùng attempt ID.
-3. **Ghép bằng chứng và chốt benchmark:** lưu version Kaggle, lấy JSON/checkpoint/state từ output_dir trong report, ghép đúng W&B URL và source hashes. Sau đó chốt protocol/metric, đo tài nguyên và xử lý resume/reference lớn. Xử lý riêng checksum CRLF/LF của manifest CPU; không đổi số liệu lịch sử.
+3. **Ghép bằng chứng và chốt benchmark:** lưu version Kaggle, lấy JSON/checkpoint/state từ output_dir trong report, ghép đúng W&B URL và source hashes. Sau đó chốt protocol/metric, đo tài nguyên và xử lý resume/reference lớn. Bộ ghi report đã chuẩn UTF-8/LF; tính checksum theo đúng bytes của file được công bố.
 4. **Hoàn thành core reproduction:** kết quả chính, ablation đã chọn và một phân tích bổ sung; đối chiếu paper/code tác giả, giải thích sai lệch. Viết nội dung deck song song khi scope và kết quả đã rõ.
 5. **Hoàn thiện deck trước hạn; sau đó tập trung poster:** phát triển P1/P2 thành giả thuyết, lý thuyết, đối chứng và phép đo; chỉ đưa kết luận được bằng chứng ủng hộ.
 

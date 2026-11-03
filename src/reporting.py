@@ -29,10 +29,15 @@ def collect_provenance(root):
 
 
 def save_json(report, output_path):
-    """Ghi report JSON UTF-8 vào output_path; tự tạo thư mục cha và trả Path."""
+    """Ghi JSON UTF-8/LF trên mọi hệ điều hành để checksum khớp Git blob.
+
+    Giữ một newline cuối file, không BOM; không để Windows tự đổi LF thành CRLF.
+    Tự tạo thư mục cha và trả Path.
+    """
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n",
+                           encoding="utf-8", newline="\n")
     return output_path
 
 

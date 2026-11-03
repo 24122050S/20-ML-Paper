@@ -27,6 +27,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── HUONG_DAN_KAGGLE.md
 │   ├── HUONG_DAN_CIFAR_SMOKE.md
 │   ├── SUA_LOI_TRANG_THAI_RUN.md
+│   ├── SUA_LOI_CHECKSUM_JSON.md
 │   ├── PHAN_CONG_NHOM.md
 │   ├── THAY_DOI_VERIFY02.md
 │   └── THAY_DOI_CIFAR_SMOKE.md
@@ -154,7 +155,7 @@ VERIFY-02 Version 9 đã Save & Run All thành công trên Kaggle CPU ngày 02/1
 
 Notebook Kaggle được ghi nhận **Private** trong các lần đối chiếu version; cần kiểm quyền truy cập trước khi nộp. Source, notebook và JSON đã lưu trên GitHub; notebook 01 có output, còn bản 02 mang source bundle của Version 2. W&B project đã được ghi nhận Public.
 
-Trạng thái cập nhật **03/11/2026**: pipeline CIFAR đã lên main qua PR #5; PR #7 thêm notebook 03 và quản lý attempt. Suite đầy đủ đã kiểm tra 37 tests trên local. Bản 03 chưa có version training Kaggle mới được xác nhận; bằng chứng Kaggle/W&B công bố hiện dừng ở 60 lớp. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
+Trạng thái cập nhật **03/11/2026**: pipeline CIFAR đã lên main qua PR #5; PR #7 thêm notebook 03 và quản lý attempt. Suite đầy đủ đã kiểm tra 38 tests trên local, gồm test ghi report UTF-8/LF. [Checksum JSON CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã được cập nhật theo Git blob; checksum raw CRLF cũ được giữ riêng, số liệu không đổi. Bản 03 chưa có version training Kaggle mới được xác nhận; bằng chứng Kaggle/W&B công bố hiện dừng ở 60 lớp. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
 
 ## Quy ước phương pháp
 
