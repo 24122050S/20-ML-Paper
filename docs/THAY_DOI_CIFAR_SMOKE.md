@@ -2,6 +2,8 @@
 
 Ngày 02/11/2026. Mục tiêu là hoàn thành đường đi ảnh → backbone → analytic, không phụ thuộc bàn giao từ thành viên khác.
 
+> Cập nhật 03/11/2026: pipeline và bằng chứng CIFAR đã lên main qua [PR #5](https://github.com/24122050S/20-ML-Paper/pull/5). Notebook 02 Version 2 đã chạy trên Kaggle CUDA, W&B o2r63pj2 Finished. [PR #7](https://github.com/24122050S/20-ML-Paper/pull/7) thêm notebook 03, artifact riêng cho mỗi attempt và kiểm kích thước theo config. Phần số liệu local dưới đây là lịch sử của lượt CPU ban đầu.
+
 ## Vì sao phải sửa?
 
 Workspace cũ đã có dữ liệu và pipeline CIFAR, nhưng nó import analytic từ `acil_toy.py`; source này nằm ngoài repository chuẩn. Chỉ sao chép kết quả cũ vào repo không chứng minh module minibatch hiện tại hoạt động với đặc trưng CNN thật.
@@ -14,9 +16,9 @@ Workspace cũ đã có dữ liệu và pipeline CIFAR, nhưng nó import analyti
 - Thêm `src/cifar_smoke.py`: tự tải/cache dữ liệu theo revision HF cố định, train 50 lớp base, kiểm checkpoint, freeze CNN/BatchNorm, mở rộng feature và cập nhật 10 lớp mới theo minibatch.
 - Chốt nhãn toàn cục: cùng permutation/mapping cho train và test; `class_order` thuộc pipeline. Mở trước 60 cột cho toàn phase qua `n_classes=60`, không thêm cột theo số batch.
 - Gộp mục 9 của đặc tả thành hợp đồng H/y/R/W; giữ riêng bản đặc tả trước chỉnh sửa trong `.local-archive` của workspace. Các mục công thức 1–8 được giữ.
-- Thêm test mapping 60 lớp, checkpoint không tương thích và từ chối trích feature khi chưa freeze/eval. Có 20 test khi cài dependency CIFAR; 9 test ảnh được skip rõ ràng trong môi trường chỉ cài core.
+- Thêm test mapping 60 lớp, checkpoint không tương thích và từ chối trích feature khi chưa freeze/eval. Snapshot này có 20 tests khi cài dependency CIFAR, gồm 9 tests ảnh. Sau PR #7, suite đầy đủ đã kiểm tra 37 tests trên local.
 - Reporting có thể nhận tags CIFAR thay vì gắn synthetic; provenance tính cả file chưa được Git track để không gọi nhầm working tree mới là source sạch. Thứ tự log/finish rồi ghi JSON được giữ.
-- Notebook 02 đóng gói source thành ZIP có SHA-256. Đây là bản phân phối của cùng module, không phải implementation analytic được viết lại trong cell. Có thể upload notebook độc lập, không cần chờ source lên GitHub. `src/notebook_bundle.py` phục vụ tạo lại gói sau khi sửa source.
+- Notebook 02 đóng gói source thành ZIP có SHA-256. Đây là bản phân phối của cùng module, không phải implementation analytic được viết lại trong cell. Bản 02 hiện giữ snapshot tương ứng Version 2; `python -m src.notebook_bundle` tạo bản 03 cho source mới sau PR #7.
 
 ## Kết quả thực thi local
 
@@ -37,4 +39,6 @@ Kết quả: [JSON nguyên bản](../reports/cifar100_smoke_results.json), [mani
 
 Lượt này chạy local với working tree chưa commit (`source_dirty=true`), W&B tắt (`not_logged`, ID/URL null). Không gắn kết quả vào commit cha như thể commit đó chứa source mới và không gán version Kaggle giả. Bằng chứng lịch sử VERIFY-01/02 được giữ nguyên.
 
-Sang đọc mục 9 của đặc tả và JSON trước; sau đó import notebook 02, bật Internet/GPU và Save & Run All trên Kaggle. Có hướng dẫn tự chạy trong [HUONG_DAN_CIFAR_SMOKE.md](HUONG_DAN_CIFAR_SMOKE.md). Source/notebook mới và thay đổi dọn thư mục hiện còn ở local; chưa push GitHub.
+Run Kaggle 50+10 tiếp theo đã hoàn tất và được lưu riêng: [JSON Kaggle](../reports/cifar100_kaggle_results.json), [Version 2](https://www.kaggle.com/code/hsangg206/notebook7e7946d4ee?scriptVersionId=364942764), [W&B o2r63pj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2), [manifest](../reports/CIFAR-KAGGLE-01-provenance.json). Số liệu CUDA là 32,58% ở base và 29,70% ở 60 lớp. Trạng thái not_logged trong JSON CPU phía trên thuộc chính lượt CPU đó.
+
+Việc tiếp theo của Sang là import notebook 03, đặt `RUN_INCREMENTAL_PHASES=5` và bật tracking để lưu mốc 100 lớp. Source/notebook hiện đã có trên main; chưa có version training Kaggle được xác nhận cho bản 03. Xem [hướng dẫn tự chạy](HUONG_DAN_CIFAR_SMOKE.md) và [giải thích sửa trạng thái](SUA_LOI_TRANG_THAI_RUN.md).

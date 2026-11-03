@@ -1,9 +1,9 @@
 # Phân công ACIL: Sang, Vỹ, Phát
 
-> Cập nhật cách làm hiện tại: Sang đang thực hiện một mình. Các vai trò Sang/Vỹ/Phát bên dưới là kế hoạch phân công của nhóm, không phải điều kiện phải chờ người khác. Thứ tự cá nhân: chốt analytic → chạy CIFAR smoke 50+10 → đưa lên Kaggle → mở rộng đủ phase và thí nghiệm. Xem [hướng dẫn chạy một mình](HUONG_DAN_CIFAR_SMOKE.md).
+> Sang đang thực hiện một mình. Các vai trò Sang/Vỹ/Phát bên dưới là kế hoạch phân công của nhóm; hiện Sang thực hiện cả ba nhóm việc. Analytic, pipeline CIFAR trên GitHub và lượt Kaggle 50+10 có W&B đã có bằng chứng. Việc tiếp theo: dùng notebook 03 chạy đủ 5 phase, lưu bằng chứng 100 lớp rồi chốt protocol benchmark. Xem [hướng dẫn chạy một mình](HUONG_DAN_CIFAR_SMOKE.md).
 
 
-Cập nhật **02/11/2026**, giờ Việt Nam. Nền tảng chạy chính: **Kaggle**.
+Cập nhật **03/11/2026**, giờ Việt Nam, sau [PR #5](https://github.com/24122050S/20-ML-Paper/pull/5) và [PR #7](https://github.com/24122050S/20-ML-Paper/pull/7). Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
 Mốc nộp nội bộ: **20/11** và **04/12**. Mốc trung gian dưới đây là kế hoạch nhóm đề xuất; cần điều chỉnh theo thời gian thực tế của cả ba.
 
@@ -24,14 +24,17 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 | Hiện trạng | Bằng chứng | Việc tiếp tục |
 |---|---|---|
 | Đã có analytic head dùng chung, hỗ trợ minibatch | `src/analytic.py`, `src/verification.py`, notebook 01 | Sang hiểu và kiểm tra; tiếp tục thiết kế R3 |
-| Dataset/protocol ảnh và ResNet-32 chưa công bố trong repo này | Thư mục src hiện mới có analytic/verification/reporting | Vỹ đưa pipeline ảnh đã kiểm tra lên repo bằng PR riêng |
-| Có lượt CPU smoke ở workspace hỗ trợ cục bộ trước đây | Chưa có artifact của lượt đó trong repo public | Không trình bày như kết quả đã công bố của repo; Phát kiểm tra trước khi nhập bằng chứng |
-| Số 32,68%/29,37% thuộc lượt CPU hỗ trợ cục bộ | Không phải VERIFY-01/VERIFY-02 và không phải benchmark hoàn chỉnh | Giữ tách khỏi bảng kết quả public cho đến khi nhập đúng source/config/artifact |
-| Đã có test độc lập trong repo | `tests/test_analytic_update.py`, `tests/test_reporting.py` | Chạy một lệnh unittest; không dùng số 13 tests của workspace khác để mô tả suite hiện tại |
+| Pipeline CIFAR và ResNet-32 đã lên main qua PR #5 | [Loader/protocol](../src/cifar_data.py), [backbone](../src/resnet.py), [runner](../src/cifar_smoke.py), [config](../configs/cifar100_smoke.json) | Chốt protocol benchmark; runner hiện giới hạn K=5 |
+| Lượt CPU smoke 50+10 đã có JSON trong repo | [JSON CPU](../reports/cifar100_smoke_results.json); source dirty và W&B tắt tại thời điểm chạy | Giữ provenance lịch sử; checkpoint/state vẫn local, bị Git bỏ qua |
+| Lượt Kaggle GPU 50+10 đã có tracking | [Version 2 / 364942764](https://www.kaggle.com/code/hsangg206/notebook7e7946d4ee?scriptVersionId=364942764), [JSON](../reports/cifar100_kaggle_results.json), [W&B o2r63pj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2), [manifest](../reports/CIFAR-KAGGLE-01-provenance.json) | Mốc 2 epochs/d=256: base 32,58%, 60 lớp 29,70%; tiếp tục 100 lớp, chưa coi là benchmark paper |
+| Suite đầy đủ đã kiểm tra 37 tests trên local | `tests/`: analytic, reporting, CIFAR, run attempts và notebook distribution | Chạy unittest khi đổi code; 11 tests của VERIFY-02 và 20 tests của lượt CPU là số lịch sử |
 | Đã có đặc tả và bản giải thích minibatch | `docs/Dac_ta_ACIL.md`, `docs/THAY_DOI_VERIFY02.md` | Sang tự giải thích, Vỹ/Phát kiểm chéo |
 | Project W&B đã Public | `hsangg-2006/acil-reproduction`, VERIFY-01 run `7aeaupq7`; VERIFY-02 run `wi4wau2d` Finished | Phát kiểm ID/URL từng run; VERIFY-02 lấy URL tự động sau logging |
-| Đã có VERIFY-01 và VERIFY-02 chạy trên Kaggle CPU | Version 8/source 23af76f; Version 9/source 217684f, 11 tests đạt; pipeline ảnh GPU vẫn chưa công bố | Vỹ chuẩn bị notebook ảnh; không coi kiểm chứng NumPy là run CIFAR |
+| Đã có VERIFY-01 và VERIFY-02 chạy trên Kaggle CPU | Version 8/source 23af76f; Version 9/source 217684f, 11 tests đạt | Giữ riêng hai lượt tổng hợp với CIFAR-KAGGLE-01 |
+| Notebook 03 đã lên main qua PR #7 | [Notebook 03](../notebooks/03_cifar100_safe_attempts.ipynb), [giải thích sửa trạng thái](SUA_LOI_TRANG_THAI_RUN.md): artifact riêng, running/failed/complete, kích thước cuối theo config | Import bản 03 để chạy mới; bản 02 giữ snapshot của Version 2; chưa xác nhận lượt training Kaggle của bản 03 |
 | Repository đã Public | https://github.com/24122050S/20-ML-Paper | Cả ba dùng PR và cập nhật bằng chứng của phần mình |
+
+Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2; cần kiểm quyền truy cập khi nộp. JSON/manifest của lượt đó đã nằm trên GitHub. Bảng này mô tả bằng chứng đã có, còn các mục S/V/P phía dưới là kế hoạch công việc.
 
 ## 3. Sang: phương pháp và analytic head
 
@@ -76,12 +79,13 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 
 ## 4. Vỹ: dữ liệu, Kaggle, backbone và R1
 
-### V01 — Có một run Kaggle tái lập được
+### V01 — Mở rộng run Kaggle từ 60 lên 100 lớp
 
 - **Hạn:** 03/11, 21:00. Dự kiến 2–4 giờ gồm setup và chạy thử.
-- **Làm:** chuẩn bị notebook 02 cho dữ liệu ảnh/backbone, đưa source lên repo và chạy trên Kaggle GPU. Notebook 01 hiện chỉ kiểm chứng NumPy; file khởi động GPU ở workspace hỗ trợ trước đây chưa nằm trong repo này.
+- **Đã có:** pipeline/source trên main và notebook 02 Version 2 chạy CUDA 50+10, W&B o2r63pj2 Finished. Không cần tạo lại pipeline hoặc chạy lại chỉ để chứng minh mốc này.
+- **Làm tiếp:** import notebook 03, đặt `RUN_INCREMENTAL_PHASES=5`, bật tracking và chạy trên Kaggle. Có thể reuse checkpoint base sau khi kiểm config/mapping; ghi rõ reuse trong report. Giữ mốc 60 lớp đã công bố.
 - **Bàn giao:** URL notebook/version, tên GPU, Python/Torch/CUDA, config, log, checkpoint và `results.json` của run; giữ output trong `/kaggle/working` và lưu version.
-- **Đạt khi:** thật sự nhận `torch.cuda.is_available() == True`; test chạy được; smoke K=5 có base + đủ 5 phase, kết thúc ở 100 lớp/10.000 ảnh test. Nếu chưa chạy được, bàn giao log lỗi cụ thể thay vì đánh dấu hoàn thành.
+- **Đạt khi:** thật sự nhận `torch.cuda.is_available() == True`; tests đạt; root/latest và results cùng attempt ID, status complete, verification_passed true; smoke K=5 có base + đủ 5 phase, W cuối 256×100 và test 10.000 ảnh. Ghép version/source/JSON/W&B của chính lượt mới. Nếu lỗi, giữ failed status và log.
 - **Kiểm tra:** Phát đọc output/config; Sang kiểm R/W và test class-incremental.
 - **Lưu ý:** code hiện dùng một GPU; hai GPU có sẵn không tự đồng nghĩa training dùng cả hai.
 
@@ -97,12 +101,12 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 - **Hạn checkpoint seed đầu:** 07/11; các seed tiếp theo theo ngân sách, mục tiêu 11/11.
 - **Làm:** sau khi V02 đạt, huấn luyện đủ cấu hình đã chốt, mục tiêu 160 epochs với mốc LR 80/120. Lưu run và checkpoint cuối; checkpoint tạm cho phiên dài cần hỗ trợ và kiểm tra resume đúng optimizer/scheduler/RNG.
 - **Bàn giao:** checkpoint cho từng seed, hash, history, run URL, config, thời gian. Chia checkpoint cho Sang/Phát bằng input/artifact có version.
-- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. Khi đưa pipeline ảnh vào repo, phân biệt dùng lại base hoàn chỉnh với resume training bị ngắt; hai thao tác cần kiểm tra khác nhau.
+- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. `--reuse-checkpoint` hiện dùng lại base hoàn chỉnh; resume training bị ngắt còn cần triển khai và kiểm tra optimizer/scheduler/RNG.
 
 ### V04 — Kết quả chính R1
 
 - **Hạn run đầu K=5:** 08/11; **K=25:** 10/11; chốt các run chính 13/11.
-- **Làm:** chạy ACIL từ checkpoint chuẩn; ưu tiên K=5 rồi K=25 để bao phủ ít/nhiều phase. K=10/50 bổ sung theo thời gian đo; nếu thu hẹp phạm vi, ghi rõ trong scope/deck.
+- **Làm:** chạy ACIL từ checkpoint chuẩn; ưu tiên K=5. K=25 là mục tiêu mở rộng và cần sửa protocol/runner trước vì smoke hiện chỉ hỗ trợ K=5; K=10/50 cũng chưa được hỗ trợ. Nếu thu hẹp phạm vi, ghi rõ trong scope/deck.
 - **Bàn giao:** accuracy từng phase, toàn bộ lớp đã thấy, accuracy base, config và run links; phân biệt số trích từ paper và số nhóm chạy.
 - **Đạt khi:** chỉ gọi average incremental accuracy đủ K khi đã có K+1 điểm tính cả base. Phát tính lại metric độc lập từ dữ liệu đầu ra.
 - **Kiểm tra:** Sang xác nhận mọi run cùng feature map trong một chuỗi incremental.
@@ -194,7 +198,7 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 | Ngày | Sang | Vỹ | Phát | Mốc chung |
 |---|---|---|---|---|
-| 02–03/11 | S01 | V01 | P01 | Cả ba chạy/đọc cùng phiên bản code, chốt repo/W&B |
+| 02–03/11 | S01 | V01 | P01 | Repo và run 60 lớp đã có; Sang kiểm bản 03 và chuẩn bị bằng chứng 100 lớp |
 | 04–06/11 | S02, thiết kế R3 | V02, bắt đầu base chuẩn | P02, thiết kế R2 | Chốt protocol + bảng run, đo ngân sách Kaggle |
 | 07–10/11 | R3 và hỗ trợ R2 | Checkpoint + R1 K=5/25 | R2, kiểm metric | Có kết quả đầu và phát hiện sai lệch sớm |
 | 11–13/11 | Chốt R3 | Hoàn tất run chính + đối chiếu | Chốt R2 + bảng sai lệch | Khóa tập kết quả đưa vào deck |
@@ -212,18 +216,18 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 ## 9. Cách phối hợp để không làm trùng
 
 - Một repository chuẩn, một project W&B chuẩn. Có thể dùng nhánh `sang/analytic`, `vy/kaggle-backbone`, `phat/evaluation`; đây là tên đề xuất, chưa khẳng định nhánh đã tồn tại.
-- Sang chủ trì `src/analytic.py` và verification; Vỹ chủ trì các module dữ liệu/backbone sẽ thêm; Phát chủ trì metric/reporting và hình. Thống nhất API trước khi ghép, review thay đổi ở file chung.
+- Theo kế hoạch nhóm: Sang chủ trì `src/analytic.py` và verification; Vỹ chủ trì các module dữ liệu/backbone đã có; Phát chủ trì metric/reporting và hình. Hiện Sang thực hiện cả ba nhóm việc; thống nhất API và review thay đổi ở file chung.
 - Chia quota bằng **run ID/config đã giao**. Một checkpoint/seed/protocol chuẩn được Vỹ tạo rồi dùng lại cho R2/R3; chỉ train lại khi seed/representation/protocol cần đổi.
 - Mỗi ngày đồng bộ 10–15 phút: đã tạo artifact nào, còn vướng gì, đầu ra ngày mai là gì. Chốt vào bảng task, không chỉ báo bằng lời.
 - Mỗi run ghi seed, checkpoint hash, class order hash, normalization, d, gamma, K, dtype, batch size, nguồn số liệu và URL/version Kaggle/W&B.
-- Người chủ trì nộp file kiểm tra lại trên Moodle; cả nhóm cùng chịu trách nhiệm. Trạng thái đăng ký bài với giảng viên vẫn cần xác nhận nếu chưa có bằng chứng.
+- Người chủ trì nộp file kiểm tra lại trên Moodle; cả nhóm cùng chịu trách nhiệm. ACIL đã được giảng viên duyệt theo xác nhận của Sang; giữ bằng chứng đăng ký khi bàn giao.
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang:** mở `docs/Dac_ta_ACIL.md`, giải thích ví dụ nhãn cục bộ/toàn cục và chạy test minibatch; đối chiếu bằng chứng VERIFY-02 đã có (Version 9, source 217684f, run wi4wau2d); giải thích vì sao chia batch không làm tăng thêm cột lớp.
+**Sang đang làm một mình:** tải [notebook 03](../notebooks/03_cifar100_safe_attempts.ipynb), import vào Kaggle, đặt `RUN_INCREMENTAL_PHASES=5` và `LOG_WANDB=True`, enable secret rồi Save & Run All. Nếu reuse, gắn checkpoint làm Input và điền đúng `REUSE_CHECKPOINT`; run 60 lớp đã có được giữ nguyên.
 
-**Vỹ:** chuẩn bị PR pipeline ảnh/notebook 02 rồi chạy smoke K=5 trên Kaggle GPU. Bàn giao notebook URL/version và JSON; chưa khởi chạy 160 epochs trước khi run thử và protocol đạt.
+**Đầu ra của phiên:** version Kaggle mới, JSON trong `attempts/<id>/`, checkpoint/state và W&B URL tự lấy từ SDK. Kiểm W cuối 256×100, 10.000 ảnh test, đủ 6 điểm tính cả base và dự đoán khớp joint. Cập nhật bảng bằng chứng README bằng cùng lượt chạy.
 
-**Phát:** kiểm repo/W&B đã có và ghép đúng version/source/JSON/run; chuẩn bị định nghĩa metric cho pipeline ảnh. Không gộp các lượt local hỗ trợ vào VERIFY-01/02.
+**Sau đó:** Sang chốt protocol/metric và ngân sách trước training dài; các mục V02/P02/S02 là đầu ra tiếp theo. Nếu Vỹ/Phát tham gia lại, dùng bảng vai trò để chia việc và kiểm tra chéo; không chờ họ để hoàn thành phiên này.
 
 **Quy ước hiện trạng:** README và bảng run phản ánh artifact thật trong repo. Source hoặc kết quả chỉ có tại workspace hỗ trợ được ghi rõ chưa công bố; run Kaggle cần xác nhận bằng version và output thực tế.
