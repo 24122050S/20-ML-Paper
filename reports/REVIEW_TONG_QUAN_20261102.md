@@ -111,14 +111,14 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 ## 6. Thứ tự làm cho một người
 
 1. **Nghiệm thu CUDA:** resume CPU đã đạt; notebook04 có CUDA test conditional, cần chạy trên Kaggle. Không bắt đầu160 epochs bằng một thay đổi config đơn lẻ.
-2. **Profile Kaggle:** streaming/no-FE/metric và profile CPU d8000 đã có; chạy `profile_analytic` rồi `profile_base`5 epochs trong04 để đo runtime/RAM/GPU/quota. Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
+2. **Profile Kaggle:** analytic d8000 đã đạt qua gey0yop4/T4, peak RSS3,20GB; dùng [notebook05](../notebooks/05_profile_base_ready.ipynb) để đo BP5 và xuất proof CUDA/quota. [Review mới](REVIEW_PROFILE_KAGGLE_20261104.md) giữ checksum và phạm vi. Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
 3. **Thiết kế run và lưu bằng chứng:** tách config từng thí nghiệm, dùng source/checkpoint đúng phiên bản, lưu JSON và URL thật. Bộ ghi report đã chuẩn UTF-8/LF; tính checksum theo bytes được công bố.
 4. **Hoàn thành core reproduction:** kết quả chính, ablation đã chọn và một phân tích bổ sung; đối chiếu paper/code tác giả, giải thích sai lệch. Viết nội dung deck song song khi scope và kết quả đã rõ.
 5. **Hoàn thiện deck trước hạn; sau đó tập trung poster:** phát triển P1/P2 thành giả thuyết, lý thuyết, đối chứng và phép đo; chỉ đưa kết luận được bằng chứng ủng hộ.
 
 [Đề chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reproduction) chấp nhận cả máy cá nhân và hosted notebook. Kaggle/GPU là lựa chọn tài nguyên của kế hoạch. Mỗi lượt local/Kaggle được ghi đúng môi trường, source và trạng thái tracking của chính nó.
 
-[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **test CUDA, profile analytic d8000 và BP5 trên Kaggle bằng notebook04**; [review mới](REVIEW_RESUME_PROFILE_20261104.md) ghi proof CPU và giới hạn. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
+[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **test CUDA proof và BP5 trên Kaggle bằng notebook05**; [review mới](REVIEW_RESUME_PROFILE_20261104.md) ghi proof CPU và giới hạn. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
 
 ## 7. Cách dùng tài liệu để đỡ rối
 

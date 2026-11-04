@@ -1,0 +1,12 @@
+{
+  "attempt_id": "20261104T140958780997Z-c2ab35794fea",
+  "artifacts_dir": "attempts/20261104T140958780997Z-c2ab35794fea",
+  "output_dir": "/kaggle/working/profile_d8000/attempts/20261104T140958780997Z-c2ab35794fea",
+  "requested_seed": 42,
+  "started_at_utc": "2026-11-04T14:09:58.781140+00:00",
+  "status": "complete",
+  "stage": "complete",
+  "checks_passed": true,
+  "updated_at_utc": "2026-11-04T14:10:55.885826+00:00",
+  "results_path": "attempts/20261104T140958780997Z-c2ab35794fea/results.json"
+}

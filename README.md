@@ -14,7 +14,7 @@
 - Đã có test độc lập cho phương pháp và thứ tự log W&B/xuất JSON.
 - VERIFY-01 là mốc lịch sử trên dữ liệu tổng hợp. VERIFY-02 kiểm tra thêm minibatch.
 - Pipeline CIFAR smoke đã có lượt CUDA đủ 100 lớp: [JSON](reports/cifar100_kaggle_full5_results.json), [Kaggle scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714), [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished. W cuối 256×100, test 10.000 ảnh, accuracy 22,05%, mọi check đạt; source/config hashes đã đối chiếu. Đây là smoke 2 epochs/d256.
-- Đã có checkpoint resume tại biên epoch, benchmark streaming tách oracle, no-FE, metric export và profile d8000 trên CPU. **Bước tiếp theo: import [notebook04](notebooks/04_resume_benchmark_profile.ipynb) để kiểm resume/profile trên Kaggle**, theo [hướng dẫn từng bước](docs/RESUME_BENCHMARK_PROFILE.md). Chưa chạy benchmark160 epochs.
+- Đã có checkpoint resume tại biên epoch, benchmark streaming tách oracle, no-FE, metric export và profile d8000 trên CPU/Kaggle T4. [Run gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4) Finished:34,07s/peak RSS3,20GB trên subset; [JSON](reports/profile_d8000_kaggle_results.json) và [manifest](reports/PROFILE-KAGGLE-01-provenance.json) đã đối chiếu API. **Bước tiếp theo: import [notebook05 BP5 cấu hình sẵn](notebooks/05_profile_base_ready.ipynb), không cần sửa biến**, theo [hướng dẫn ngắn cho Sang](docs/BUOC_TIEP_THEO_SANG.md). Chưa chạy benchmark160 epochs.
 - Project W&B: [hsangg-2006/acil-reproduction](https://wandb.ai/hsangg-2006/acil-reproduction), đã xác nhận Public ngày 02/11/2026.
 
 ## Cấu trúc và cách chạy
@@ -28,6 +28,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── protocol_chot.md
 │   ├── metrics.md
 │   ├── RESUME_BENCHMARK_PROFILE.md
+│   ├── BUOC_TIEP_THEO_SANG.md
 │   ├── HUONG_DAN_KAGGLE.md
 │   ├── HUONG_DAN_CIFAR_SMOKE.md
 │   ├── SUA_LOI_TRANG_THAI_RUN.md
@@ -64,7 +65,8 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── 01_verify_analytic_update.ipynb
 │   ├── 02_cifar100_smoke.ipynb
 │   ├── 03_cifar100_safe_attempts.ipynb
-│   └── 04_resume_benchmark_profile.ipynb
+│   ├── 04_resume_benchmark_profile.ipynb
+│   └── 05_profile_base_ready.ipynb
 ├── configs/
 │   ├── verify_analytic_update.json
 │   ├── cifar100_smoke.json
@@ -83,8 +85,13 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── cifar100_streaming_cpu_verification.json
 │   ├── profile_d8000_cpu_results.json
 │   ├── RESUME-PROFILE-01-provenance.json
+│   ├── profile_d8000_kaggle_results.json
+│   ├── profile_d8000_kaggle_progress.json
+│   ├── PROFILE-KAGGLE-01-provenance.json
 │   ├── verify_analytic_update_results.json
 │   └── verify_analytic_update_v2_results.json
+├── scripts/
+│   └── build_profile_base_notebook.py
 ├── .gitattributes
 ├── .gitignore
 ├── README.md
@@ -150,7 +157,7 @@ python -B -m src.cifar_smoke
 
 Lệnh mặc định tải dữ liệu, train base 2 epochs, freeze ResNet-32/BatchNorm, expansion 256, chạy một phase mới và kiểm joint trên đủ 60 lớp. API dùng chính `src/analytic.py`; metadata mapping thuộc pipeline. Root output là `reports/local/cifar100_smoke/`; artifact đầy đủ nằm trong `attempts/<attempt_id>/`. Các test ảnh/attempt được skip rõ ràng nếu thiếu dependency CIFAR; 15 test core/tracking/metrics vẫn chạy với NumPy.
 
-Để chạy source hiện tại, import **[notebook04](notebooks/04_resume_benchmark_profile.ipynb)** và làm theo [hướng dẫn resume/profile](docs/RESUME_BENCHMARK_PROFILE.md). Mặc định action chỉ profile analytic d8000 từ checkpoint hoàn tất; `profile_base` đo BP5 epochs, `benchmark` dùng preset160 epochs khi đã qua gate. Generator `python -m src.notebook_bundle` tạo lại bản04 và chặn ghi đè02/03; hai bản cũ giữ snapshot của bằng chứng Kaggle. `--resume-checkpoint` tiếp tục BP đang dở; `--reuse-checkpoint` dùng base đã hoàn tất.
+Lượt analytic d8000 của04 đã đạt; bước tiếp theo dùng **[notebook05](notebooks/05_profile_base_ready.ipynb)** đã chọn BP5, không cần sửa code hoặc thêm Input. Tải `profile_base_ready.json` sau Save & Run All theo [hướng dẫn ngắn](docs/BUOC_TIEP_THEO_SANG.md). Script `python scripts/build_profile_base_notebook.py` tạo05 từ cùng bundle04; giữ04 làm snapshot của bằng chứng mới. Generator cũ `python -m src.notebook_bundle` vẫn mặc định tạo04: không dùng để ghi đè snapshot đã công bố. `benchmark` dùng preset160 epochs khi đã qua gate. `--resume-checkpoint` tiếp tục BP đang dở; `--reuse-checkpoint` dùng base đã hoàn tất.
 
 Mỗi lần gọi pipeline tạo một attempt riêng. Root `latest.json`, `progress.json`, `results.json` có cùng attempt ID và trạng thái mới nhất: `running`, `complete` hoặc `failed`. Chỉ nhận kết quả khi `status=complete` và `verification_passed=true`; lấy checkpoint/state từ `output_dir` trong report. Nếu lượt mới lỗi, root ghi failed/false; dữ liệu lượt trước vẫn ở thư mục riêng. [Giải thích và test hồi quy](docs/SUA_LOI_TRANG_THAI_RUN.md).
 
@@ -178,7 +185,9 @@ VERIFY-02 Version 9 đã Save & Run All thành công trên Kaggle CPU ngày 02/1
 
 Notebook Kaggle được ghi nhận **Private** trong các lần đối chiếu version; cần kiểm quyền truy cập trước khi nộp. Source, notebook và JSON đã lưu trên GitHub; notebook 01 có output, còn bản 02 mang source bundle của Version 2. W&B project đã được ghi nhận Public.
 
-Trạng thái cập nhật **04/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite hiện tại: **54 tests, 53 đạt và 1 skip CUDA** trên local CPU; bootstrap04 từ bundle trong kernel mới đạt52/54, skip CUDA và test snapshot02/03 không phân phối trong bundle. [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base160 epochs, d8000, gamma0.1; R1/R2/R3 theo core scope. Resume CPU đã so model/optimizer/scheduler/RNG/history chính xác; streaming đủ100 lớp khớp accuracy oracle CPU ở cả6 mốc. [Bằng chứng mới](reports/RESUME-PROFILE-01-provenance.json) và [báo cáo thay đổi](reports/REVIEW_RESUME_PROFILE_20261104.md) ghi phạm vi từng phép kiểm. Việc tiếp theo là nghiệm thu resume CUDA, profile d8000 và BP5 trên Kaggle trước lượt dài. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
+Trạng thái cập nhật **04/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite hiện tại: **54 tests, 53 đạt và 1 skip CUDA** trên local CPU; bootstrap04 từ bundle trong kernel mới đạt52/54, skip CUDA và test snapshot02/03 không phân phối trong bundle. [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base160 epochs, d8000, gamma0.1; R1/R2/R3 theo core scope. Resume CPU đã so model/optimizer/scheduler/RNG/history chính xác; streaming đủ100 lớp khớp accuracy oracle CPU ở cả6 mốc. [Bằng chứng mới](reports/RESUME-PROFILE-01-provenance.json) và [báo cáo thay đổi](reports/REVIEW_RESUME_PROFILE_20261104.md) ghi phạm vi từng phép kiểm. Analytic d8000 trên Kaggle T4 đã đạt qua [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4); còn proof resume CUDA, BP5 và kiểm quota trước lượt dài. Notebook05 gộp các proof mới vào một JSON, đã kiểm bootstrap/export/CUDA gate trên CPU; chưa có lượt05 Kaggle. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
+
+Notebook04 hiện Public, Version1 theo public Kaggle pull API; source bundle khớp và W&B finished. API pull không chứa output test; numeric scriptVersionId chưa xác minh độc lập. [Review analytic Kaggle](reports/REVIEW_PROFILE_KAGGLE_20261104.md) ghi phần đã đạt và phần còn thiếu.
 
 ## Kiểm resume và profile bằng CLI
 

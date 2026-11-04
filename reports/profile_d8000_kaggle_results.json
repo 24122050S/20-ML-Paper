@@ -1,0 +1,138 @@
+{
+  "experiment": "ACIL-RESOURCE-PROFILE",
+  "description": "Resource probe on a balanced CIFAR subset; not benchmark accuracy",
+  "config": {
+    "experiment": "ACIL-RESOURCE-PROFILE",
+    "seed": 42,
+    "incremental_phases": 5,
+    "run_incremental_phases": 5,
+    "epochs": 2,
+    "batch_size": 128,
+    "eval_batch_size": 256,
+    "learning_rate": 0.1,
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "lr_milestones": [
+      80,
+      120
+    ],
+    "expansion_dim": 8000,
+    "gamma": 0.1,
+    "analytic_batch_size": 128,
+    "num_workers": 0,
+    "torch_threads": 4,
+    "device": "auto",
+    "rtol": 1e-06,
+    "atol": 1e-08,
+    "mode": "profile",
+    "feature_expansion": true
+  },
+  "environment": {
+    "python": "3.13.16",
+    "numpy": "2.1.3",
+    "torch": "2.11.0+cu130",
+    "device": "cuda",
+    "cuda_device": "Tesla T4",
+    "packages": {
+      "scipy": "1.17.0",
+      "psutil": "7.2.2",
+      "threadpoolctl": "3.6.0"
+    },
+    "wandb": "0.28.1"
+  },
+  "provenance": {
+    "repository": "https://github.com/24122050S/20-ML-Paper",
+    "git_commit": null,
+    "source_dirty": null,
+    "source_sha256": {
+      "src/__init__.py": "bbaf18d6b0088492b409b69a69515c1041c86aa803ba1b1e6f1fe7a2753d2ced",
+      "src/analytic.py": "73c9e5ac823b6b0348c4452bb1fb256e2bdd443a409368224d174af7dd31d6e3",
+      "src/base_training.py": "367b4efb39091206ec2f073b22a427cdb1bc65deec264036d70c3ce3717ae72c",
+      "src/cifar_data.py": "10beb0454ed7b9fa7c12dfe4fbaffdd47d608e84bb86ee662b4fe870ef5d1279",
+      "src/cifar_smoke.py": "9e08c06c389d6a0816518ed02791acf4cd391d5c7cba4b609b1c9a0423da21a9",
+      "src/metrics.py": "5c6015d5e33e9e4fde28754bfd3458e0b52aece7fa7e2559109780764bce35a8",
+      "src/notebook_bundle.py": "deac866df63a930749e6a21ca9b3c2c71508523afa688e13fb37d4b3d6444c72",
+      "src/profile_analytic.py": "3d27dbc8197d4b479cad0dafefd17d08e47ab17514bcb978e489a0327283c506",
+      "src/reporting.py": "1f5b91333c29e610048cab9ed98287ddb84751516ff57d794fc05359fd3fe055",
+      "src/resnet.py": "64ca4b7938282e1dc219d5c496d7f02c77918abcf63b7b715e615534a4f350a0",
+      "src/run_attempt.py": "50291737fb37cd431e081157ffe50850f5ed94efcf4ea744a97ff3a1c97e7115",
+      "src/streaming.py": "39b41b487d37a0a78aa2b4aeda0cc017ad802faebe56c098802d47e192f6f337",
+      "src/verification.py": "5d07f3037e58e65668884f097b916bcddbf981882c361d4c1246a57496f10076",
+      "src/verify_analytic.py": "0f788158c76f191f1848abce30eed98373a3841546bd3021000a4a8e496c1d60",
+      "src/verify_resume.py": "e15e906f85af630e9eb526d5b1ab77036f673847fb7eafec3ea4efa43ae71580",
+      "configs/verify_analytic_update.json": "d915a738726455a7a0b96bfd5928a12504c38595d423a85c8f7b73daaa5bcdfc"
+    },
+    "input_checkpoint_sha256": "a5bc46f46a89d5eea99e5b782925ea4ab31e809e00cf6b41442b039f5c30a0d2"
+  },
+  "profile_scope": {
+    "full_protocol_evaluated": false,
+    "base_samples": 1000,
+    "incremental_samples": 200,
+    "test_samples": 600,
+    "class_transition": [
+      50,
+      100
+    ],
+    "stored_raw_feature_scope": "subset F64 only; no expanded-feature history",
+    "analytic_state_saved": false,
+    "gpu_benchmark_validated": false
+  },
+  "timings": {
+    "feature_extraction_seconds": 0.6834845600000108,
+    "base_accumulation_seconds": 17.363855006999984,
+    "base_solve_seconds": 12.740448819999983,
+    "base_samples": 1000,
+    "incremental_analytic_seconds": 2.843411747999994,
+    "evaluation_seconds": 0.03374447399994551
+  },
+  "memory": {
+    "baseline_cpu_rss_bytes": 1130729472,
+    "peak_cpu_rss_bytes": 3195297792,
+    "sampling_interval_seconds": 0.02,
+    "peak_cuda_allocated_bytes": 45453824,
+    "persistent_analytic_state_bytes": 522496000
+  },
+  "state_shapes": {
+    "R": [
+      8000,
+      8000
+    ],
+    "W": [
+      8000,
+      100
+    ],
+    "FE": [
+      64,
+      8000
+    ]
+  },
+  "profile_subset_evaluation": {
+    "test_samples_all_seen": 600,
+    "accuracy_pct": 9.333333333333334,
+    "base_accuracy_pct": 16.666666666666668,
+    "new_class_accuracy_pct": 2.0
+  },
+  "rough_extrapolation": {
+    "base_full25000_seconds": 446.8368239949996,
+    "incremental_full25000_seconds": 355.42646849999926,
+    "note": "Linear subset extrapolation only; excludes full evaluation, artifact I/O and BP. Not a Kaggle runtime guarantee."
+  },
+  "results": [],
+  "checks": {
+    "finite_analytic_state": true,
+    "weights_shape_correct": true,
+    "all_profile_classes_evaluated": true,
+    "backbone_frozen": true
+  },
+  "verification_passed": true,
+  "attempt_id": "20261104T140958780997Z-c2ab35794fea",
+  "seconds_this_run": 34.069345276000035,
+  "wandb_status": "logged",
+  "wandb_run_id": "gey0yop4",
+  "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4",
+  "artifacts_dir": "attempts/20261104T140958780997Z-c2ab35794fea",
+  "output_dir": "/kaggle/working/profile_d8000/attempts/20261104T140958780997Z-c2ab35794fea",
+  "requested_seed": 42,
+  "started_at_utc": "2026-11-04T14:09:58.781140+00:00",
+  "status": "complete"
+}

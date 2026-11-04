@@ -21,4 +21,6 @@ Cập nhật trạng thái **04/11/2026**: notebook 03 đã có JSON của chu�
 - [profile_d8000_cpu_results.json](profile_d8000_cpu_results.json): subset resource probe CPU1000+200+600 ảnh, không phải benchmark accuracy.
 - [Manifest RESUME-PROFILE-01](RESUME-PROFILE-01-provenance.json) và [review triển khai](REVIEW_RESUME_PROFILE_20261104.md): checksum/source bundle04, kết quả kiểm và các gate GPU còn thiếu. Tracking của ba lượt CPU này tắt; không gắn URL Kaggle/W&B cũ cho chúng.
 
+- [profile_d8000_kaggle_results.json](profile_d8000_kaggle_results.json) và [progress](profile_d8000_kaggle_progress.json): analytic subset d8000 trên Kaggle T4,34,07s/peak RSS3,20GB; [W&B gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4) được API xác nhận finished/config/source/memory. [PROFILE-KAGGLE-01-provenance.json](PROFILE-KAGGLE-01-provenance.json) và [review](REVIEW_PROFILE_KAGGLE_20261104.md) phân biệt profile đã đạt với CUDA proof/BP5/quota còn thiếu.
+
 [Review tổng quan, cập nhật 04/11](REVIEW_TONG_QUAN_20261102.md) ghi phần đã đạt và việc còn lại. `local/` tiếp tục chỉ chứa artifact trên máy, không được đưa lên GitHub.
