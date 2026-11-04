@@ -1,0 +1,69 @@
+{
+  "id": "RESUME-PROFILE-01",
+  "date": "2026-11-04",
+  "host_scope": "local CPU; not Kaggle or CUDA validation",
+  "source_note": "Runs used this working tree before publication. Original commit/source_dirty metadata is preserved; source hashes match the published files and notebook04 bundle.",
+  "artifacts": {
+    "resume_cpu_verification.json": {
+      "sha256": "26293b87025e952efcece03b8b243b594e166cccf39c0146b2fdfb0d9c3c929a",
+      "attempt_id": "20261104T122022484168Z-8a71f97f1cde",
+      "executed_source_matches_current": true,
+      "checked_source_files": 16
+    },
+    "cifar100_streaming_cpu_verification.json": {
+      "sha256": "f9c18aee716fa23ef729357f7daf980b7dbbccbc3adb7a6dfc77746f07c3bca8",
+      "attempt_id": "20261104T121631309331Z-d3cabfe475c7",
+      "executed_source_matches_current": true,
+      "checked_source_files": 16
+    },
+    "profile_d8000_cpu_results.json": {
+      "sha256": "b4a97b66b9be2c15ed8cfbe44b5b263dc8d9d732054f9533e5b1f595ac3cd38f",
+      "attempt_id": "20261104T122103104596Z-23b7ebfbad12",
+      "executed_source_matches_current": true,
+      "checked_source_files": 16
+    },
+    "cifar100_joint_cpu_reference.json": {
+      "sha256": "81f819f30f3625fad85750fe9b86d599bc28558fbe28bf646ffa16719aeb9a9b",
+      "original_raw_sha256": "e64a8b29de7e9e565a909c62b154ba257c8a3f6b666534aa571119325ca7081a",
+      "scope": "Historical CPU2 epochs/d256 full5 oracle reference; source metadata preserved"
+    }
+  },
+  "streaming_integration": {
+    "joint_oracle_and_full_feature_collector_forbidden_during_run": true,
+    "n_evaluations": 6,
+    "maximum_accuracy_difference_from_old_oracle_pp": 3.552713678800501e-15,
+    "reference_file": "cifar100_joint_cpu_reference.json",
+    "raw_feature_history_samples": 0,
+    "scope": "2 epochs/d256 integration verification; not R1 benchmark"
+  },
+  "notebook": {
+    "path": "notebooks/04_resume_benchmark_profile.ipynb",
+    "bundle_sha256": "5851fa25143689342edabe9ab112635395ed2eae4f19fe95c446eaf96b6ca19c",
+    "bundle_file_count": 30,
+    "bootstrap_fresh_kernel": "passed; source extracted outside checkout; cells0..5 only",
+    "bootstrap_tests": {
+      "discovered": 54,
+      "passed": 52,
+      "skipped": 2,
+      "skip_reasons": [
+        "CUDA unavailable",
+        "historical notebook snapshots absent from bundle"
+      ]
+    }
+  },
+  "tests": {
+    "command": "python -B -X utf8 -m unittest discover -s tests -v",
+    "discovered": 54,
+    "passed": 53,
+    "skipped": 1,
+    "skip_reason": "CUDA unavailable on local host",
+    "pip_check": "passed",
+    "real_cifar_resume_command": "python -m src.verify_resume --data-dir ../data"
+  },
+  "pending_before_long_benchmark": [
+    "CUDA resume test in notebook04",
+    "Kaggle analytic d8000 profile with saved version/JSON/W&B",
+    "Kaggle BP5 profile and runtime/quota budget with30 percent margin",
+    "R1 seed42 benchmark160 epochs; then43/44; R2/R3 runs"
+  ]
+}

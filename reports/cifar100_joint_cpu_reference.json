@@ -1,0 +1,361 @@
+{
+  "experiment": "AUDIT-CIFAR-FULL5",
+  "description": "Real CIFAR-100 smoke test; not a paper benchmark",
+  "config": {
+    "experiment": "AUDIT-CIFAR-FULL5",
+    "seed": 42,
+    "incremental_phases": 5,
+    "run_incremental_phases": 5,
+    "epochs": 2,
+    "batch_size": 128,
+    "eval_batch_size": 256,
+    "learning_rate": 0.1,
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "lr_milestones": [
+      80,
+      120
+    ],
+    "expansion_dim": 256,
+    "gamma": 0.1,
+    "analytic_batch_size": 128,
+    "num_workers": 0,
+    "torch_threads": 8,
+    "device": "cpu",
+    "rtol": 1e-06,
+    "atol": 1e-08
+  },
+  "environment": {
+    "python": "3.12.7",
+    "numpy": "2.1.3",
+    "torch": "2.11.0+cpu",
+    "device": "cpu",
+    "packages": {
+      "huggingface_hub": "1.10.1",
+      "pyarrow": "23.0.1",
+      "Pillow": "11.1.0",
+      "threadpoolctl": "3.6.0"
+    }
+  },
+  "provenance": {
+    "repository": "https://github.com/24122050S/20-ML-Paper",
+    "git_commit": "71735c778a5c43e8fefb14c6dfd8a412868556f0",
+    "source_dirty": false,
+    "source_sha256": {
+      "src/__init__.py": "bbaf18d6b0088492b409b69a69515c1041c86aa803ba1b1e6f1fe7a2753d2ced",
+      "src/analytic.py": "d79285c6fe7d7a0c0688161980992016a8bc9fccd80e32d451089309d81177d6",
+      "src/cifar_data.py": "10beb0454ed7b9fa7c12dfe4fbaffdd47d608e84bb86ee662b4fe870ef5d1279",
+      "src/cifar_smoke.py": "3f9bf2eec4a62396cf9746f670550d0bb7c3d7c0a415d65561d0b514c61b05a5",
+      "src/notebook_bundle.py": "137004c92f3e8567dda33d4eeceece4d2350f51b0311f9ec44e2f883db02482c",
+      "src/reporting.py": "126bd222b84827af446a12a0400696f826ab1e84d04787a86da70c597a27fce3",
+      "src/resnet.py": "64ca4b7938282e1dc219d5c496d7f02c77918abcf63b7b715e615534a4f350a0",
+      "src/verification.py": "5d07f3037e58e65668884f097b916bcddbf981882c361d4c1246a57496f10076",
+      "src/verify_analytic.py": "0f788158c76f191f1848abce30eed98373a3841546bd3021000a4a8e496c1d60",
+      "configs/verify_analytic_update.json": "d915a738726455a7a0b96bfd5928a12504c38595d423a85c8f7b73daaa5bcdfc"
+    },
+    "input_config_sha256": "52b8fb9fb61b772aa30edfc32eb04f19a3f7c5a3eeded1b2dde8f4985ea26927",
+    "effective_config_sha256": "8d1313262fdcf8555c6468c3c45b9b8b04b82fd589e1a7a74a9a0d9aa06b6330",
+    "base_checkpoint_sha256": "539417f7e0cda767f7cbdf02c003fd9269e7acc460b204abe133787c7469f5da"
+  },
+  "checkpoint_origin": {
+    "reused": true,
+    "input_sha256": "539417f7e0cda767f7cbdf02c003fd9269e7acc460b204abe133787c7469f5da",
+    "training_executed_this_run": false
+  },
+  "dataset_source": {
+    "dataset_id": "uoft-cs/cifar100",
+    "revision": "aadb3af77e9048adbea6b47c21a81e47dd092ae5",
+    "files": {
+      "train": {
+        "hf_filename": "cifar100/train-00000-of-00001.parquet",
+        "sha256": "694865d6b990e234804f01268586c41e88bcbbb75e20858432c05ad4081aca23",
+        "rows": 50000
+      },
+      "test": {
+        "hf_filename": "cifar100/test-00000-of-00001.parquet",
+        "sha256": "98776c529bb146a9c791229df74a5cf076be9b43d82dbbd334b6a7788d73dc68",
+        "rows": 10000
+      }
+    },
+    "class_names": [
+      "apple",
+      "aquarium_fish",
+      "baby",
+      "bear",
+      "beaver",
+      "bed",
+      "bee",
+      "beetle",
+      "bicycle",
+      "bottle",
+      "bowl",
+      "boy",
+      "bridge",
+      "bus",
+      "butterfly",
+      "camel",
+      "can",
+      "castle",
+      "caterpillar",
+      "cattle",
+      "chair",
+      "chimpanzee",
+      "clock",
+      "cloud",
+      "cockroach",
+      "couch",
+      "cra",
+      "crocodile",
+      "cup",
+      "dinosaur",
+      "dolphin",
+      "elephant",
+      "flatfish",
+      "forest",
+      "fox",
+      "girl",
+      "hamster",
+      "house",
+      "kangaroo",
+      "keyboard",
+      "lamp",
+      "lawn_mower",
+      "leopard",
+      "lion",
+      "lizard",
+      "lobster",
+      "man",
+      "maple_tree",
+      "motorcycle",
+      "mountain",
+      "mouse",
+      "mushroom",
+      "oak_tree",
+      "orange",
+      "orchid",
+      "otter",
+      "palm_tree",
+      "pear",
+      "pickup_truck",
+      "pine_tree",
+      "plain",
+      "plate",
+      "poppy",
+      "porcupine",
+      "possum",
+      "rabbit",
+      "raccoon",
+      "ray",
+      "road",
+      "rocket",
+      "rose",
+      "sea",
+      "seal",
+      "shark",
+      "shrew",
+      "skunk",
+      "skyscraper",
+      "snail",
+      "snake",
+      "spider",
+      "squirrel",
+      "streetcar",
+      "sunflower",
+      "sweet_pepper",
+      "table",
+      "tank",
+      "telephone",
+      "television",
+      "tiger",
+      "tractor",
+      "train",
+      "trout",
+      "tulip",
+      "turtle",
+      "wardrobe",
+      "whale",
+      "willow_tree",
+      "wolf",
+      "woman",
+      "worm"
+    ]
+  },
+  "training_history": [
+    {
+      "epoch": 1,
+      "train_loss": 3.477293237838745,
+      "train_accuracy_pct": 10.676,
+      "samples": 25000,
+      "learning_rate": 0.1,
+      "seconds": 127.24551570002222
+    },
+    {
+      "epoch": 2,
+      "train_loss": 3.018684260101318,
+      "train_accuracy_pct": 19.6,
+      "samples": 25000,
+      "learning_rate": 0.1,
+      "seconds": 133.64671150001232
+    }
+  ],
+  "stem_weight_change_l2": 3.418292760848999,
+  "checkpoint_reload_max_logit_error": 0.0,
+  "backbone_sha256_before": "d156ac6b648fdbe1a46e964f6ecd34681c91d7cd722b8104be5cc83b50e46e34",
+  "backbone_sha256_after": "d156ac6b648fdbe1a46e964f6ecd34681c91d7cd722b8104be5cc83b50e46e34",
+  "expansion_sha256": "cdce912f5bb3f1519b3fdbc2200bb6c3fb0f425c497314eaf8a5eb191dd3121a",
+  "results": [
+    {
+      "phase": 0,
+      "n_classes": 50,
+      "weights_shape": [
+        256,
+        50
+      ],
+      "inverse_gram_shape": [
+        256,
+        256
+      ],
+      "train_samples_current_phase": 25000,
+      "test_samples_all_seen": 5000,
+      "analytic_batches": 1,
+      "relative_w_error": 2.0472990953845228e-11,
+      "max_abs_r_error": 0.0,
+      "max_abs_score_error": 3.2198896326995907e-12,
+      "prediction_disagreements": 0,
+      "accuracy_pct": 32.68,
+      "base_accuracy_pct": 32.68,
+      "new_class_accuracy_pct": null,
+      "checks_passed": true
+    },
+    {
+      "phase": 1,
+      "n_classes": 60,
+      "weights_shape": [
+        256,
+        60
+      ],
+      "inverse_gram_shape": [
+        256,
+        256
+      ],
+      "train_samples_current_phase": 5000,
+      "test_samples_all_seen": 6000,
+      "analytic_batches": 40,
+      "relative_w_error": 1.7707280174132673e-11,
+      "max_abs_r_error": 1.2789519877182132e-15,
+      "max_abs_score_error": 2.73137068518281e-12,
+      "prediction_disagreements": 0,
+      "accuracy_pct": 29.366666666666667,
+      "base_accuracy_pct": 29.92,
+      "new_class_accuracy_pct": 26.6,
+      "checks_passed": true
+    },
+    {
+      "phase": 2,
+      "n_classes": 70,
+      "weights_shape": [
+        256,
+        70
+      ],
+      "inverse_gram_shape": [
+        256,
+        256
+      ],
+      "train_samples_current_phase": 5000,
+      "test_samples_all_seen": 7000,
+      "analytic_batches": 40,
+      "relative_w_error": 1.7369574597322275e-11,
+      "max_abs_r_error": 1.4072808673590287e-15,
+      "max_abs_score_error": 1.9777721127489656e-12,
+      "prediction_disagreements": 0,
+      "accuracy_pct": 26.971428571428575,
+      "base_accuracy_pct": 28.46,
+      "new_class_accuracy_pct": 21.0,
+      "checks_passed": true
+    },
+    {
+      "phase": 3,
+      "n_classes": 80,
+      "weights_shape": [
+        256,
+        80
+      ],
+      "inverse_gram_shape": [
+        256,
+        256
+      ],
+      "train_samples_current_phase": 5000,
+      "test_samples_all_seen": 8000,
+      "analytic_batches": 40,
+      "relative_w_error": 1.472682487976308e-11,
+      "max_abs_r_error": 6.81705668477417e-16,
+      "max_abs_score_error": 1.7154888620751763e-12,
+      "prediction_disagreements": 0,
+      "accuracy_pct": 24.3875,
+      "base_accuracy_pct": 26.619999999999997,
+      "new_class_accuracy_pct": 19.1,
+      "checks_passed": true
+    },
+    {
+      "phase": 4,
+      "n_classes": 90,
+      "weights_shape": [
+        256,
+        90
+      ],
+      "inverse_gram_shape": [
+        256,
+        256
+      ],
+      "train_samples_current_phase": 5000,
+      "test_samples_all_seen": 9000,
+      "analytic_batches": 40,
+      "relative_w_error": 1.3896574224622412e-11,
+      "max_abs_r_error": 1.055152330526471e-15,
+      "max_abs_score_error": 1.5185075419310579e-12,
+      "prediction_disagreements": 0,
+      "accuracy_pct": 22.955555555555556,
+      "base_accuracy_pct": 26.040000000000003,
+      "new_class_accuracy_pct": 16.3,
+      "checks_passed": true
+    },
+    {
+      "phase": 5,
+      "n_classes": 100,
+      "weights_shape": [
+        256,
+        100
+      ],
+      "inverse_gram_shape": [
+        256,
+        256
+      ],
+      "train_samples_current_phase": 5000,
+      "test_samples_all_seen": 10000,
+      "analytic_batches": 40,
+      "relative_w_error": 1.2939877773847021e-11,
+      "max_abs_r_error": 7.771561172376096e-16,
+      "max_abs_score_error": 1.4591244879014198e-12,
+      "prediction_disagreements": 0,
+      "accuracy_pct": 21.490000000000002,
+      "base_accuracy_pct": 25.06,
+      "new_class_accuracy_pct": 16.6,
+      "checks_passed": true
+    }
+  ],
+  "checks": {
+    "data_audit_passed": true,
+    "checkpoint_reload_exact": true,
+    "finite_training_loss": true,
+    "base_parameters_updated": true,
+    "backbone_batchnorm_and_expansion_frozen": true,
+    "all_seen_test_classes_evaluated": true,
+    "analytic_minibatch_matches_joint": true,
+    "final_columns_correct": true
+  },
+  "verification_passed": true,
+  "seconds_this_run": 153.53706239999883,
+  "wandb_status": "not_logged",
+  "wandb_run_id": null,
+  "wandb_run_url": null
+}

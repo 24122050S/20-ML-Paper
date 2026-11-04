@@ -69,6 +69,16 @@ def log_and_save_report(report, output_path, *, log_wandb=False, entity=None, pr
                     run.log(metrics, step=row["phase"])
                 run.summary["verification_passed"] = result["verification_passed"]
                 run.summary["experiment"] = result["experiment"]
+                if "metric_summary" in result:
+                    run.summary.update(result["metric_summary"])
+                if "profile_scope" in result:
+                    run.summary.update({"profile/dimension": result["config"]["expansion_dim"],
+                                        "profile/peak_cpu_rss_bytes": result["memory"]["peak_cpu_rss_bytes"],
+                                        "profile/persistent_state_bytes": result["memory"]["persistent_analytic_state_bytes"],
+                                        "profile/full_protocol_evaluated": False})
+                    for group in ("timings", "memory", "profile_scope"):
+                        run.summary.update({f"profile/{key}": value for key, value in result[group].items()
+                                            if isinstance(value, (int, float, bool))})
                 actual_id, actual_url = run.id, run.url
             # Chỉ đến đây sau khi __exit__/finish đã hoàn tất thành công.
             if not actual_id or not actual_url:
