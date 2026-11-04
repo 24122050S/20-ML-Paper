@@ -24,6 +24,8 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 20-ML-Paper/
 ├── docs/
 │   ├── Dac_ta_ACIL.md
+│   ├── protocol_chot.md
+│   ├── metrics.md
 │   ├── HUONG_DAN_KAGGLE.md
 │   ├── HUONG_DAN_CIFAR_SMOKE.md
 │   ├── SUA_LOI_TRANG_THAI_RUN.md
@@ -130,7 +132,7 @@ python -m pip install -r requirements-cifar.txt
 python -B -m src.cifar_smoke
 ```
 
-Lệnh mặc định tải dữ liệu, train base 2 epochs, freeze ResNet-32/BatchNorm, expansion 256, chạy một phase mới và kiểm joint trên đủ 60 lớp. API dùng chính `src/analytic.py`; metadata mapping thuộc pipeline. Root output là `reports/local/cifar100_smoke/`; artifact đầy đủ nằm trong `attempts/<attempt_id>/`. Các test ảnh/attempt được skip rõ ràng nếu thiếu dependency CIFAR; 11 test core/tracking vẫn chạy với NumPy.
+Lệnh mặc định tải dữ liệu, train base 2 epochs, freeze ResNet-32/BatchNorm, expansion 256, chạy một phase mới và kiểm joint trên đủ 60 lớp. API dùng chính `src/analytic.py`; metadata mapping thuộc pipeline. Root output là `reports/local/cifar100_smoke/`; artifact đầy đủ nằm trong `attempts/<attempt_id>/`. Các test ảnh/attempt được skip rõ ràng nếu thiếu dependency CIFAR; 12 test core/tracking vẫn chạy với NumPy.
 
 Để dùng quản lý trạng thái mới trên Kaggle, import [notebook 03](notebooks/03_cifar100_safe_attempts.ipynb). Cell đầu có `LOG_WANDB`, `RUN_INCREMENTAL_PHASES` và `REUSE_CHECKPOINT`. Generator `python -m src.notebook_bundle` tạo lại bản 03; bản 02 được giữ nguyên làm source snapshot cho bằng chứng Kaggle Version 2.
 
@@ -160,7 +162,7 @@ VERIFY-02 Version 9 đã Save & Run All thành công trên Kaggle CPU ngày 02/1
 
 Notebook Kaggle được ghi nhận **Private** trong các lần đối chiếu version; cần kiểm quyền truy cập trước khi nộp. Source, notebook và JSON đã lưu trên GitHub; notebook 01 có output, còn bản 02 mang source bundle của Version 2. W&B project đã được ghi nhận Public.
 
-Trạng thái cập nhật **04/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite source hiện tại đã kiểm tra 38 tests trên local. Bước tiếp theo là chốt protocol/metric, ngân sách và checkpoint benchmark cho R1/R2/R3. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
+Trạng thái cập nhật **04/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite source hiện tại đã kiểm tra 38 tests trên local. [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base160 epochs, d8000, gamma0.1; R1/R2/R3 theo core scope. Việc tiếp theo là nghiệm thu resume, benchmark mode và profile theo các gate trong protocol trước lượt dài. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
 
 ## Quy ước phương pháp
 
