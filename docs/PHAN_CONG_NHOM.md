@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vĩ, Phát
 
-> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Analytic, pipeline CIFAR và smoke 100 lớp đã có bằng chứng: [JSON](../reports/cifar100_kaggle_full5_results.json), [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished. Việc tiếp theo là chốt protocol/metric và ngân sách benchmark theo V02/P02/S02. Xem [hướng dẫn](HUONG_DAN_CIFAR_SMOKE.md).
+> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; việc tiếp theo là triển khai/kiểm resume, benchmark mode và profile trước training dài.
 
 Cập nhật **04/11/2026**, giờ Việt Nam, sau khi nhận JSON full5 và xác minh run W&B blhw74ff. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
@@ -93,8 +93,8 @@ Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2
 
 - **Hạn:** 04/11, 21:00.
 - **Làm:** xác nhận fine labels, 50 lớp base, class order, normalization, augmentation và ResNet shortcut. Ghi các điểm đã khớp paper/code và điểm còn khác. Chạy đo thời gian trên Kaggle, không suy thời gian GPU từ benchmark CPU.
-- **Bàn giao:** `docs/protocol_chot.md` (cần tạo), danh sách sai khác, dự tính giờ chạy theo seed/config, địa chỉ checkpoint đầu vào chuẩn.
-- **Đạt khi:** cả ba dùng cùng protocol version; mỗi checkpoint đi kèm mapping/normalization/config. Sang và Phát cùng ký xác nhận nội bộ bằng comment/commit.
+- **Bàn giao:** [protocol_chot.md](protocol_chot.md) đã chốt v1.0, có danh sách sai khác, cấu hình và gate trước lượt dài; còn cần artifact profile và checkpoint benchmark thật. Tài liệu hoàn tất không đồng nghĩa runner đã đáp ứng các gate.
+- **Đạt khi:** dùng protocol v1.0 và ghi mỗi checkpoint cùng mapping/normalization/config; Sang kiểm bằng evidence của các gate trong tài liệu. Hiện Sang làm một mình; khi Vĩ/Phát tham gia lại sẽ review chéo cùng phiên bản.
 
 ### V03 — Huấn luyện base chuẩn và bảo toàn checkpoint
 
@@ -136,7 +136,7 @@ Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2
 
 - **Hạn:** 05/11.
 - **Làm:** định nghĩa accuracy từng phase trên tất cả lớp đã thấy; A-bar có tính base; quy ước forgetting và dấu của phép trừ. Đối chiếu công thức paper với bảng/code trước khi gọi metric là F của paper.
-- **Bàn giao:** `docs/metrics.md` và script tính metric từ dữ liệu run; bảng so sánh paper/nhóm có chênh lệch điểm phần trăm và sai lệch tương đối khi áp dụng được.
+- **Bàn giao:** [metrics.md](metrics.md) đã chốt v1.0: A-bar có base, F-base/delta có quy ước dấu và ví dụ smoke thật. Script export và bảng benchmark theo metric này còn cần triển khai; báo deviation theo pp và tương đối khi áp dụng được.
 - **Đạt khi:** dùng một ví dụ số nhỏ để kiểm phép tính; tính lại được số từ run của Vĩ, không chép số bằng tay. Một seed không có độ lệch chuẩn giữa seeds.
 - **Kiểm tra:** Sang rà định nghĩa; Vĩ đối chiếu dữ liệu đầu ra.
 
@@ -224,10 +224,10 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang đang làm một mình:** hoàn thành bản protocol/metric và ngân sách cho benchmark theo V02/P02/S02. Ghi scope R1/R2/R3, cấu hình base/FE/gamma, số seed, định nghĩa metric, sai khác với paper và checkpoint đầu vào chuẩn.
+**Sang đang làm một mình:** triển khai checkpoint resume BP tại biên epoch theo G2/G3 trong [protocol](protocol_chot.md); kiểm run2 epochs liên tục so với1+resume1. Giữ protocol v1.0 và các metric đã chốt.
 
-**Đầu ra của phiên:** `docs/protocol_chot.md` và `docs/metrics.md` là các tài liệu cần tạo; chốt cấu hình thí nghiệm và ngân sách trước training dài. Mốc smoke 100 lớp đã có JSON/manifest/W&B, không còn là việc phải chạy để bắt đầu phiên này.
+**Đầu ra của phiên:** checkpoint có optimizer/scheduler/RNG/DataLoader generator, test resume/reject checkpoint sai config và JSON kiểm tra ngắn có provenance. `docs/protocol_chot.md` và `docs/metrics.md` đã có; không mở160 epochs chỉ bằng sửa notebook03.
 
-**Sau đó:** chuẩn bị checkpoint benchmark, khả năng resume và driver cho thí nghiệm chính/ablation/phân tích bổ sung theo phạm vi đã chốt. Nếu Vĩ/Phát tham gia lại, dùng bảng vai trò để chia việc và kiểm tra chéo.
+**Sau đó:** tách benchmark analytic khỏi joint oracle, thêm no-FE/metric export và profile d8000 theo G4–G6. Chạy R1 seed42 trước, rồi43/44 khi các gate đạt; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 
 **Quy ước hiện trạng:** README và bảng run phản ánh artifact thật trong repo. Source hoặc kết quả chỉ có tại workspace hỗ trợ được ghi rõ chưa công bố; run Kaggle cần xác nhận bằng version và output thực tế.

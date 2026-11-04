@@ -66,7 +66,7 @@ Ctrl+C được ghi failed. Nếu kernel/process bị tắt cứng, Python khôn
 
 Hai epochs, expansion 256 và một phase giúp kiểm tra đường đi dữ liệu, gradient, save/load, freeze và cập nhật theo batch với tài nguyên nhỏ. Đây là lựa chọn kiểm tra pipeline; chưa kết luận tái lập accuracy của paper. Dùng backbone và dữ liệu thật vẫn không biến một smoke test thành benchmark.
 
-Mốc smoke đủ 5 phase (100 lớp) đã có [JSON](../reports/cifar100_kaggle_full5_results.json) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished, được đối chiếu ngày 04/11/2026. [Review](../reports/REVIEW_CIFAR_KAGGLE_FULL5_20261104.md) ghi cách kiểm và giới hạn metadata Kaggle. Bước tiếp theo là chốt protocol/metric, cấu hình training/expansion và ablation benchmark. Run notebook 02 Version 2 vẫn là mốc lịch sử riêng.
+Mốc smoke đủ 5 phase (100 lớp) đã có [JSON](../reports/cifar100_kaggle_full5_results.json) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished, được đối chiếu ngày 04/11/2026. [Review](../reports/REVIEW_CIFAR_KAGGLE_FULL5_20261104.md) ghi cách kiểm và giới hạn metadata Kaggle. [Protocol](protocol_chot.md) và [metrics](metrics.md) đã chốt; tiếp theo cần đạt các gate resume, benchmark mode và profile d8000 trước run160 epochs. Run notebook 02 Version 2 vẫn là mốc lịch sử riêng.
 
 Khi source/config/test đổi, chạy `python -m src.notebook_bundle` để tạo lại notebook 03 trước khi upload. Generator chặn ghi đè notebook 02 để giữ source bundle của bằng chứng cũ.
 

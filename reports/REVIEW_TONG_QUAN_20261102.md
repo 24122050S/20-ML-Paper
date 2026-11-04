@@ -70,13 +70,13 @@ Kaggle được ghi nhận Private trong lần đối chiếu version; repo/W&B 
 
 | Phần thiếu | Hiện trạng | Tiêu chí hoàn thành |
 |---|---|---|
-| Scope/protocol tái lập | Có kế hoạch, chưa có bản chốt đủ cho benchmark | Nêu rõ scope; dataset, thứ tự lớp, preprocessing, backbone, FE, gamma, metric và các sai khác với paper |
+| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2/R3, base160/d8000/gamma0.1; sai khác và readiness gates có trong tài liệu; implementation benchmark chưa hoàn tất |
 | Kết quả chính R1 | Chưa có benchmark hoàn chỉnh | Training đủ cấu hình đã chốt; chuỗi incremental hoàn chỉnh; bảng/đường cong so với paper và sai lệch |
 | Mốc smoke 100 lớp | Đã có JSON/manifest; W&B blhw74ff finished và config/source/summary khớp | Giữ Output checkpoint/state; quyền xem và số version hiển thị Kaggle còn cần kiểm trước nộp. [Manifest](CIFAR-KAGGLE-02-provenance.json) phân biệt phần đã kiểm và phần user cung cấp |
 | Ablation R2 | Chưa có bộ kết quả | Thí nghiệm thành phần đã chọn, đối chứng cùng checkpoint/protocol và run links |
 | Phân tích bổ sung R3 | Có ý tưởng batch size | Có driver sweep, đo kết quả/sai số/thời gian và diễn giải từ run thật |
 | Đối chiếu code tác giả | Chưa có bằng chứng chạy | Môi trường riêng, commit/config pin, so output và định vị khác biệt; không chép core implementation |
-| Metrics tổng hợp | Có accuracy theo phase/base/new | Chốt và kiểm phép tính average incremental accuracy/forgetting, chênh lệch điểm phần trăm/relative deviation theo paper |
+| Metrics tổng hợp | Đã chốt [metrics v1.0](../docs/metrics.md), ví dụ smoke đã tính lại | A-bar có base; F-base/delta có dấu rõ; script export/benchmark summaries còn cần triển khai |
 | Seeds benchmark | Ảnh thật mới một seed | Chọn số seed theo scope/tài nguyên; chỉ báo mean/std khi có đủ runs. Ba seed trong unit test không phải ba benchmark CIFAR |
 | Công bố kết quả tiếp theo | Mốc smoke 100 có blhw74ff; chưa có benchmark chính | Mỗi thí nghiệm benchmark có config/metrics, checkpoint, W&B và source riêng; cập nhật README theo cùng lượt |
 
@@ -110,15 +110,15 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 
 ## 6. Thứ tự làm cho một người
 
-1. **Chốt protocol và metric:** smoke 100 lớp đã có bằng chứng; ghi scope R1/R2/R3, cấu hình base/FE/gamma, số seed, quy ước metric và các sai khác với paper. Các mục V02/P02/S02 là việc tiếp theo.
-2. **Chuẩn bị benchmark:** đo ngân sách, xử lý resume optimizer/scheduler/RNG và chi phí joint oracle khi tăng chiều; chốt checkpoint đầu vào chuẩn. Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
+1. **Nghiệm thu resume:** protocol/metrics v1.0 đã chốt; triển khai G2/G3 và kiểm run ngắn continuous so với resume. Không bắt đầu160 epochs bằng một thay đổi config đơn lẻ.
+2. **Chuẩn bị benchmark:** hoàn thành benchmark mode theo batch, tách joint oracle, no-FE và metric export; profile d8000/RAM/runtime/quota. Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
 3. **Thiết kế run và lưu bằng chứng:** tách config từng thí nghiệm, dùng source/checkpoint đúng phiên bản, lưu JSON và URL thật. Bộ ghi report đã chuẩn UTF-8/LF; tính checksum theo bytes được công bố.
 4. **Hoàn thành core reproduction:** kết quả chính, ablation đã chọn và một phân tích bổ sung; đối chiếu paper/code tác giả, giải thích sai lệch. Viết nội dung deck song song khi scope và kết quả đã rõ.
 5. **Hoàn thiện deck trước hạn; sau đó tập trung poster:** phát triển P1/P2 thành giả thuyết, lý thuyết, đối chứng và phép đo; chỉ đưa kết luận được bằng chứng ủng hộ.
 
 [Đề chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reproduction) chấp nhận cả máy cá nhân và hosted notebook. Kaggle/GPU là lựa chọn tài nguyên của kế hoạch. Mỗi lượt local/Kaggle được ghi đúng môi trường, source và trạng thái tracking của chính nó.
 
-Việc ưu tiên tiếp theo là **chốt protocol/metric và ngân sách benchmark**. Mốc smoke 100 lớp đã có JSON và W&B finished; các kết quả R1/R2/R3 còn phải triển khai theo phạm vi đã chốt.
+[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **checkpoint resume và các gate trước lượt benchmark dài**. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
 
 ## 7. Cách dùng tài liệu để đỡ rối
 
