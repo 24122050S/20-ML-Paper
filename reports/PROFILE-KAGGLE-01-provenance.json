@@ -1,0 +1,79 @@
+{
+  "id": "PROFILE-KAGGLE-01",
+  "date": "2026-11-04",
+  "scope": "Analytic d8000 subset resource profile; not full benchmark or BP5",
+  "artifacts": {
+    "profile_d8000_kaggle_results.json": {
+      "sha256": "758e403df17c82bf4d766a5523fbedb2058c9d6ef2f98b8831f69e5c2c9766b9",
+      "original_raw_sha256": "758e403df17c82bf4d766a5523fbedb2058c9d6ef2f98b8831f69e5c2c9766b9"
+    },
+    "profile_d8000_kaggle_progress.json": {
+      "sha256": "ce6eb8cbb142f2805ee6586ecf79150db1ce10b3b0cd963027c598f835a2cc1a",
+      "original_raw_sha256": "ce6eb8cbb142f2805ee6586ecf79150db1ce10b3b0cd963027c598f835a2cc1a"
+    }
+  },
+  "attempt_id": "20261104T140958780997Z-c2ab35794fea",
+  "source": {
+    "github_commit": "d3e7405dadfb3a2e93212c343665c8bc75ffc657",
+    "source_note": "Executed from embedded bundle, git_commit/source_dirty=null;16 source/config hashes match the published Git files.",
+    "github_notebook": "notebooks/04_resume_benchmark_profile.ipynb",
+    "bundle_sha256": "5851fa25143689342edabe9ab112635395ed2eae4f19fe95c446eaf96b6ca19c",
+    "kaggle_notebook_source_sha256": "d150e9cc0b799af53e291450a9d3e617cdd5023f491eae35ed50a69b576c57fc",
+    "kaggle_additional_cell": "User added checkpoint path selection; embedded module bundle unchanged.",
+    "input_checkpoint_sha256": "a5bc46f46a89d5eea99e5b782925ea4ab31e809e00cf6b41442b039f5c30a0d2",
+    "input_checkpoint_matches": "reports/cifar100_kaggle_full5_results.json provenance.base_checkpoint_sha256"
+  },
+  "kaggle": {
+    "url": "https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile",
+    "verification_method": "public Kaggle kernels pull API",
+    "current_version_number": 1,
+    "public": true,
+    "gpu_enabled": true,
+    "machine_shape": "NvidiaTeslaT4",
+    "docker_image": "gcr.io/kaggle-private-byod/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
+    "script_version_id": null,
+    "note": "Public pull supplies source and version number, not executed cell output. Numeric scriptVersionId and CUDA test output were not independently verified."
+  },
+  "wandb": {
+    "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4",
+    "run_id": "gey0yop4",
+    "state": "finished",
+    "verification_method": "public GraphQL API; config/source hashes and numeric memory summary matched JSON",
+    "verified": true,
+    "verification_passed": true
+  },
+  "validated": [
+    "progress/results complete and same attempt",
+    "all required profile checks true",
+    "d8000 state shapes and finite values",
+    "public W&B finished/config/source/memory",
+    "public Kaggle V1 source bundle matches Github04",
+    "input checkpoint matches earlier full5 Kaggle run"
+  ],
+  "pending": [
+    "CUDA resume proof from executed test output/JSON",
+    "BP5 time and peak-memory profile",
+    "BP5 total-budget and current session-window check using user-reported26 GPU hours",
+    "full benchmark160 epochs seed42"
+  ],
+  "next_notebook": {
+    "path": "notebooks/05_profile_base_ready.ipynb",
+    "sha256": "1359bcf8a6fbc7a8b9116ba839fc8ae889a39efab20fe5d8484ca15bce8ce5fa",
+    "core_bundle_unchanged": true,
+    "epochs": 5,
+    "reused_or_resumed_checkpoint": false,
+    "bootstrap_cpu": {
+      "tests_run": 54,
+      "passed": 52,
+      "skipped": 2,
+      "proof_export": "passed",
+      "cuda_gate_and_stale_readiness_check": "passed"
+    },
+    "kaggle_execution": "not_started_by_assistant; browser control unavailable"
+  },
+  "user_reported_gpu_quota": {
+    "hours": 26,
+    "date": "2026-11-04",
+    "source": "Sang reply in this conversation; not account API measurement"
+  }
+}

@@ -2,6 +2,8 @@
 
 Cập nhật 04/11/2026. Dùng cùng [protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md). Notebook mới là **`notebooks/04_resume_benchmark_profile.ipynb`**; notebook02/03 giữ nguyên source của các bằng chứng cũ.
 
+**Bước hiện tại của Sang:** analytic Kaggle đã đạt qua [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4). Dùng [notebook05 cấu hình sẵn và hướng dẫn ngắn](BUOC_TIEP_THEO_SANG.md) để đo BP5/xuất CUDA proof, không cần sửa biến hoặc thêm Input. Các bước notebook04 bên dưới được giữ để tái lập lượt analytic.
+
 ## 1. Đã thay đổi gì, vì sao
 
 | Thay đổi | Lý do và hành vi |
@@ -34,7 +36,7 @@ No-FE của benchmark dùng trực tiếp **F(n,64)** từ backbone, giữ cả 
 4. **Save & Run All.** Cell tests có kiểm resume CUDA khi GPU khả dụng. Cell cuối phải in `RESUME-BENCHMARK-PROFILE COMPLETE`, status complete, mọi check true và W shape `[8000,100]`.
 5. Lấy **Output → `profile_d8000/results.json`**, `profile_d8000/progress.json` và link version đã lưu. Kiểm `wandb_status="logged"`, run URL do JSON tự lấy. Gửi JSON và link version để chốt bằng chứng GPU/time/quota.
 
-Profile mặc định dùng **1000 ảnh base + 200 ảnh từ 50 lớp mới + 600 ảnh test**, batch128, float64. Chuyển50→100 ở đây chỉ đo kích thước W100 và tài nguyên; không phải protocol K5 với năm phase10 lớp. Không dùng accuracy subset cho bảng paper. CPU đã đo được d8000; **GPU/Kaggle chưa được nghiệm thu bằng lượt mới**.
+Profile mặc định dùng **1000 ảnh base + 200 ảnh từ 50 lớp mới + 600 ảnh test**, batch128, float64. Chuyển50→100 ở đây chỉ đo kích thước W100 và tài nguyên; không phải protocol K5 với năm phase10 lớp. Không dùng accuracy subset cho bảng paper. CPU và Kaggle T4 đã đo được d8000; [manifest Kaggle](../reports/PROFILE-KAGGLE-01-provenance.json) xác nhận profile analytic đạt. **BP5, CUDA test output và quota vẫn cần nghiệm thu**.
 
 Sau profile analytic, đổi **`ACTION="profile_base"`**, đặt `CHECKPOINT=None`, `RESUME_CHECKPOINT=None`, `STOP_AFTER_EPOCH=None`, rồi Save & Run All một version mới. Action này train BP5 epochs, chạy một phase analytic d256 để kiểm pipeline, ghi history/time/checkpoint v2; LR milestones vẫn80/120 nên không giảm LR trong5 epochs. Dùng thời gian thực đo để dự trù160 epochs, cộng analytic/evaluation/I/O và dự phòng ít nhất30% theo protocol.
 

@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vĩ, Phát
 
-> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; resume CPU/benchmark streaming/metric export và profile d8000 CPU đã có; việc tiếp theo là nghiệm thu CUDA và profile trên Kaggle theo [hướng dẫn04](RESUME_BENCHMARK_PROFILE.md). Chưa chạy benchmark160 epochs.
+> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; resume CPU/benchmark streaming/metric export và profile d8000 CPU đã có; analytic Kaggle d8000 đã có gey0yop4 finished; việc tiếp theo là proof CUDA và BP5 bằng [notebook05 cấu hình sẵn](BUOC_TIEP_THEO_SANG.md). Chưa chạy benchmark160 epochs.
 
 Cập nhật **04/11/2026**, giờ Việt Nam, sau khi nhận JSON full5 và xác minh run W&B blhw74ff. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
@@ -224,9 +224,9 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang đang làm một mình:** import [notebook04](../notebooks/04_resume_benchmark_profile.ipynb), attach Output03 có checkpoint base2 epochs và chạy action mặc định `profile_analytic`. Xem [các cell/path cụ thể](RESUME_BENCHMARK_PROFILE.md). Giữ protocol/metrics v1.0.
+**Sang đang làm một mình:** import [notebook05](../notebooks/05_profile_base_ready.ipynb), bật GPU/Internet/secret rồi Save & Run All. Không cần Input hoặc sửa biến. Gửi file gộp `profile_base_ready.json` theo [hướng dẫn ngắn](BUOC_TIEP_THEO_SANG.md). Giữ protocol/metrics v1.0.
 
-**Đã có:** checkpoint v2/resume CPU, streaming tách oracle/no-FE, metric export, profile CPU d8000 và JSON có provenance. Suite54 tests có1 skip CUDA. **Đầu ra phiên Kaggle kế tiếp:** test CUDA đạt, JSON profile/time/RSS/GPU, W&B finished và version đã lưu; sau đó action `profile_base`5 epochs.
+**Đã có:** checkpoint v2/resume CPU, streaming/no-FE/metrics, profile d8000 CPU và Kaggle T4/gey0yop4 finished có provenance. **Đầu ra kế tiếp:** notebook05 xuất proof CUDA, BP5/time/peak RSS/GPU, checkpoint v2, W&B và version đã lưu trong `profile_base_ready.json`. Chưa chạy160 epochs.
 
 **Sau đó:** khi G2/G3 CUDA và G6 Kaggle/quota đạt, chạy R1 seed42 trước, rồi43/44; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 
