@@ -70,7 +70,7 @@ Kaggle được ghi nhận Private trong lần đối chiếu version; repo/W&B 
 
 | Phần thiếu | Hiện trạng | Tiêu chí hoàn thành |
 |---|---|---|
-| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2/R3, base160/d8000/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming đã có; còn nghiệm thu CUDA/profile/quota |
+| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2/R3, base160/d8000/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming/CUDA/BP5 đã đạt; budget2 giờ đã lập; tracking BP5 xem manifest |
 | Kết quả chính R1 | Chưa có benchmark hoàn chỉnh | Training đủ cấu hình đã chốt; chuỗi incremental hoàn chỉnh; bảng/đường cong so với paper và sai lệch |
 | Mốc smoke 100 lớp | Đã có JSON/manifest; W&B blhw74ff finished và config/source/summary khớp | Giữ Output checkpoint/state; quyền xem và số version hiển thị Kaggle còn cần kiểm trước nộp. [Manifest](CIFAR-KAGGLE-02-provenance.json) phân biệt phần đã kiểm và phần user cung cấp |
 | Ablation R2 | Chưa có bộ kết quả | Thí nghiệm thành phần đã chọn, đối chứng cùng checkpoint/protocol và run links |
@@ -85,7 +85,7 @@ Một checkpoint 2 epochs không phải checkpoint benchmark hoàn chỉnh. Ch�
 ## 4. Những giới hạn code cần xử lý trước lượt chạy lớn
 
 1. `src/cifar_smoke.py` hiện giới hạn K=5; K=25 trong roadmap không thể hoàn thành chỉ bằng đổi một giá trị JSON.
-2. `--reuse-checkpoint` dùng lại base đã hoàn thành. Đã có checkpoint v2 mỗi epoch và resume đủ optimizer/scheduler/RNG/loader. CPU continuous so với resume đạt; CUDA cần nghiệm thu bằng notebook04.
+2. `--reuse-checkpoint` dùng lại base đã hoàn thành. Đã có checkpoint v2 mỗi epoch và resume đủ optimizer/scheduler/RNG/loader. CPU continuous so với resume và CUDA TinyCNN test đều đạt; BP5 GPU/checkpoint đã kiểm. Xem review BP5 để phân biệt phạm vi từng phép kiểm.
 3. Analytic vẫn là NumPy CPU. GPU giúp base training/trích feature; cần đo riêng chi phí analytic trước khi tăng expansion.
 4. Mode smoke giữ oracle để kiểm nhỏ; mode benchmark mới đọc batch, không giữ train history và không gọi oracle. Đã kiểm đủ100 lớp CPU; phân biệt peak process RAM với bytes R/W/FE.
 5. Đã có no-FE đúng nghĩa: dùng F64 trực tiếp, không ReLU/projection; có test. Gamma=0 đang bị từ chối; không thay epsilon rồi gọi là zero.
@@ -110,15 +110,15 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 
 ## 6. Thứ tự làm cho một người
 
-1. **Nghiệm thu CUDA:** resume CPU đã đạt; notebook04 có CUDA test conditional, cần chạy trên Kaggle. Không bắt đầu160 epochs bằng một thay đổi config đơn lẻ.
-2. **Profile Kaggle:** analytic d8000 đã đạt qua gey0yop4/T4, peak RSS3,20GB; dùng [notebook05](../notebooks/05_profile_base_ready.ipynb) để đo BP5 và xuất proof CUDA/quota. [Review mới](REVIEW_PROFILE_KAGGLE_20261104.md) giữ checksum và phạm vi. Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
+1. **CUDA/BP5 đã đạt:** Version3 API có executed proof53 tests passed/1 skip, checkpoint5 epochs đã tải/kiểm. [Review mới](REVIEW_BP5_KAGGLE_20261105.md) ghi chi tiết và tracking. Không bắt đầu160 epochs bằng một thay đổi config đơn lẻ.
+2. **Profile Kaggle đã đủ số đo:** analytic d8000 đạt gey0yop4/T4; BP5 đạt76,11s và RAM/GPU đã ghi. [Budget](benchmark_seed42_budget.json) dự trù~59 phút, chuẩn bị2 giờ; [notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) chưa chạy. Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
 3. **Thiết kế run và lưu bằng chứng:** tách config từng thí nghiệm, dùng source/checkpoint đúng phiên bản, lưu JSON và URL thật. Bộ ghi report đã chuẩn UTF-8/LF; tính checksum theo bytes được công bố.
 4. **Hoàn thành core reproduction:** kết quả chính, ablation đã chọn và một phân tích bổ sung; đối chiếu paper/code tác giả, giải thích sai lệch. Viết nội dung deck song song khi scope và kết quả đã rõ.
 5. **Hoàn thiện deck trước hạn; sau đó tập trung poster:** phát triển P1/P2 thành giả thuyết, lý thuyết, đối chứng và phép đo; chỉ đưa kết luận được bằng chứng ủng hộ.
 
 [Đề chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reproduction) chấp nhận cả máy cá nhân và hosted notebook. Kaggle/GPU là lựa chọn tài nguyên của kế hoạch. Mỗi lượt local/Kaggle được ghi đúng môi trường, source và trạng thái tracking của chính nó.
 
-[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **test CUDA proof và BP5 trên Kaggle bằng notebook05**; [review mới](REVIEW_RESUME_PROFILE_20261104.md) ghi proof CPU và giới hạn. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
+[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **tracking BP5 và R1 seed42/160 epochs bằng notebook06**; [review mới](REVIEW_RESUME_PROFILE_20261104.md) ghi proof CPU và giới hạn. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
 
 ## 7. Cách dùng tài liệu để đỡ rối
 

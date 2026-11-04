@@ -1,0 +1,87 @@
+{
+  "id": "BP5-KAGGLE-01",
+  "date": "2026-11-05",
+  "scope": "BP5 GPU resource/implementation verification, not R1 benchmark",
+  "attempt_id": "20261104T173456176348Z-f3b67e52a9c7",
+  "artifacts": {
+    "profile_base_kaggle_ready.json": {
+      "sha256": "42fb476e2f4a14decbe67b7e7a0f3d65999900af08c31a8e7194f6eb869f9729",
+      "raw_numeric_and_capture_metadata_preserved": true
+    },
+    "benchmark_seed42_budget.json": {
+      "sha256": "e2b63e8ca1ba5ee4c8a4c4174ad42667114b3b3499dc1ae0755f8a578d606675",
+      "scope": "planning estimate only"
+    }
+  },
+  "kaggle": {
+    "version_number": 3,
+    "script_version_id": 365703432,
+    "url": "https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365703432",
+    "status": "complete",
+    "verification_method": "authenticated API status, version-pinned output download/content hashes with isolated CLI2.2.5",
+    "execution_note": "CLI2.1 submitted version2 with online tracking; it failed before training due missing secret binding. Version3 disabled online login and saved W&B offline data."
+  },
+  "source": {
+    "bundle_sha256": "5851fa25143689342edabe9ab112635395ed2eae4f19fe95c446eaf96b6ca19c",
+    "core_source_matches_commit": "d3e7405dadfb3a2e93212c343665c8bc75ffc657",
+    "executed_notebook_archive": "notebooks/archive/05_profile_base_api_v3.ipynb",
+    "executed_notebook_sha256": "9e5d74e340c8fb24a855a672e33a4966d4bb0076372b8ddba6c5487d70de1bc2",
+    "core_source_files_unchanged": 16
+  },
+  "checkpoint": {
+    "sha256": "ea34137b9cfc92024a6c8db65368d461e930c563b92320d227ce07df8aac3749",
+    "format_version": 2,
+    "completed_epoch": 5,
+    "target_epochs": 5,
+    "training_samples_per_epoch": 25000,
+    "optimizer_scheduler_rng_and_loader_state_verified": true,
+    "weights_not_committed": true
+  },
+  "verification": {
+    "cuda_resume_test_passed": true,
+    "tests_run": 54,
+    "tests_passed": 53,
+    "tests_skipped": 1,
+    "skip_reason": "historical notebook snapshots absent from embedded source bundle",
+    "final_weights_shape": [
+      256,
+      60
+    ],
+    "final_test_samples": 6000,
+    "learning_rates": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ]
+  },
+  "tracking_sync": {
+    "status": "offline_pending_sync",
+    "offline_run_id": "pv82dy1f",
+    "offline_payload_sha256": "cf4fc710f4032650454a2b12aaded0de44cde63f0573d5e871a0fa55c106084b",
+    "wandb_run_url": null,
+    "note": "Raw GPU JSON was captured offline. A later sync, if performed, is recorded here after completion; do not claim logged before actual sync."
+  },
+  "budget": {
+    "estimated_minutes": 58.86620590097842,
+    "planned_window_hours": 2,
+    "minimum_window_with_30_percent_remaining_minutes": 84.0945798585406,
+    "user_reported_gpu_quota_hours": 26,
+    "quota_not_live_account_measurement": true,
+    "long_benchmark_started": false
+  },
+  "next_notebook": {
+    "path": "notebooks/06_benchmark_seed42_ready.ipynb",
+    "sha256": "9bcaeae5f95d5977314376425a58ab3332b515628237b681e16caa9b133cab22",
+    "purpose": "R1 seed42/160 epochs/d8000/K5, prepared only",
+    "bootstrap_cpu": {
+      "tests_run": 54,
+      "passed": 52,
+      "skipped": 2,
+      "gpu_guard": "passed",
+      "stale_success_guard": "passed"
+    },
+    "gpu_run_submitted": false
+  }
+}

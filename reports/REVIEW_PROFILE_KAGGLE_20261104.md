@@ -9,7 +9,7 @@
 - 16 source/config hashes khớp Git ở commit `d3e7405dadfb3a2e93212c343665c8bc75ffc657`. Source chạy từ bundle nên git_commit/source_dirty=null là đúng. Bundle SHA-256 `5851fa25143689342edabe9ab112635395ed2eae4f19fe95c446eaf96b6ca19c` khớp notebook04.
 - Input checkpoint SHA-256 `a5bc46f46a89d5eea99e5b782925ea4ab31e809e00cf6b41442b039f5c30a0d2` khớp base2 epochs của JSON smoke Kaggle full5 đã công bố.
 - Public W&B GraphQL API xác nhận [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4) finished; config/source hashes, verification và các memory summary khớp JSON.
-- Public Kaggle kernels pull API xác nhận notebook Public, currentVersionNumber=1, GPU T4/Internet bật, source bundle như trên. Source của Sang thêm một cell chọn path checkpoint. API không trả output cell hoặc numeric scriptVersionId; chưa dùng source đơn thuần để xác nhận CUDA test đã chạy.
+- Public Kaggle kernels pull API xác nhận notebook Public, currentVersionNumber=1, GPU T4/Internet bật, source bundle như trên. Source của Sang thêm một cell chọn path checkpoint. Cập nhật05/11: version-pinned output API đã xác nhận scriptVersionId365647614 và raw bytes khớp analytic JSON. CUDA proof hiện có riêng ở BP5 Version3, không suy từ source V1.
 
 ## Thời gian và tài nguyên
 
@@ -32,6 +32,6 @@ Ngoại suy base25.000 ảnh khoảng446,84s, incremental25.000 khoảng355,43s;
 
 Đã tạo [notebook05](../notebooks/05_profile_base_ready.ipynb) từ source bundle04 không đổi module huấn luyện. Không cần Input hoặc sửa biến. Nó chạy suite, ghi proof từng test/CUDA, yêu cầu CUDA resume đạt, train BP5 từ đầu và analytic50+10/d256, đo RSS/GPU rồi xuất một file `profile_base_ready.json`. Không mở160 epochs.
 
-Đã kiểm bootstrap05 trong kernel mới trên local CPU:54 tests,52 passed/2 skipped (CUDA và snapshot02/03), JSON proof xuất đúng; CUDA gate chặn training trên CPU và xóa trạng thái success cũ khỏi file gộp khi lỗi. Chưa có kết quả BP5 hoặc CUDA test mới trên Kaggle từ notebook05.
+Đã kiểm bootstrap05 trong kernel mới trên local CPU:54 tests,52 passed/2 skipped (CUDA và snapshot02/03), JSON proof xuất đúng; CUDA gate chặn training trên CPU và xóa trạng thái success cũ khỏi file gộp khi lỗi. Tại mốc04/11 chưa có BP5/CUDA output; kết quả mới ngày05/11 được liên kết ngay dưới.
 
-Sang chỉ cần import05 và Save & Run All theo [hướng dẫn ngắn](../docs/BUOC_TIEP_THEO_SANG.md). Sang báo còn26 giờ GPU ngày04/11; đây là thông tin người dùng cung cấp. Khi có JSON BP5, tính tổng ngân sách và đối chiếu quota/giới hạn phiên với dự phòng30% trước khi chuẩn bị lượt benchmark seed42.
+Cập nhật05/11: đã chạy thay Sang BP5 qua API và CUDA proof đạt; [review BP5](REVIEW_BP5_KAGGLE_20261105.md), [budget](benchmark_seed42_budget.json), [notebook06](../notebooks/06_benchmark_seed42_ready.ipynb). Quota26h là thông tin Sang cung cấp; chưa có run160 epochs.

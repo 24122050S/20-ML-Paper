@@ -24,15 +24,16 @@
     "input_checkpoint_matches": "reports/cifar100_kaggle_full5_results.json provenance.base_checkpoint_sha256"
   },
   "kaggle": {
-    "url": "https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile",
-    "verification_method": "public Kaggle kernels pull API",
+    "url": "https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365647614",
+    "verification_method": "Public pull metadata plus authenticated, version-pinned output bytes with isolated Kaggle CLI2.2.5",
     "current_version_number": 1,
     "public": true,
     "gpu_enabled": true,
     "machine_shape": "NvidiaTeslaT4",
     "docker_image": "gcr.io/kaggle-private-byod/python@sha256:de153e6d303881930c51286216393d56f56b26458d0661350305a1e8144eea01",
-    "script_version_id": null,
-    "note": "Public pull supplies source and version number, not executed cell output. Numeric scriptVersionId and CUDA test output were not independently verified."
+    "script_version_id": 365647614,
+    "note": "Version1 content independently verified against original analytic JSON using version-pinned API output. Later versions of the same kernel run BP5.",
+    "pinned_output_sha256_verified": "758e403df17c82bf4d766a5523fbedb2058c9d6ef2f98b8831f69e5c2c9766b9"
   },
   "wandb": {
     "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4",
@@ -51,10 +52,8 @@
     "input checkpoint matches earlier full5 Kaggle run"
   ],
   "pending": [
-    "CUDA resume proof from executed test output/JSON",
-    "BP5 time and peak-memory profile",
-    "BP5 total-budget and current session-window check using user-reported26 GPU hours",
-    "full benchmark160 epochs seed42"
+    "W&B sync of BP5 offline payload",
+    "Full R1 benchmark160 epochs seed42; not started"
   ],
   "next_notebook": {
     "path": "notebooks/05_profile_base_ready.ipynb",

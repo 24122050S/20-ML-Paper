@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vĩ, Phát
 
-> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; resume CPU/benchmark streaming/metric export và profile d8000 CPU đã có; analytic Kaggle d8000 đã có gey0yop4 finished; việc tiếp theo là proof CUDA và BP5 bằng [notebook05 cấu hình sẵn](BUOC_TIEP_THEO_SANG.md). Chưa chạy benchmark160 epochs.
+> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; resume CPU/benchmark streaming/metric export và profile d8000 CPU đã có; analytic Kaggle d8000 đã có gey0yop4 finished; BP5/CUDA cũng đã chạy đạt qua API ngày05/11; việc tiếp theo là tracking BP5 và R1 bằng [notebook06](../notebooks/06_benchmark_seed42_ready.ipynb). Chưa chạy benchmark160 epochs.
 
 Cập nhật **04/11/2026**, giờ Việt Nam, sau khi nhận JSON full5 và xác minh run W&B blhw74ff. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
@@ -101,7 +101,7 @@ Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2
 - **Hạn checkpoint seed đầu:** 07/11; các seed tiếp theo theo ngân sách, mục tiêu 11/11.
 - **Làm:** sau khi V02 đạt, huấn luyện đủ cấu hình đã chốt, mục tiêu 160 epochs với mốc LR 80/120. Lưu run và checkpoint cuối; checkpoint tạm cho phiên dài cần hỗ trợ và kiểm tra resume đúng optimizer/scheduler/RNG.
 - **Bàn giao:** checkpoint cho từng seed, hash, history, run URL, config, thời gian. Chia checkpoint cho Sang/Phát bằng input/artifact có version.
-- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. `--reuse-checkpoint` dùng lại base hoàn chỉnh; `--resume-checkpoint` v2 tiếp tục BP tại biên epoch. CPU đã so optimizer/scheduler/RNG/history chính xác; nghiệm thu CUDA qua notebook04 còn phải chạy.
+- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. `--reuse-checkpoint` dùng lại base hoàn chỉnh; `--resume-checkpoint` v2 tiếp tục BP tại biên epoch. CPU đã so optimizer/scheduler/RNG/history chính xác; CUDA TinyCNN resume test passed trong BP5 Version3 và checkpoint GPU5 epochs đã kiểm.
 
 ### V04 — Kết quả chính R1
 
@@ -224,9 +224,9 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang đang làm một mình:** import [notebook05](../notebooks/05_profile_base_ready.ipynb), bật GPU/Internet/secret rồi Save & Run All. Không cần Input hoặc sửa biến. Gửi file gộp `profile_base_ready.json` theo [hướng dẫn ngắn](BUOC_TIEP_THEO_SANG.md). Giữ protocol/metrics v1.0.
+**Sang đang làm một mình:** trợ lý đã chạy BP5/CUDA qua API, không cần làm05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình160/d8000/seed42. Xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md), giữ protocol/metrics v1.0.
 
-**Đã có:** checkpoint v2/resume CPU, streaming/no-FE/metrics, profile d8000 CPU và Kaggle T4/gey0yop4 finished có provenance. **Đầu ra kế tiếp:** notebook05 xuất proof CUDA, BP5/time/peak RSS/GPU, checkpoint v2, W&B và version đã lưu trong `profile_base_ready.json`. Chưa chạy160 epochs.
+**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget~59 phút, cửa sổ2 giờ, quota26h từ Sang. **Tiếp theo:** tracking BP5 và run R1 seed42; chưa khởi chạy160 epochs.
 
 **Sau đó:** khi G2/G3 CUDA và G6 Kaggle/quota đạt, chạy R1 seed42 trước, rồi43/44; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 
