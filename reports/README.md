@@ -13,6 +13,12 @@ Mỗi bản kết quả phải có config, môi trường, source commit/hashes,
 
 - [cifar100_kaggle_full5_results.json](cifar100_kaggle_full5_results.json): smoke CUDA đủ 100 lớp, [scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714), [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) được API công khai xác nhận finished. Train mới 2 epochs/d256, W cuối 256×100, test 10.000 ảnh, accuracy 22,05%; mọi check đạt. [CIFAR-KAGGLE-02-provenance.json](CIFAR-KAGGLE-02-provenance.json) đối chiếu raw JSON/source/config và ghi rõ giao diện Kaggle chưa xác minh. [Review chi tiết](REVIEW_CIFAR_KAGGLE_FULL5_20261104.md).
 
-Cập nhật trạng thái **04/11/2026**: notebook 03 đã có JSON của chuỗi đủ 5 phase và W&B finished. [Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt v1.0; bước tiếp theo là các gate resume/benchmark mode/profile trước lượt dài; suite hiện tại đã kiểm tra 38 tests trên local. Số 11/20 tests trong các lượt cũ giữ theo snapshot. File mới được copy nguyên bytes; các JSON/manifest cũ không thay đổi.
+Cập nhật trạng thái **04/11/2026**: notebook 03 đã có JSON của chuỗi đủ 5 phase và W&B finished. [Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt v1.0; đã triển khai resume/benchmark streaming/metric export và profile CPU d8000; còn nghiệm thu CUDA/profile analytic+BP5 trên Kaggle trước lượt dài. Suite54 tests:53 đạt,1 skip CUDA trên local CPU. Số 11/20 tests trong các lượt cũ giữ theo snapshot. File mới được copy nguyên bytes; các JSON/manifest cũ không thay đổi.
+
+- [resume_cpu_verification.json](resume_cpu_verification.json): CPU2 epochs so với1+resume1, ResNet32/CIFAR thật200 ảnh/epoch, model/optimizer/scheduler/RNG/history khớp.
+- [cifar100_streaming_cpu_verification.json](cifar100_streaming_cpu_verification.json): kiểm đủ100 lớp ở2 epochs/d256, oracle/full collector bị chặn; accuracy từng mốc khớp oracle CPU lịch sử.
+- [cifar100_joint_cpu_reference.json](cifar100_joint_cpu_reference.json): bản oracle CPU lịch sử dùng đối chiếu6 mốc của lượt streaming; metadata cũ giữ nguyên, checksum bytes công bố trong manifest mới.
+- [profile_d8000_cpu_results.json](profile_d8000_cpu_results.json): subset resource probe CPU1000+200+600 ảnh, không phải benchmark accuracy.
+- [Manifest RESUME-PROFILE-01](RESUME-PROFILE-01-provenance.json) và [review triển khai](REVIEW_RESUME_PROFILE_20261104.md): checksum/source bundle04, kết quả kiểm và các gate GPU còn thiếu. Tracking của ba lượt CPU này tắt; không gắn URL Kaggle/W&B cũ cho chúng.
 
 [Review tổng quan, cập nhật 04/11](REVIEW_TONG_QUAN_20261102.md) ghi phần đã đạt và việc còn lại. `local/` tiếp tục chỉ chứa artifact trên máy, không được đưa lên GitHub.

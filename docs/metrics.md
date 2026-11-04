@@ -78,7 +78,7 @@ Với oracle joint dùng đúng feature map, gamma, dữ liệu, precision và m
 
 R3 reset R/W cho từng batch-size/repeat, dùng cùng checkpoint160/seed42, cùng FE1024/gamma0.1 và sample order. Joint oracle/cache historical features chỉ phục vụ kiểm chứng và nằm **ngoài thời gian analytic được so sánh**. Incremental update chỉ nhận batch hiện tại và trạng thái; log cache/oracle riêng khi báo memory.
 
-Ở mode benchmark không chạy oracle, các error/disagreement fields phải null với `joint_reference_status="not_run"`; không ghi0 để ám chỉ đã so khớp. `checks` và verification_passed phải dựa trên những điều kiện bắt buộc của mode đã khai báo, không gọi check chưa chạy là passed. Đó là hợp đồng của benchmark runner cần triển khai; smoke hiện tại vẫn chạy oracle.
+Ở mode benchmark không chạy oracle, các error/disagreement fields phải null với `joint_reference_status="not_run"`; không ghi0 để ám chỉ đã so khớp. `checks` và verification_passed phải dựa trên những điều kiện bắt buộc của mode đã khai báo, không gọi check chưa chạy là passed. Đường benchmark đã được triển khai trong `src/streaming.py`; `src/metrics.py` xuất `metric_summary` vào JSON/W&B. Smoke vẫn chạy oracle. Chuỗi chưa đủ K ghi `average_incremental_accuracy_pct=null`, dùng `partial_average_accuracy_pct` riêng và `complete_protocol=false`; xem [hướng dẫn](RESUME_BENCHMARK_PROFILE.md).
 
 ## 7. Thời gian và bộ nhớ
 

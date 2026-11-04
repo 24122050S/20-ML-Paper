@@ -168,3 +168,11 @@ Chỉ tái sử dụng checkpoint khi cấu hình base, class order, normalizati
 `incremental_update` chỉ nhận R/W cũ và batch hiện tại. Bộ kiểm tra bên ngoài giữ feature train lịch sử để giải joint ridge làm tham chiếu; phần lịch sử này không nằm trong trạng thái analytic được lưu.
 
 Đối chiếu R, W, score và argmax trên cùng feature map/gamma. Sau 50+10 lớp, đánh giá toàn bộ **6.000 ảnh test của 60 lớp**, gồm cả 50 lớp cũ; W phải có 60 cột. Smoke dùng float64 ở analytic và ngưỡng trong config. Kết quả này chưa phải tái lập benchmark paper.
+
+### 9.8. Base streaming và mode benchmark
+
+Từ04/11/2026, `initialize_batches(batches, n_features, n_classes, gamma=...)` nhận iterator `(H,y)` của base, tích lũy Gram/cross theo batch và trả cùng `(R,W)`. Gamma cộng đúng một lần; Cholesky giải cùng objective ridge. API này không trả `class_ids`; mapping vẫn thuộc pipeline.
+
+`StreamingHead` quản lý feature expansion/R/W cho đường benchmark. Mặc định `H=ReLU(F @ FE)`; khi `feature_expansion=false`, H chính là F64 từ backbone, không projection/ReLU bổ sung. Không giữ train history hoặc gọi joint oracle trong đường này. Field sai số so joint=null, `joint_reference_status="not_run"`. Smoke/test vẫn giữ oracle riêng.
+
+Xem [hướng dẫn resume/profile](RESUME_BENCHMARK_PROFILE.md) để phân biệt checkpoint BP đang dở với reuse base hoàn tất; resume hiện ở biên epoch BP, chưa hỗ trợ tiếp tục R/W giữa các phase. [Metrics v1.0](metrics.md) định nghĩa A-bar/full/partial cho JSON.

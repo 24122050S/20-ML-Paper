@@ -107,15 +107,15 @@ Hai epoch của run blhw74ff mất tổng34,3874 giây cho BP; ngoại suy tuy�
 
 ## 8. Nghiệm thu trước khi mở benchmark
 
-| Gate | Điều kiện đạt | Hiện trạng ở main f8bad6e |
+| Gate | Điều kiện đạt | Cập nhật triển khai 04/11/2026 |
 |---|---|---|
 | G1: dữ liệu/numerical smoke | Audit, mapping, reload/freeze, K5 đủ100 lớp và tracking | Đã có ở d256/2 epochs, blhw74ff |
-| G2: resume BP | Lưu model, optimizer, scheduler, completed_epoch, target_epochs, config/protocol/norm/revision, Python/NumPy/Torch CPU+CUDA RNG, DataLoader generator và history; resume đúng ở biên epoch, giữ mục tiêu160 epochs | Chưa có; reuse checkpoint hoàn tất không phải resume |
-| G3: kiểm resume | Run ngắn liên tục2 epochs so với1+resume1: cùng sample order, LR, loss/state trên môi trường kiểm tra; thử checkpoint thiếu/khác config | Cần triển khai và kiểm trước160 epochs |
-| G4: benchmark analytic | Base theo batch; không giữ lịch sử/joint oracle trong đường benchmark; no-FE đúng; metadata mode rõ | Runner smoke hiện giữ pooled features/joint; cần mode riêng |
-| G5: metric export | A0..AK/B0..BK đầy đủ, số mẫu đúng; tính A-bar/F theo metrics; không lấy final thay A-bar | Công thức đã chốt ở tài liệu, script export còn cần triển khai |
-| G6: profile/provenance | Source commit/hashes, config, checkpoint hashes, package/device, peak memory/time, version Kaggle và public W&B | Cần run profile thật; smoke chưa đo d8000 |
+| G2: resume BP | Lưu model, optimizer, scheduler, completed_epoch, target_epochs, config/protocol/norm/revision, Python/NumPy/Torch CPU+CUDA RNG, DataLoader generator và history; resume đúng ở biên epoch, giữ mục tiêu160 epochs | Đã có checkpoint v2 mỗi epoch; strict config/protocol/runtime/source; kiểm CPU đạt, CUDA chờ notebook04 |
+| G3: kiểm resume | Run ngắn liên tục2 epochs so với1+resume1: cùng sample order, LR, loss/state trên môi trường kiểm tra; thử checkpoint thiếu/khác config | CPU đạt: unit test model/optimizer/scheduler/RNG/LR/sample order và ResNet32/CIFAR200 ảnh thật; test CUDA có trong04, chưa chạy trên máy này |
+| G4: benchmark analytic | Base theo batch; không giữ lịch sử/joint oracle trong đường benchmark; no-FE đúng; metadata mode rõ | Đã có mode benchmark streaming; chạy đủ100 lớp CPU/d256 với oracle và full collector bị chặn, accuracy khớp run oracle cũ; no-FE đã có test |
+| G5: metric export | A0..AK/B0..BK đầy đủ, số mẫu đúng; tính A-bar/F theo metrics; không lấy final thay A-bar | Đã xuất metric_summary vào JSON/W&B; test công thức và chuỗi partial đạt |
+| G6: profile/provenance | Source commit/hashes, config, checkpoint hashes, package/device, peak memory/time, version Kaggle và public W&B | Đã profile subset CPU d8000, có report/hashes/RSS/time; còn profile analytic + BP5 và nghiệm thu CUDA/quota trên Kaggle |
 
-**Việc làm ngay sau khi chốt tài liệu:** triển khai G2/G3, sau đó G4/G5 và profile G6. Chưa mở run160 epochs bằng cách chỉ sửa epochs/d trong notebook03. Notebook03 hiện phân phối smoke runner; notebook benchmark mới phải có source bundle riêng, giữ nguồn đã công bố của các run cũ.
+**Việc làm tiếp:** dùng [notebook04 và hướng dẫn](RESUME_BENCHMARK_PROFILE.md) để chạy test resume CUDA, profile analytic d8000 và BP5 trên Kaggle; đối chiếu thời gian/quota với dự phòng30%. [Manifest CPU](../reports/RESUME-PROFILE-01-provenance.json) giữ proof hiện có. Chưa mở160 epochs khi thiếu gate GPU/tài nguyên. Notebook02/03 giữ source cũ; generator hiện tạo04 với bundle riêng. Thay đổi này hoàn thiện implementation, không thay protocol v1.0.
 
 Mỗi kết quả benchmark phải lưu config, protocol/class_order, normalization, checkpoint/state, per-phase JSON và summary metrics; README ghép đúng source/JSON/version/W&B cùng lượt. Xuất UTF-8/LF, tính SHA-256 trên bytes công bố. [metrics.md](metrics.md) là định nghĩa duy nhất của các metric dùng trong bảng/deck.

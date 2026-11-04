@@ -12,6 +12,9 @@ import numpy as np
 
 def _data(h, labels):
     """Kiểm tra H (n,d), nhãn toàn cục (n,); trả mảng float64/int64 hợp lệ."""
+    # Kiểm tra đầu vào có sạch hay không.
+    # H là ma trận hữu hạn, 2d, không rỗng
+    # Nhãn là vector số nguyên, đúng n phần tử, không âm
     h = np.asarray(h, dtype=np.float64)
     labels = np.asarray(labels)
     if h.ndim != 2 or min(h.shape) < 1 or not np.isfinite(h).all():
@@ -25,6 +28,8 @@ def _data(h, labels):
 
 def _classes(labels, n_classes=None, minimum=0):
     """Trả số cột classifier, không thu hẹp lớp cũ và không bỏ sót nhãn mới."""
+    #Tính số cột
+    # Số cột phải lớn hơn bằng max(Nhãn) + 1, và không nhỏ hơn số cột cũ (minimum).
     required = max(minimum, int(labels.max()) + 1)
     if n_classes is None:
         return required
@@ -37,6 +42,7 @@ def _classes(labels, n_classes=None, minimum=0):
 
 def _gamma(gamma):
     """Trả gamma hữu hạn, lớn hơn 0; gamma=0 cần phương pháp giải riêng."""
+    # Kiểm tra gamma > 0 và hữu hạn.
     gamma = float(gamma)
     if not np.isfinite(gamma) or gamma <= 0:
         raise ValueError("gamma phải hữu hạn và lớn hơn 0")
@@ -44,6 +50,7 @@ def _gamma(gamma):
 
 
 def _targets(labels, n_classes):
+    #tạo one-hote cho từng nhãn n*c
     """Tạo one-hot (n,C) theo ID toàn cục; batch có thể chỉ chứa một số lớp."""
     y = np.zeros((len(labels), n_classes), dtype=np.float64)
     y[np.arange(len(labels)), labels] = 1.0
@@ -57,6 +64,11 @@ def joint_ridge(h, labels, n_classes=None, gamma=1.0):
     Trả về W (d,C) từ hệ (H.T H + gamma I) W = H.T Y.
     Các lớp chưa có mẫu có cột target bằng 0 nếu C được chỉ định trước.
     """
+    # Giải W để khi học tât cả các batch -> So sánh
+    # H ma trận đặc trưng
+    # labels là nhãn toàn cục
+    # gamma*I thành phần điều tiết, ổn định ma trận -> tránh suy biến
+    # Ma trận tối ưu cuối cùng
     h, labels = _data(h, labels)
     gamma = _gamma(gamma)
     count = _classes(labels, n_classes)
@@ -71,12 +83,56 @@ def initialize(h, labels, gamma=1.0, n_classes=None):
     Trả (R,W), với R kích thước (d,d), W kích thước (d,C).
     Gamma chỉ được cộng tại khởi tạo, không cộng lại ở mỗi minibatch.
     """
+    # thiết lập ma trận nghịch đảo ban đầu
+    # đóng vai trò là nơi duy nhất tạo hệ só gamma vào hệ thống
     h, labels = _data(h, labels)
     gamma = _gamma(gamma)
     count = _classes(labels, n_classes)
     identity = np.eye(h.shape[1])
     r = np.linalg.solve(h.T @ h + gamma * identity, identity)
     w = r @ (h.T @ _targets(labels, count))
+    return r, w
+
+
+def initialize_batches(batches, n_features, n_classes, gamma=1.0, *, timings=None):
+    """Tích lũy base Gram/cross theo batch, trả R/W mà không giữ lịch sử H.
+
+    batches là iterator (H,y) chỉ đọc một lượt. Cholesky giải cùng objective
+    ridge với initialize; gamma được cộng đúng một lần. timings là dict nhận
+    giây tích lũy và giải hệ, nếu được cung cấp. Cần SciPy của requirements-cifar.
+    """
+    from scipy.linalg import cho_factor, cho_solve
+    import time
+    if isinstance(n_features, bool) or not isinstance(n_features, (int, np.integer)) or n_features < 1:
+        raise ValueError("n_features phải là số nguyên dương")
+    if isinstance(n_classes, bool) or not isinstance(n_classes, (int, np.integer)) or n_classes < 1:
+        raise ValueError("n_classes phải là số nguyên dương")
+    gamma = _gamma(gamma)
+    gram = np.zeros((n_features, n_features), dtype=np.float64, order="F")
+    cross = np.zeros((n_features, n_classes), dtype=np.float64, order="F")
+    samples = 0
+    start = time.perf_counter()
+    for h, labels in batches:
+        h, labels = _data(h, labels)
+        if h.shape[1] != n_features:
+            raise ValueError("Batch không khớp chiều feature")
+        _classes(labels, n_classes)
+        gram += h.T @ h
+        cross += h.T @ _targets(labels, n_classes)
+        samples += len(h)
+    if samples == 0:
+        raise ValueError("Base batches không được rỗng")
+    if not np.isfinite(gram).all() or not np.isfinite(cross).all():
+        raise FloatingPointError("Thống kê base không hữu hạn")
+    accumulated = time.perf_counter() - start
+    gram[np.diag_indices(n_features)] += gamma
+    start = time.perf_counter()
+    factor = cho_factor(gram, lower=True, overwrite_a=True, check_finite=False)
+    w = cho_solve(factor, cross, check_finite=False)
+    r = cho_solve(factor, np.eye(n_features, order="F"), overwrite_b=True, check_finite=False)
+    if timings is not None:
+        timings.update(base_accumulation_seconds=accumulated, base_solve_seconds=time.perf_counter()-start,
+                       base_samples=samples)
     return r, w
 
 
@@ -100,16 +156,18 @@ def incremental_update(r_old, w_old, h, labels, n_classes=None):
         raise ValueError("R/W cũ phải hữu hạn")
     count = _classes(labels, n_classes, minimum=w_old.shape[1])
 
-    # Giữ nguyên cột lớp cũ, chỉ đệm 0 cho lớp mới; không thêm cột theo số batch.
+    # Giữ nguyên cột lớp cũ, chỉ đệm 0 cho lớp mới; không thêm cột theo số batch( mở rộng W cho lớp mới)
     w_padded = np.zeros((d, count), dtype=np.float64)
     w_padded[:, :w_old.shape[1]] = w_old
     y_global = _targets(labels, count)
 
     # Woodbury: giải hệ ở không gian batch, không tạo nghịch đảo tường minh.
+    #Chỉ cần giải phương trình kích thước nxn, kích thước batch nhỏ hơn nhiều so với d.
     left = r_old @ h.T
     middle = np.eye(len(h)) + h @ left
     r_new = r_old - left @ np.linalg.solve(middle, h @ r_old)
 
     # Dạng residual của (9). Dùng R MỚI; lớp lặp tiếp tục dùng đúng cột đã có.
+    #cập nhật W mới
     w_new = w_padded + r_new @ h.T @ (y_global - h @ w_padded)
     return r_new, w_new

@@ -24,11 +24,12 @@ class NotebookDistributionTests(unittest.TestCase):
                          "Snapshot 02 chỉ có trong checkout repo, không nằm trong source bundle")
     def test_cannot_overwrite_published_notebook02(self):
         root = Path(__file__).resolve().parents[1]
-        old = root / "notebooks/02_cifar100_smoke.ipynb"
-        before = old.read_bytes()
-        with self.assertRaises(ValueError):
-            build(old)
-        self.assertEqual(old.read_bytes(), before)
+        for name in ("02_cifar100_smoke.ipynb", "03_cifar100_safe_attempts.ipynb"):
+            old = root / "notebooks" / name
+            before = old.read_bytes()
+            with self.assertRaises(ValueError):
+                build(old)
+            self.assertEqual(old.read_bytes(), before)
 
     def test_bundle_has_current_attempt_code_and_tests(self):
         root = Path(__file__).resolve().parents[1]
@@ -65,6 +66,9 @@ class NotebookDistributionTests(unittest.TestCase):
                           "attempt_id": "test", "output_dir": "test-artifacts",
                           "wandb_status": "not_logged", "wandb_run_url": None}
                 exec(compile(final_cell, "notebook-final-cell", "exec"), {"report": report})
+            report["config"].update(feature_expansion=False, expansion_dim=8000)
+            report["results"][-1]["weights_shape"] = [64, 100]
+            exec(compile(final_cell, "notebook-final-cell", "exec"), {"report": report})
 
 
 if __name__ == "__main__":

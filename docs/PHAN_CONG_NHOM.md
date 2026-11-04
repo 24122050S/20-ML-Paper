@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vĩ, Phát
 
-> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; việc tiếp theo là triển khai/kiểm resume, benchmark mode và profile trước training dài.
+> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; resume CPU/benchmark streaming/metric export và profile d8000 CPU đã có; việc tiếp theo là nghiệm thu CUDA và profile trên Kaggle theo [hướng dẫn04](RESUME_BENCHMARK_PROFILE.md). Chưa chạy benchmark160 epochs.
 
 Cập nhật **04/11/2026**, giờ Việt Nam, sau khi nhận JSON full5 và xác minh run W&B blhw74ff. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
@@ -27,7 +27,7 @@ Mỗi người đều có phần đọc, code/thực nghiệm, phân tích và v
 | Lượt CPU smoke 50+10 đã có JSON trong repo         | [JSON CPU](../reports/cifar100_smoke_results.json); source dirty và W&B tắt tại thời điểm chạy                                                                                                                                                                                               | Giữ provenance lịch sử; checkpoint/state vẫn local, bị Git bỏ qua                                                    |
 | Lượt Kaggle GPU 50+10 đã có tracking               | [Version 2 / 364942764](https://www.kaggle.com/code/hsangg206/notebook7e7946d4ee?scriptVersionId=364942764), [JSON](../reports/cifar100_kaggle_results.json), [W&amp;B o2r63pj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2), [manifest](../reports/CIFAR-KAGGLE-01-provenance.json) | Mốc 2 epochs/d=256: base 32,58%, 60 lớp 29,70%; giữ mốc lịch sử riêng với lượt 100 lớp                       |
 | Smoke CUDA đủ 100 lớp đã có tracking | [JSON](../reports/cifar100_kaggle_full5_results.json), [manifest](../reports/CIFAR-KAGGLE-02-provenance.json), [scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714), [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished | Đã đạt mốc kỹ thuật: W256×100, test 10.000, accuracy 22,05%; chốt protocol benchmark |
-| Suite đầy đủ đã kiểm tra 38 tests trên local    | `tests/`: analytic, reporting gồm UTF-8/LF, CIFAR, run attempts và notebook distribution                                                                                                                                                                                                       | Chạy unittest khi đổi code; 11 tests của VERIFY-02 và 20 tests của lượt CPU là số lịch sử                      |
+| Suite54 tests:53 đạt,1 skip CUDA trên CPU    | `tests/`: analytic, reporting gồm UTF-8/LF, CIFAR, run attempts và notebook distribution                                                                                                                                                                                                       | Chạy unittest khi đổi code; 11 tests của VERIFY-02 và 20 tests của lượt CPU là số lịch sử                      |
 | Đã có đặc tả và bản giải thích minibatch      | `docs/Dac_ta_ACIL.md`, `docs/THAY_DOI_VERIFY02.md`                                                                                                                                                                                                                                             | Sang tự giải thích, Vĩ/Phát kiểm chéo                                                                               |
 | Project W&B đã Public                                 | `hsangg-2006/acil-reproduction`, VERIFY-01 run `7aeaupq7`; VERIFY-02 run `wi4wau2d` Finished                                                                                                                                                                                                 | Phát kiểm ID/URL từng run; VERIFY-02 lấy URL tự động sau logging                                                    |
 | Đã có VERIFY-01 và VERIFY-02 chạy trên Kaggle CPU | Version 8/source 23af76f; Version 9/source 217684f, 11 tests đạt                                                                                                                                                                                                                                 | Giữ riêng hai lượt tổng hợp với CIFAR-KAGGLE-01                                                                     |
@@ -101,7 +101,7 @@ Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2
 - **Hạn checkpoint seed đầu:** 07/11; các seed tiếp theo theo ngân sách, mục tiêu 11/11.
 - **Làm:** sau khi V02 đạt, huấn luyện đủ cấu hình đã chốt, mục tiêu 160 epochs với mốc LR 80/120. Lưu run và checkpoint cuối; checkpoint tạm cho phiên dài cần hỗ trợ và kiểm tra resume đúng optimizer/scheduler/RNG.
 - **Bàn giao:** checkpoint cho từng seed, hash, history, run URL, config, thời gian. Chia checkpoint cho Sang/Phát bằng input/artifact có version.
-- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. `--reuse-checkpoint` hiện dùng lại base hoàn chỉnh; resume training bị ngắt còn cần triển khai và kiểm tra optimizer/scheduler/RNG.
+- **Đạt khi:** tải lại cho dự đoán tương thích; freeze đúng; checkpoint không bị dùng nhầm cho class order/normalization khác. `--reuse-checkpoint` dùng lại base hoàn chỉnh; `--resume-checkpoint` v2 tiếp tục BP tại biên epoch. CPU đã so optimizer/scheduler/RNG/history chính xác; nghiệm thu CUDA qua notebook04 còn phải chạy.
 
 ### V04 — Kết quả chính R1
 
@@ -136,7 +136,7 @@ Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2
 
 - **Hạn:** 05/11.
 - **Làm:** định nghĩa accuracy từng phase trên tất cả lớp đã thấy; A-bar có tính base; quy ước forgetting và dấu của phép trừ. Đối chiếu công thức paper với bảng/code trước khi gọi metric là F của paper.
-- **Bàn giao:** [metrics.md](metrics.md) đã chốt v1.0: A-bar có base, F-base/delta có quy ước dấu và ví dụ smoke thật. Script export và bảng benchmark theo metric này còn cần triển khai; báo deviation theo pp và tương đối khi áp dụng được.
+- **Bàn giao:** [metrics.md](metrics.md) đã chốt v1.0: A-bar có base, F-base/delta có quy ước dấu và ví dụ smoke thật. `src/metrics.py` đã xuất summary vào JSON/W&B; bảng benchmark vẫn cần run160 epochs thật. Báo deviation theo pp và tương đối khi áp dụng được.
 - **Đạt khi:** dùng một ví dụ số nhỏ để kiểm phép tính; tính lại được số từ run của Vĩ, không chép số bằng tay. Một seed không có độ lệch chuẩn giữa seeds.
 - **Kiểm tra:** Sang rà định nghĩa; Vĩ đối chiếu dữ liệu đầu ra.
 
@@ -224,10 +224,10 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 ## 10. Phiên làm việc kế tiếp
 
-**Sang đang làm một mình:** triển khai checkpoint resume BP tại biên epoch theo G2/G3 trong [protocol](protocol_chot.md); kiểm run2 epochs liên tục so với1+resume1. Giữ protocol v1.0 và các metric đã chốt.
+**Sang đang làm một mình:** import [notebook04](../notebooks/04_resume_benchmark_profile.ipynb), attach Output03 có checkpoint base2 epochs và chạy action mặc định `profile_analytic`. Xem [các cell/path cụ thể](RESUME_BENCHMARK_PROFILE.md). Giữ protocol/metrics v1.0.
 
-**Đầu ra của phiên:** checkpoint có optimizer/scheduler/RNG/DataLoader generator, test resume/reject checkpoint sai config và JSON kiểm tra ngắn có provenance. `docs/protocol_chot.md` và `docs/metrics.md` đã có; không mở160 epochs chỉ bằng sửa notebook03.
+**Đã có:** checkpoint v2/resume CPU, streaming tách oracle/no-FE, metric export, profile CPU d8000 và JSON có provenance. Suite54 tests có1 skip CUDA. **Đầu ra phiên Kaggle kế tiếp:** test CUDA đạt, JSON profile/time/RSS/GPU, W&B finished và version đã lưu; sau đó action `profile_base`5 epochs.
 
-**Sau đó:** tách benchmark analytic khỏi joint oracle, thêm no-FE/metric export và profile d8000 theo G4–G6. Chạy R1 seed42 trước, rồi43/44 khi các gate đạt; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
+**Sau đó:** khi G2/G3 CUDA và G6 Kaggle/quota đạt, chạy R1 seed42 trước, rồi43/44; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 
 **Quy ước hiện trạng:** README và bảng run phản ánh artifact thật trong repo. Source hoặc kết quả chỉ có tại workspace hỗ trợ được ghi rõ chưa công bố; run Kaggle cần xác nhận bằng version và output thực tế.

@@ -1,5 +1,7 @@
 # Sang tự chạy CIFAR-100: 50 base + 10 lớp mới
 
+Phần Kaggle03 dưới đây mô tả smoke đã có bằng chứng. **Source mới/resume/profile dùng [notebook04 và hướng dẫn riêng](RESUME_BENCHMARK_PROFILE.md)**; hai notebook02/03 giữ snapshot lịch sử.
+
 Bạn có thể thực hiện toàn bộ bước này một mình. Mục tiêu là nối pipeline ảnh với analytic head đã kiểm chứng, không chờ source của thành viên khác.
 
 ## Ba quy ước đã chốt
@@ -68,6 +70,6 @@ Hai epochs, expansion 256 và một phase giúp kiểm tra đường đi dữ li
 
 Mốc smoke đủ 5 phase (100 lớp) đã có [JSON](../reports/cifar100_kaggle_full5_results.json) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished, được đối chiếu ngày 04/11/2026. [Review](../reports/REVIEW_CIFAR_KAGGLE_FULL5_20261104.md) ghi cách kiểm và giới hạn metadata Kaggle. [Protocol](protocol_chot.md) và [metrics](metrics.md) đã chốt; tiếp theo cần đạt các gate resume, benchmark mode và profile d8000 trước run160 epochs. Run notebook 02 Version 2 vẫn là mốc lịch sử riêng.
 
-Khi source/config/test đổi, chạy `python -m src.notebook_bundle` để tạo lại notebook 03 trước khi upload. Generator chặn ghi đè notebook 02 để giữ source bundle của bằng chứng cũ.
+Khi source/config/test đổi, chạy `python -m src.notebook_bundle` để tạo lại **notebook04** trước khi upload. Generator chặn ghi đè02/03 để giữ source bundle của bằng chứng cũ. [Hướng dẫn resume/profile04](RESUME_BENCHMARK_PROFILE.md) dùng cho bước tiếp theo; các biến `REUSE_CHECKPOINT` phía trên mô tả notebook03 lịch sử, còn04 dùng `CHECKPOINT`/`RESUME_CHECKPOINT`.
 
 Nguồn kỹ thuật: [PyTorch reproducibility](https://docs.pytorch.org/docs/2.11/notes/randomness.html), [Module.eval và requires_grad](https://docs.pytorch.org/docs/2.11/generated/torch.nn.Module.html). Seed không bảo đảm bitwise giống nhau giữa mọi thiết bị/phiên bản.
