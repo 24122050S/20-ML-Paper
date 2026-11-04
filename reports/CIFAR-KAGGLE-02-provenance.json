@@ -1,0 +1,58 @@
+{
+  "experiment": "CIFAR-KAGGLE-02",
+  "result_experiment": "CIFAR-SMOKE-01",
+  "execution_started_at_utc": "2026-11-03T02:04:15.597507+00:00",
+  "reviewed_date_client": "2026-11-04",
+  "kaggle_version": null,
+  "kaggle_script_version_id": 365084714,
+  "kaggle_url": "https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714",
+  "kaggle_link_source": "Saved output/version link supplied by Sang together with the downloaded results.json",
+  "kaggle_ui_verified": false,
+  "kaggle_visibility_observed": null,
+  "kaggle_hardware_label": null,
+  "kaggle_runtime_display": null,
+  "kaggle_ui_verification_note": "Browser automation could not read the page. Displayed version number, hardware label, notebook duration and visibility were not independently observed.",
+  "source_bundle_sha256": "7830c6ba851cdf3e7370b22b0f8ce726f2d066cd22de6c42a260242da240ad00",
+  "source_bundle_carrier": "https://github.com/24122050S/20-ML-Paper/blob/9972be9db06b60ff1abbf0c7483325543cda8b1a/notebooks/03_cifar100_safe_attempts.ipynb",
+  "source_bundle_reference_file": "../notebooks/03_cifar100_safe_attempts.ipynb",
+  "source_bundle_reference_commit": "9972be9db06b60ff1abbf0c7483325543cda8b1a",
+  "source_git_commit": null,
+  "source_hashes_verified_against": "All 11 source/config hashes matched raw files in the embedded ZIP at the immutable reference commit; input/effective config hashes also matched",
+  "result_file": "cifar100_kaggle_full5_results.json",
+  "result_sha256": "a03d686c1e184b96d267af2b6ec4af9df08d806a8c9ce74d6e3fbaaafea9b5f3",
+  "result_serialization": {
+    "encoding": "utf-8",
+    "newline": "LF"
+  },
+  "attempt_id": "20261103T020415597382Z-6c34dd841810",
+  "artifacts_output_dir": "/kaggle/working/cifar100_smoke/attempts/20261103T020415597382Z-6c34dd841810",
+  "base_checkpoint_sha256": "a5bc46f46a89d5eea99e5b782925ea4ab31e809e00cf6b41442b039f5c30a0d2",
+  "wandb_run_id": "blhw74ff",
+  "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff",
+  "wandb_state_observed": "finished",
+  "wandb_verification": {
+    "method": "Unauthenticated read-only public W&B GraphQL API",
+    "checked_date_client": "2026-11-04",
+    "state": "finished",
+    "config_matches_json": true,
+    "source_hashes_match_json": true,
+    "summary_matches_final_phase": true,
+    "summary": {
+      "verification_passed": true,
+      "phase": 5,
+      "n_classes": 100,
+      "accuracy_pct": 22.05,
+      "prediction_disagreements": 0
+    }
+  },
+  "verification_passed": true,
+  "phase_class_counts": [
+    50,
+    60,
+    70,
+    80,
+    90,
+    100
+  ],
+  "note": "Fresh 2-epoch CUDA training, expansion256, seed42, all 5 incremental phases. Supplied JSON preserved byte-for-byte. The reference commit carries matching source; the run executed an extracted bundle and did not report a Git checkout. This is a full-protocol smoke run, not a paper benchmark."
+}

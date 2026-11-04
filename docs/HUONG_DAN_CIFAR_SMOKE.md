@@ -14,7 +14,7 @@ Chi tiết và ví dụ nhãn: [đặc tả, mục 9](Dac_ta_ACIL.md#9-hợp-đ�
 
 1. Import [notebook 03 có trạng thái từng lượt](../notebooks/03_cifar100_safe_attempts.ipynb), bật Internet, chọn GPU nếu có. Notebook 02 giữ snapshot của run Version 2 đã công bố.
 2. Source được đóng gói trong notebook, không phụ thuộc file nằm riêng ở workspace cũ hoặc một commit chưa được push.
-3. Cell code đầu có `LOG_WANDB`, `RUN_INCREMENTAL_PHASES`, `REUSE_CHECKPOINT`. Giữ 2 epochs, expansion256 và `RUN_INCREMENTAL_PHASES=1` cho 50+10; đặt 5 khi kiểm đủ 100 lớp. Save & Run All.
+3. Cell code đầu có `LOG_WANDB`, `RUN_INCREMENTAL_PHASES`, `REUSE_CHECKPOINT`. Giữ 2 epochs, expansion 256 và `RUN_INCREMENTAL_PHASES=1` cho 50+10; đặt 5 khi kiểm đủ 100 lớp. Save & Run All.
 4. Kiểm tra `CIFAR-SMOKE-01 COMPLETE`; tải thư mục `cifar100_smoke` ở Output.
 5. Nếu cần W&B, enable secret `WANDB_API_KEY` và đặt `LOG_WANDB=True`. JSON chỉ ghi `logged` sau khi run context kết thúc; URL lấy từ SDK.
 
@@ -66,7 +66,7 @@ Ctrl+C được ghi failed. Nếu kernel/process bị tắt cứng, Python khôn
 
 Hai epochs, expansion 256 và một phase giúp kiểm tra đường đi dữ liệu, gradient, save/load, freeze và cập nhật theo batch với tài nguyên nhỏ. Đây là lựa chọn kiểm tra pipeline; chưa kết luận tái lập accuracy của paper. Dùng backbone và dữ liệu thật vẫn không biến một smoke test thành benchmark.
 
-Sau khi lượt 50+10 đạt, dùng notebook 03 để kiểm tra đủ 5 phase (100 lớp) trên Kaggle, rồi chốt training dài/expansion và ablation theo paper. Run notebook 02 Version 2 vẫn là mốc lịch sử hợp lệ.
+Mốc smoke đủ 5 phase (100 lớp) đã có [JSON](../reports/cifar100_kaggle_full5_results.json) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished, được đối chiếu ngày 04/11/2026. [Review](../reports/REVIEW_CIFAR_KAGGLE_FULL5_20261104.md) ghi cách kiểm và giới hạn metadata Kaggle. Bước tiếp theo là chốt protocol/metric, cấu hình training/expansion và ablation benchmark. Run notebook 02 Version 2 vẫn là mốc lịch sử riêng.
 
 Khi source/config/test đổi, chạy `python -m src.notebook_bundle` để tạo lại notebook 03 trước khi upload. Generator chặn ghi đè notebook 02 để giữ source bundle của bằng chứng cũ.
 
