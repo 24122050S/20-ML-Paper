@@ -32,7 +32,7 @@ Kaggle đồng bộ notebook có output thành commit `eddd50d`; đây là commi
 
 ## Giới hạn còn lại
 
-Feature map/gamma phải cố định; module hiện chỉ dùng float64 và gamma>0. Test nhiều cấu hình nhỏ không thay chứng minh tổng quát. Accuracy tổng hợp không so với benchmark ảnh. Dataset/CNN đã có smoke CIFAR 50+10 với tracking; benchmark đầy đủ và ablation gamma=0 vẫn cần phát triển tiếp.
+Feature map/gamma phải cố định; module hiện chỉ dùng float64 và gamma>0. Test nhiều cấu hình nhỏ không thay chứng minh tổng quát. Accuracy tổng hợp không so với benchmark ảnh. Dataset/CNN đã có smoke CIFAR đủ 100 lớp với tracking (CIFAR-KAGGLE-02); benchmark đầy đủ và ablation gamma=0 vẫn cần phát triển tiếp.
 
 ## Thu gọn thư mục sau kiểm chứng
 
