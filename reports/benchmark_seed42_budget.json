@@ -15,6 +15,6 @@
   "remaining_quota_note": "User report, not live account reading; prior short runs consume some quota.",
   "gpu_resume_verified": true,
   "numerical_bp5_verified": true,
-  "tracking_status": "offline_pending_sync",
+  "tracking_status": "synced",
   "long_benchmark_started": false
 }

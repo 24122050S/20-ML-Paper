@@ -455,9 +455,18 @@
   "quota_note": "Sang reported26 GPU hours beforeBP5; compare measured runtime with quota and the session window before160 epochs.",
   "next_step": "Send this JSON and saved Kaggle version; assistant checks quota/budget and prepares benchmark seed42.",
   "tracking": {
-    "status": "offline_pending_sync",
+    "status": "synced",
     "offline_run_id": "pv82dy1f",
     "offline_directory": "/kaggle/working/wandb/wandb/offline-run-20261104_173641-pv82dy1f",
-    "reason": "Kaggle API run cannot read frontend W&B secret binding; no online login attempted in this version."
-  }
+    "reason": "Kaggle API run cannot read frontend W&B secret binding; no online login attempted in this version.",
+    "wandb_run_id": "pv82dy1f",
+    "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f",
+    "synced_at_utc": "2026-11-05T05:04:36.532574+00:00",
+    "raw_capture_tracking_status": "offline_pending_sync",
+    "sync_method": "wandb sync of exact downloaded GPU offline payload"
+  },
+  "wandb_status": "logged",
+  "wandb_run_id": "pv82dy1f",
+  "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f",
+  "postprocessing_note": "Tracking metadata added only after W&B sync finished. Numerical base_profile and original capture metadata preserved in archive."
 }
