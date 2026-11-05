@@ -5,12 +5,17 @@
   "attempt_id": "20261104T173456176348Z-f3b67e52a9c7",
   "artifacts": {
     "profile_base_kaggle_ready.json": {
-      "sha256": "42fb476e2f4a14decbe67b7e7a0f3d65999900af08c31a8e7194f6eb869f9729",
-      "raw_numeric_and_capture_metadata_preserved": true
+      "sha256": "7d91abd108867329bf3f864a483f658d3c2b3a114af0b420a6fa625fdf4dab4d",
+      "numeric_values_preserved": true,
+      "postprocessing": "actual sync metadata only, after completion"
     },
     "benchmark_seed42_budget.json": {
-      "sha256": "e2b63e8ca1ba5ee4c8a4c4174ad42667114b3b3499dc1ae0755f8a578d606675",
+      "sha256": "c4aa80a3d1c3f1ed51983fe33a11764e32866495709a3234fdc9c4d0cb063ff2",
       "scope": "planning estimate only"
+    },
+    "archive/BP5-KAGGLE-01-original-ready.json": {
+      "sha256": "42fb476e2f4a14decbe67b7e7a0f3d65999900af08c31a8e7194f6eb869f9729",
+      "scope": "unmodified original GPU readiness JSON"
     }
   },
   "kaggle": {
@@ -19,7 +24,7 @@
     "url": "https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365703432",
     "status": "complete",
     "verification_method": "authenticated API status, version-pinned output download/content hashes with isolated CLI2.2.5",
-    "execution_note": "CLI2.1 submitted version2 with online tracking; it failed before training due missing secret binding. Version3 disabled online login and saved W&B offline data."
+    "execution_note": "CLI2.1 submitted version2 with online tracking; it failed before training on HTTP400 reading WANDB_API_KEY from Kaggle Secrets. Version3 disabled online login and saved W&B offline data; that exact offline run was later synced and verified."
   },
   "source": {
     "bundle_sha256": "5851fa25143689342edabe9ab112635395ed2eae4f19fe95c446eaf96b6ca19c",
@@ -57,11 +62,18 @@
     ]
   },
   "tracking_sync": {
-    "status": "offline_pending_sync",
+    "status": "synced",
     "offline_run_id": "pv82dy1f",
     "offline_payload_sha256": "cf4fc710f4032650454a2b12aaded0de44cde63f0573d5e871a0fa55c106084b",
-    "wandb_run_url": null,
-    "note": "Raw GPU JSON was captured offline. A later sync, if performed, is recorded here after completion; do not claim logged before actual sync."
+    "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f",
+    "note": "GPU run was offline. Sync completed before writing logged metadata; original GPU JSON archived unchanged.",
+    "wandb_run_id": "pv82dy1f",
+    "synced_at_utc": "2026-11-05T05:04:36.532574+00:00",
+    "verified_state": "finished",
+    "config_and_source_hashes_match": true,
+    "numeric_summary_matches": true,
+    "public_api_verified": true,
+    "public_config_source_summary_match": true
   },
   "budget": {
     "estimated_minutes": 58.86620590097842,
@@ -73,7 +85,7 @@
   },
   "next_notebook": {
     "path": "notebooks/06_benchmark_seed42_ready.ipynb",
-    "sha256": "9bcaeae5f95d5977314376425a58ab3332b515628237b681e16caa9b133cab22",
+    "sha256": "fe2a88b139e0e01d10731531013f0b2ce34a7dfe826ee419cb4c278aa64e05c4",
     "purpose": "R1 seed42/160 epochs/d8000/K5, prepared only",
     "bootstrap_cpu": {
       "tests_run": 54,

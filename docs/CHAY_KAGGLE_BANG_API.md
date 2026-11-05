@@ -7,7 +7,7 @@ Ngày05/11/2026, công cụ điều khiển tab không đọc/click được Kag
 | Version của kernel04 | Công việc | Bằng chứng |
 |---|---|---|
 |1 /365647614 |Profile analytic d8000 |[Output](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365647614), W&B gey0yop4 finished |
-|2 |BP5 bị chặn ở quyền secret, chưa train |Output failed, không dùng làm số liệu đạt |
+|2 |BP5 lỗi khi đọc secret W&B (HTTP400), chưa train |Output failed, không dùng làm số liệu đạt |
 |3 /365703432 |BP5 hoàn tất, CUDA resume passed |[Output](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365703432), [manifest](../reports/BP5-KAGGLE-01-provenance.json) |
 
 Slug04 được giữ để lưu lịch sử version. Source Version3 là variant API của notebook05, không phải chạy lại analytic Version1. Source đã lưu tại `notebooks/archive/05_profile_base_api_v3.ipynb`.
@@ -17,6 +17,8 @@ Slug04 được giữ để lưu lịch sử version. Source Version3 là varian
 Lượt API gặp HTTP400 khi đọc `WANDB_API_KEY` từ Kaggle Secrets. Không đưa key vào notebook. Version3 ghi log offline cùng số liệu GPU; tải đúng file `.wandb` của run `pv82dy1f` về máy rồi dùng `wandb sync` vào project nhóm sau khi đăng nhập W&B tại máy.
 
 File đăng nhập Kaggle và W&B nằm ngoài repository. Không truyền key trong tham số lệnh hoặc commit credential. Sync chỉ chọn run của attempt này, không sync hàng loạt dữ liệu khác. Sau sync, kiểm API: finished, config/source hashes và summary đúng rồi mới cập nhật metadata logged. Manifest ghi nguyên SHA của payload offline; JSON trước sync được giữ khi tạo bản tổng hợp sau sync.
+
+**Cập nhật05/11/2026:** đã sync đúng payload của BP5 vào [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f). API công khai xác nhận Finished, config/source hashes/accuracy/time/memory/CUDA proof khớp. [Manifest](../reports/BP5-KAGGLE-01-provenance.json) ghi checksum và thời điểm sync. [JSON gốc trước sync](../reports/archive/BP5-KAGGLE-01-original-ready.json) giữ nguyên; [bản tổng hợp](../reports/profile_base_kaggle_ready.json) chỉ thêm tracking metadata đã xác minh. Không chạy lại BP5.
 
 ## Các lỗi CLI đã xử lý
 

@@ -2,7 +2,7 @@
 
 Cập nhật 04/11/2026. Dùng cùng [protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md). Notebook mới là **`notebooks/04_resume_benchmark_profile.ipynb`**; notebook02/03 giữ nguyên source của các bằng chứng cũ.
 
-**Cập nhật05/11:** analytic Kaggle, BP5 và CUDA resume đã đạt; [JSON BP5](../reports/profile_base_kaggle_ready.json), [review/budget](../reports/REVIEW_BP5_KAGGLE_20261105.md). Không cần chạy05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã chuẩn bị160/d8000/K5/seed42, chưa khởi chạy; xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md). Các bước04 bên dưới giữ để tái lập analytic.
+**Cập nhật05/11:** analytic Kaggle, BP5 và CUDA resume đã đạt; [JSON BP5](../reports/profile_base_kaggle_ready.json), [review/budget](../reports/REVIEW_BP5_KAGGLE_20261105.md). Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã sync, Finished và khớp API công khai. Không cần chạy05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã chuẩn bị160/d8000/K5/seed42, chưa khởi chạy; xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md). Các bước04 bên dưới giữ để tái lập analytic.
 
 ## 1. Đã thay đổi gì, vì sao
 

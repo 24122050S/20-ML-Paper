@@ -226,7 +226,7 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 **Sang đang làm một mình:** trợ lý đã chạy BP5/CUDA qua API, không cần làm05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình160/d8000/seed42. Xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md), giữ protocol/metrics v1.0.
 
-**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget~59 phút, cửa sổ2 giờ, quota26h từ Sang. **Tiếp theo:** tracking BP5 và run R1 seed42; chưa khởi chạy160 epochs.
+**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget~59 phút, cửa sổ2 giờ, quota26h từ Sang. Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã Finished và được API công khai đối chiếu. **Tiếp theo:** run R1 seed42; chưa khởi chạy160 epochs.
 
 **Sau đó:** khi G2/G3 CUDA và G6 Kaggle/quota đạt, chạy R1 seed42 trước, rồi43/44; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 

@@ -30,9 +30,11 @@ CUDA resume test dùng TinyCNN có BatchNorm/Dropout và dataset tiêu thụ RNG
 
 ## Tracking và lần lỗi trước
 
-Version2 dừng ở tracking_setup vì lượt gửi API không được cấp secret W&B, trước khi train. Version3 train mới5 epochs, tắt online login và tạo offline run `pv82dy1f`. Numeric JSON gốc ghi not_logged/offline_pending_sync, không ghi logged trước khi đồng bộ.
+Version2 dừng ở tracking_setup do HTTP400 khi đọc WANDB_API_KEY từ Kaggle Secrets, trước khi train; chưa xác nhận nguyên nhân sâu hơn của phản hồi này. Version3 train mới5 epochs, tắt online login và tạo offline run `pv82dy1f`. Numeric JSON gốc ghi not_logged/offline_pending_sync, không ghi logged trước khi đồng bộ.
 
-Trạng thái sync hiện hành nằm trong `tracking_sync` của [manifest](BP5-KAGGLE-01-provenance.json). Chỉ sau khi SDK sync hoàn tất và API xác nhận finished/config/source/numeric khớp mới xuất logged metadata. Nếu đã sync, bản gốc trước sync được lưu riêng ở reports/archive; số liệu không thay đổi. Không lấy W&B run của analytic Version1 gán cho BP5.
+Đã đồng bộ đúng payload `.wandb` có SHA-256 `cf4fc710f4032650454a2b12aaded0de44cde63f0573d5e871a0fa55c106084b` vào [W&B pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) ngày05/11/2026. SDK và API công khai không đăng nhập đều xác nhận Finished; config, 16 source hashes, BP5 seconds, accuracy, peak memory và CUDA proof khớp. Không chạy lại BP5.
+
+[Manifest](BP5-KAGGLE-01-provenance.json) ghi thời điểm sync và checksum mới. [JSON gốc trước sync](archive/BP5-KAGGLE-01-original-ready.json) giữ nguyên byte đã công bố và trạng thái tại lúc Kaggle ghi (`not_logged/offline_pending_sync`). [JSON tổng hợp sau sync](profile_base_kaggle_ready.json) bổ sung top-level `wandb_status=logged`, ID/URL thực và `tracking.status=synced`; phần `base_profile` bên trong vẫn là bằng chứng gốc. Notebook06 được tạo lại chỉ để cập nhật trạng thái tracking BP5 trong planning budget nhúng; source bundle/config benchmark không đổi. Không lấy W&B run analytic Version1 gán cho BP5.
 
 ## Dự trù160 epochs, d8000, K5, seed42
 

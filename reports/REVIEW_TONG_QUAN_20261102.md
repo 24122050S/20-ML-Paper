@@ -70,7 +70,7 @@ Kaggle được ghi nhận Private trong lần đối chiếu version; repo/W&B 
 
 | Phần thiếu | Hiện trạng | Tiêu chí hoàn thành |
 |---|---|---|
-| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2/R3, base160/d8000/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming/CUDA/BP5 đã đạt; budget2 giờ đã lập; tracking BP5 xem manifest |
+| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2/R3, base160/d8000/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming/CUDA/BP5 đã đạt; budget2 giờ đã lập; tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) Finished, đã đối chiếu API công khai |
 | Kết quả chính R1 | Chưa có benchmark hoàn chỉnh | Training đủ cấu hình đã chốt; chuỗi incremental hoàn chỉnh; bảng/đường cong so với paper và sai lệch |
 | Mốc smoke 100 lớp | Đã có JSON/manifest; W&B blhw74ff finished và config/source/summary khớp | Giữ Output checkpoint/state; quyền xem và số version hiển thị Kaggle còn cần kiểm trước nộp. [Manifest](CIFAR-KAGGLE-02-provenance.json) phân biệt phần đã kiểm và phần user cung cấp |
 | Ablation R2 | Chưa có bộ kết quả | Thí nghiệm thành phần đã chọn, đối chứng cùng checkpoint/protocol và run links |
@@ -118,7 +118,7 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 
 [Đề chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reproduction) chấp nhận cả máy cá nhân và hosted notebook. Kaggle/GPU là lựa chọn tài nguyên của kế hoạch. Mỗi lượt local/Kaggle được ghi đúng môi trường, source và trạng thái tracking của chính nó.
 
-[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **tracking BP5 và R1 seed42/160 epochs bằng notebook06**; [review mới](REVIEW_RESUME_PROFILE_20261104.md) ghi proof CPU và giới hạn. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
+[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) đã chốt. Việc ưu tiên tiếp theo là **R1 seed42/160 epochs bằng notebook06**; tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã hoàn tất; [review mới](REVIEW_RESUME_PROFILE_20261104.md) ghi proof CPU và giới hạn. Mốc smoke100 đã có JSON/W&B; R1/R2/R3 cần chạy thật theo thiết kế đã chốt.
 
 ## 7. Cách dùng tài liệu để đỡ rối
 
