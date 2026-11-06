@@ -1,10 +1,10 @@
 # Review tổng quan tiến độ ACIL — 02/11/2026
 
-> Lập ngày 02/11, cập nhật **04/11/2026** sau khi nhận JSON full5. Mốc smoke 100 lớp đã có [JSON](cifar100_kaggle_full5_results.json), [link Kaggle scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) được API công khai xác nhận finished. Source/config khớp bundle 03; giới hạn xác minh giao diện Kaggle được ghi trong [manifest](CIFAR-KAGGLE-02-provenance.json). Benchmark đầy đủ và deck/poster còn phải hoàn thành.
+> Lập ngày02/11; cập nhật trạng thái mới nhất **07/11/2026**: R1 đủ3 seeds, R2 đủ4 hàng/3 seeds (9 analytic runs mới +3 baseline R1), tracking công khai đã kiểm. [Báo cáo R1](R1_CIFAR100_K5_3SEEDS_20261106.md) · [Báo cáo R2](R2_CIFAR100_K5_20261107.md). Còn R3 và sản phẩm PPTX/poster. Chi tiết smoke/ngày cũ bên dưới giữ vai trò lịch sử; không dùng chúng làm trạng thái benchmark hiện tại.
 
 ## Kết luận về vị trí hiện tại
 
-Đã hoàn thành một implementation analytic được kiểm chứng và một pipeline ảnh chạy thử đầu-cuối. Chưa hoàn thành bộ thí nghiệm tái lập theo phạm vi nộp, slide deck giữa kỳ hoặc poster cuối kỳ.
+Đã có implementation analytic được kiểm chứng, benchmark R1 đủ 3 seeds và ablation R2 đủ 4 hàng/3 seeds. Còn phân tích bổ sung R3 để hoàn tất bộ thí nghiệm trong core scope, cùng slide deck giữa kỳ và poster cuối kỳ.
 
 Sang hiện tự thực hiện công việc; không cần chờ bàn giao từ Vĩ/Phát. Đã xác nhận với Sang rằng bài ACIL được giảng viên duyệt. Các phân công ba người trước đây là kế hoạch lịch sử, không phải danh sách việc đã hoàn tất.
 
@@ -73,12 +73,12 @@ Kaggle được ghi nhận Private trong lần đối chiếu version; repo/W&B 
 | Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2/R3, base160/d8000/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming/CUDA/BP5 đã đạt; budget2 giờ đã lập; tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) Finished, đã đối chiếu API công khai |
 | Kết quả chính R1 | Hoàn tất42/43/44, n=3 | Ā65,1196 ± 0,6104%, final56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (sample SD, ddof=1); [báo cáo](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json), cả3 public W&B Finished |
 | Mốc smoke 100 lớp | Đã có JSON/manifest; W&B blhw74ff finished và config/source/summary khớp | Giữ Output checkpoint/state; quyền xem và số version hiển thị Kaggle còn cần kiểm trước nộp. [Manifest](CIFAR-KAGGLE-02-provenance.json) phân biệt phần đã kiểm và phần user cung cấp |
-| Ablation R2 | Chưa có bộ kết quả | Thí nghiệm thành phần đã chọn, đối chứng cùng checkpoint/protocol và run links |
-| Phân tích bổ sung R3 | Có ý tưởng batch size | Có driver sweep, đo kết quả/sai số/thời gian và diễn giải từ run thật |
+| Ablation R2 | Hoàn tất4 hàng/3 seeds | [Báo cáo/hình](R2_CIFAR100_K5_20261107.md), [summary](r2_cifar100_k5_summary.json), [manifest](R2-C100-K5-provenance.json);9 run mới và3 baseline R1, không train thêm backbone; phạm vi4/5 Table2, gamma0 ngoài scope |
+| Phân tích bổ sung R3 | Chưa có bộ kết quả | Cần driver batch32/128/512, d1024, oracle riêng và3 lượt đo mỗi batch theo protocol; báo sai số/thời gian/bộ nhớ từ run thật |
 | Đối chiếu code tác giả | Chưa có bằng chứng chạy | Môi trường riêng, commit/config pin, so output và định vị khác biệt; không chép core implementation |
-| Metrics tổng hợp | Đã chốt [metrics v1.0](../docs/metrics.md), ví dụ smoke đã tính lại | A-bar có base; F-base/delta có dấu rõ; script export đã có, bảng benchmark chờ run thật |
-| Seeds benchmark | Ảnh thật mới một seed | Chọn số seed theo scope/tài nguyên; chỉ báo mean/std khi có đủ runs. Ba seed trong unit test không phải ba benchmark CIFAR |
-| Công bố kết quả tiếp theo | R1 đủ3 seeds | [Manifest tổng hợp](R1-C100-K5-3SEEDS-provenance.json) nối3 manifest/version/source/checkpoint/W&B; tiếp theo R2/R3 |
+| Metrics tổng hợp | Đã chốt [metrics v1.0](../docs/metrics.md), ví dụ smoke đã tính lại | A-bar có base; F-base/delta có dấu rõ; script export và summary R1/R2 đã có; mean/SD được tính lại từ JSON thật |
+| Seeds benchmark | R1 và R2 đủ seeds42/43/44 | R1 train base mới từng seed; R2 dùng checkpoint cùng seed. Mean ± sample SD với n=3, ddof=1; không lấy phase hoặc unit test làm seed benchmark |
+| Công bố kết quả tiếp theo | R1 đủ3 seeds | [Manifest tổng hợp](R1-C100-K5-3SEEDS-provenance.json) nối3 manifest/version/source/checkpoint/W&B; R2 đã đủ; tiếp theo R3 |
 
 Một checkpoint 2 epochs không phải checkpoint benchmark hoàn chỉnh. Chạy thêm đủ phase với chính checkpoint đó trước hết vẫn là kiểm tra pipeline đầy đủ.
 
@@ -110,15 +110,14 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 
 ## 6. Thứ tự làm cho một người
 
-1. **CUDA/BP5 đã đạt:** Version3 API có executed proof53 tests passed/1 skip, checkpoint5 epochs đã tải/kiểm. [Review mới](REVIEW_BP5_KAGGLE_20261105.md) ghi chi tiết và tracking. Không bắt đầu160 epochs bằng một thay đổi config đơn lẻ.
-2. **Profile Kaggle đã đủ số đo:** analytic d8000 đạt gey0yop4/T4; BP5 đạt76,11s và RAM/GPU đã ghi. [Budget](benchmark_seed42_budget.json) dự trù~59 phút, chuẩn bị2 giờ; [notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) hiện đã chạy xong seed42:53,78 phút numeric; [báo cáo nghiệm thu06/11](R1_SEED42_KAGGLE_20261106.md). Giữ artifact của run W&B blhw74ff để truy nguyên mốc smoke.
-3. **Thiết kế run và lưu bằng chứng:** tách config từng thí nghiệm, dùng source/checkpoint đúng phiên bản, lưu JSON và URL thật. Bộ ghi report đã chuẩn UTF-8/LF; tính checksum theo bytes được công bố.
-4. **Hoàn thành core reproduction:** kết quả chính, ablation đã chọn và một phân tích bổ sung; đối chiếu paper/code tác giả, giải thích sai lệch. Viết nội dung deck song song khi scope và kết quả đã rõ.
-5. **Hoàn thiện deck trước hạn; sau đó tập trung poster:** phát triển P1/P2 thành giả thuyết, lý thuyết, đối chứng và phép đo; chỉ đưa kết luận được bằng chứng ủng hộ.
+1. **R3:** dùng checkpoint160 seed42, d1024/gamma0.1 và batch32/128/512. Giữ thứ tự ảnh/FE/dtype; chạy joint oracle ngoài vùng đo, mỗi batch đo3 lần. Chỉ gọi hoàn tất khi có JSON, sai số nghiệm/dự đoán, thời gian/bộ nhớ và diễn giải từ lượt thật.
+2. **Ghép R1/R2 vào deck ngay:** dùng [bảng R1](R1_CIFAR100_K5_3SEEDS_20261106.md) và [bảng R2](R2_CIFAR100_K5_20261107.md), hình tự làm, nguồn paper và run links. Ghi rõ R2 là4/5 Table2, không có gamma0.
+3. **Hoàn thiện đọc hiểu và phân tích sai lệch:** nối công thức với code, điều kiện tương đương joint và các khác biệt protocol; tách giả thuyết giải thích khỏi nguyên nhân đã kiểm riêng.
+4. **Nghiệm thu PPTX, rồi poster:** kiểm nội dung/notes/nguồn/định dạng theo yêu cầu môn và hạn chính thức. Các gate CUDA/BP5/profile và R1/R2 đã đạt có manifest lịch sử, không cần lặp lại để lấy bằng chứng.
 
 [Đề chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reproduction) chấp nhận cả máy cá nhân và hosted notebook. Kaggle/GPU là lựa chọn tài nguyên của kế hoạch. Mỗi lượt local/Kaggle được ghi đúng môi trường, source và trạng thái tracking của chính nó.
 
-[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) giữ v1.0. R1 đã đủ42/43/44 với mean±sample_SD(ddof=1), [báo cáo tổng hợp](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json). Việc ưu tiên tiếp theo là **R2 và R3**, reuse đúng checkpoint160 cùng seed; còn deck/poster và phân tích theo yêu cầu môn. Các báo cáo nghiệm thu từng seed giữ vai trò snapshot lịch sử, không thay bằng số tổng hợp.
+[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) giữ v1.0. R1 đã đủ42/43/44 với mean±sample_SD(ddof=1), [báo cáo tổng hợp](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json). R2 đã hoàn tất theo bảng trên. Việc ưu tiên tiếp theo là **R3**, checkpoint160 seed42/d1024, batch32/128/512; còn deck/poster và phân tích theo yêu cầu môn. Các báo cáo nghiệm thu từng seed giữ vai trò snapshot lịch sử, không thay bằng số tổng hợp.
 
 ## 7. Cách dùng tài liệu để đỡ rối
 

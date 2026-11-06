@@ -31,3 +31,13 @@ File đăng nhập Kaggle và W&B nằm ngoài repository. Không truyền key t
 [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình R1 seed42,160 epochs/d8000/K5, yêu cầu CUDA test đạt và dùng checkpoint v2 đúng target/runtime. `CHECKPOINT=None`, `RESUME_CHECKPOINT=None` cho base mới; checkpoint5 epochs bị từ chối cho target160.
 
 R1 hiện đã hoàn tất3 kernels06/07/08, tương ứng42/43/44, mỗi lượt timeout7200s,160 epochs/d8000/K5 và fresh base. [Báo cáo tổng hợp](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json) ghi Ā65,1196 ± 0,6104%, final56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (n=3, ddof=1), với version/source/checkpoint/W&B riêng trong [manifest tổng hợp](../reports/R1-C100-K5-3SEEDS-provenance.json). Seed43/44 chạy song song; cả3 payload đã sync và được kiểm API công khai. Giữ Output/checkpoint cho R2/R3; R/W incremental chưa có resume giữa phase. Không cần chạy lại các seeds R1 đã nghiệm thu.
+
+## R2 đã hoàn tất — 07/11/2026
+
+Notebook09/10/11 tương ứng seeds42/43/44, mỗi notebook có3 case analytic: no-FE/gamma0.1, FE8000/gamma0.01 và0.001. Baseline FE8000/gamma0.1 lấy từ R1 cùng seed. [Báo cáo](../reports/R2_CIFAR100_K5_20261107.md) và [manifest tổng hợp](../reports/R2-C100-K5-provenance.json) nối source commit, version Kaggle, checkpoint hash và9 actual W&B run IDs. Cả9 run đã sync và Finished/công khai; không train thêm backbone.
+
+Input pin R1 version1 của đúng seed. `CHECKPOINT=None` ở R2 nghĩa là tìm checkpoint đã pin theo SHA trong Input; không có sẽ fail, không train mới. Hai gamma mới phải giữ FE hash giống R1. Mỗi case có attempt riêng và6 mốc đánh giá; suite complete chỉ khi đủ3 case.
+
+Kaggle thực tế từ chối seed44 ban đầu do tài khoản đạt2 batch GPU sessions; đây là yêu cầu chưa được tạo (kernel_id/version đều0), không phải một run số liệu thất bại. Sau khi42/43 hoàn tất mới gửi44. Dùng CLI chính thức2.2.5 hỗ trợ version-pinned pull/output; không lấy latest để gắn vào version cũ. Signed output URLs và credential không lưu trong repo.
+
+Numeric JSON giữ nguyên bytes lúc capture offline. Đồng bộ đúng3 payload của từng seed, kiểm config/source/metrics/6 history rows và API công khai không Authorization/Cookie; ready/manifest chỉ ghi synced sau khi kiểm xong. Ma trận R/W/FE mới được load và kiểm trên Kaggle CPU, giữ tại Output đúng version; local tải JSON/proof/log, không tải NPZ lớn. Không cần chạy lại R2. Bước tiếp theo là R3 theo protocol.

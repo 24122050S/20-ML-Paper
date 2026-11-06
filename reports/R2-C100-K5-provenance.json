@@ -1,0 +1,208 @@
+{
+  "id": "R2-C100-K5",
+  "published_date": "2026-11-07",
+  "status": "complete",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "n_new_cases": 9,
+  "n_reused_r1_baselines": 3,
+  "n_rows": 4,
+  "ddof": 1,
+  "scope": "4/5 Table2 rows from fixed protocol; gamma0 excluded, no additional backbone training",
+  "artifacts": {
+    "r2_cifar100_k5_summary.json": {
+      "sha256": "af82cacab527b53bc0abb08d63d73cd2f51f66fd14d28d5e5f2c5d3b01b52fdc"
+    },
+    "R2_CIFAR100_K5_20261107.md": {
+      "sha256": "b2a44220807fe69e3ac12a89ff96d93b9b67b56f7dd3c8f4236fc592fb14dd33"
+    },
+    "figures/r2_cifar100_k5_ablation.png": {
+      "sha256": "ac1ccea2313716955feeac125285872dfb4d1e18fe815aa4a692d0e399ea92b4"
+    }
+  },
+  "inputs": [
+    {
+      "seed": 42,
+      "manifest": "R2-SEED42-KAGGLE-01-provenance.json",
+      "sha256": "d722d3cc05b3930949e8276e0d401a5eb9953b60d08633184ba1c27db2a5868a",
+      "raw_suite_sha256": "c0ce51893da2084a1e2ca67c056dc1a069f853f1b9a1b47e3931647e1e3e072f",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/09-r2-ablation-seed42/output?scriptVersionId=366341660",
+      "r1_manifest": "R1-SEED42-KAGGLE-01-provenance.json",
+      "r1_manifest_sha256": "c3ef25c09a5315b82ad3cb1820a176dd447e756e1558ee76d7260a01ce146bb5"
+    },
+    {
+      "seed": 43,
+      "manifest": "R2-SEED43-KAGGLE-01-provenance.json",
+      "sha256": "f5348a54f118566c03e92aa0e07a99d835fa4cac517cbe3bd53d4669f057265f",
+      "raw_suite_sha256": "5a41d7cde3e14ce19344bf5f2201b6ff1d4be1a919d41a276f27c18266286a94",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/10-r2-ablation-seed43/output?scriptVersionId=366341726",
+      "r1_manifest": "R1-SEED43-KAGGLE-01-provenance.json",
+      "r1_manifest_sha256": "c7288d3fb18288c9b70b2fff2b2ed7062e4ea847375c0fac59e359cdd64017d4"
+    },
+    {
+      "seed": 44,
+      "manifest": "R2-SEED44-KAGGLE-01-provenance.json",
+      "sha256": "9c08068f79eb5ed81fb63c9469846694786348315a20791c891ff1a9bf2ae321",
+      "raw_suite_sha256": "8ed3f1042050a40d418407f5f6edba7c7717c876f5a9fb980611566d9f073215",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/11-r2-ablation-seed44/output?scriptVersionId=366348428",
+      "r1_manifest": "R1-SEED44-KAGGLE-01-provenance.json",
+      "r1_manifest_sha256": "ce3ddef1dddeb8bcf1bf6f702bba3bb9eaacde653075572e756a8489c21894bc"
+    }
+  ],
+  "analysis": {
+    "code_commit": "16a0fa0fff53c33fda34dab7a9fe7f6915587466",
+    "scripts": {
+      "scripts/r2_runner.py": "0a798188e511154e34b9aefefcac6f04efa697b0d19a93d8ca5dc15eae7f2509",
+      "scripts/build_r2_notebooks.py": "115533a98fb66b8cf71c0e6ab0c2b8ab287087e0f9be707535e20c9fd2f47d52",
+      "scripts/aggregate_r2.py": "550a495b705e6038006776013771f8bdffaf92f264c4648eecafa41d67ae0f3e",
+      "scripts/plot_r2.py": "38f866fd6c819cc4479bae606e3bada7a32db38e7b800cc03089f522ea456c60"
+    },
+    "aggregate_command": "python scripts/aggregate_r2.py",
+    "plot_command": "python scripts/plot_r2.py",
+    "independent_statistics_crosscheck": true
+  },
+  "public_tracking_verification": {
+    "status": "complete",
+    "n_new_runs": 9,
+    "n_reused_r1": 3,
+    "checked_at_utc": "2026-11-06T17:47:16.483760+00:00",
+    "method": "fresh session per run, trust_env=False; no Authorization/Cookie",
+    "runs": [
+      {
+        "seed": 42,
+        "case_key": "no_fe_g0p1",
+        "origin": "new_R2",
+        "run_id": "xdrm0d27",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/xdrm0d27",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 43,
+        "case_key": "no_fe_g0p1",
+        "origin": "new_R2",
+        "run_id": "7wgme4so",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/7wgme4so",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 44,
+        "case_key": "no_fe_g0p1",
+        "origin": "new_R2",
+        "run_id": "81aci8h1",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/81aci8h1",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 42,
+        "case_key": "fe8000_g0p1",
+        "origin": "reused_R1",
+        "run_id": "zt1014ei",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 43,
+        "case_key": "fe8000_g0p1",
+        "origin": "reused_R1",
+        "run_id": "v51m2dan",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 44,
+        "case_key": "fe8000_g0p1",
+        "origin": "reused_R1",
+        "run_id": "vqcs1ql4",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/vqcs1ql4",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 42,
+        "case_key": "fe8000_g0p01",
+        "origin": "new_R2",
+        "run_id": "qcgdklxh",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/qcgdklxh",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 43,
+        "case_key": "fe8000_g0p01",
+        "origin": "new_R2",
+        "run_id": "xfleip26",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/xfleip26",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 44,
+        "case_key": "fe8000_g0p01",
+        "origin": "new_R2",
+        "run_id": "dub202jk",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/dub202jk",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 42,
+        "case_key": "fe8000_g0p001",
+        "origin": "new_R2",
+        "run_id": "3yp99ewh",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/3yp99ewh",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 43,
+        "case_key": "fe8000_g0p001",
+        "origin": "new_R2",
+        "run_id": "aler6nj2",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/aler6nj2",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 44,
+        "case_key": "fe8000_g0p001",
+        "origin": "new_R2",
+        "run_id": "l9c50ezb",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/l9c50ezb",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      }
+    ]
+  },
+  "verification": {
+    "all9_cases_complete_full6_phases": true,
+    "same_seed_r1_checkpoint_backbone_context": true,
+    "same_fe_for_gamma_variants": true,
+    "new_backbone_training_calls": 0,
+    "all_raw_suites_byte_exact": true,
+    "new_npz_verification_location": "Kaggle CPU after numeric timer; full finite/dtype/shape/symmetry/FE/context/file hash checks",
+    "large_new_npz_downloaded_locally": false,
+    "no_joint_oracle_d8000": true,
+    "historical_r1_artifacts_unchanged": true
+  },
+  "created_at_utc": "2026-11-06T17:48:15.306807+00:00"
+}

@@ -1,0 +1,371 @@
+{
+  "status": "complete",
+  "scope": "R2:4/5 Table2 rows, gamma0 excluded; no additional backbone training",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "n_completed_seeds": 3,
+  "n_new_cases": 9,
+  "n_reused_r1_cases": 3,
+  "ddof": 1,
+  "created_at_utc": "2026-11-06T17:47:04.895142+00:00",
+  "rows": [
+    {
+      "case_key": "no_fe_g0p1",
+      "feature_expansion": false,
+      "dimension": 64,
+      "gamma": 0.1,
+      "paper_average": 52.99,
+      "metrics": {
+        "average_incremental_accuracy_pct": {
+          "mean": 53.25466049382717,
+          "sample_sd": 0.27677271698742845,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 53.39695767195767,
+            "43": 53.43133597883599,
+            "44": 52.93568783068783
+          }
+        },
+        "final_accuracy_pct": {
+          "mean": 38.32666666666666,
+          "sample_sd": 0.3743438704364396,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 38.48,
+            "43": 38.6,
+            "44": 37.9
+          }
+        },
+        "base_forgetting_pp": {
+          "mean": 1.5600000000000023,
+          "sample_sd": 0.6352952069707475,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 1.019999999999996,
+            "43": 2.260000000000005,
+            "44": 1.4000000000000057
+          }
+        }
+      },
+      "paired_delta_average_vs_r1_pp": {
+        "mean": -11.864909611992942,
+        "sample_sd": 0.3709926898219224,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": -11.7675925925926,
+          "43": -12.274861111111093,
+          "44": -11.552275132275135
+        }
+      },
+      "paper_comparison": {
+        "average_deviation_pp": 0.26466049382716506,
+        "average_relative_deviation_pct": 0.4994536588548123,
+        "paper_final_accuracy_pct": null,
+        "paper_base_forgetting_pp": null
+      },
+      "runs": [
+        {
+          "seed": 42,
+          "wandb_run_id": "xdrm0d27",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/xdrm0d27",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/09-r2-ablation-seed42/output?scriptVersionId=366341660"
+        },
+        {
+          "seed": 43,
+          "wandb_run_id": "7wgme4so",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/7wgme4so",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/10-r2-ablation-seed43/output?scriptVersionId=366341726"
+        },
+        {
+          "seed": 44,
+          "wandb_run_id": "81aci8h1",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/81aci8h1",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/11-r2-ablation-seed44/output?scriptVersionId=366348428"
+        }
+      ]
+    },
+    {
+      "case_key": "fe8000_g0p1",
+      "feature_expansion": true,
+      "dimension": 8000,
+      "gamma": 0.1,
+      "paper_average": 66.3,
+      "metrics": {
+        "average_incremental_accuracy_pct": {
+          "mean": 65.1195701058201,
+          "sample_sd": 0.610361374963005,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 65.16455026455027,
+            "43": 65.70619708994708,
+            "44": 64.48796296296297
+          }
+        },
+        "final_accuracy_pct": {
+          "mean": 56.129999999999995,
+          "sample_sd": 0.5574943945906565,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 55.87,
+            "43": 56.77,
+            "44": 55.75
+          }
+        },
+        "base_forgetting_pp": {
+          "mean": 8.306666666666672,
+          "sample_sd": 0.6201075175591166,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 8.320000000000007,
+            "43": 8.920000000000002,
+            "44": 7.680000000000007
+          }
+        }
+      },
+      "paired_delta_average_vs_r1_pp": {
+        "mean": 0.0,
+        "sample_sd": 0.0,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 0.0,
+          "43": 0.0,
+          "44": 0.0
+        }
+      },
+      "paper_comparison": {
+        "average_deviation_pp": -1.1804298941798947,
+        "average_relative_deviation_pct": -1.7804372461235216,
+        "paper_final_accuracy_pct": null,
+        "paper_base_forgetting_pp": null
+      },
+      "runs": [
+        {
+          "seed": 42,
+          "wandb_run_id": "zt1014ei",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei",
+          "origin": "reused_R1",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/06-benchmark-seed42/output?scriptVersionId=365844618"
+        },
+        {
+          "seed": 43,
+          "wandb_run_id": "v51m2dan",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan",
+          "origin": "reused_R1",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/07-benchmark-seed43/output?scriptVersionId=366266785"
+        },
+        {
+          "seed": 44,
+          "wandb_run_id": "vqcs1ql4",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/vqcs1ql4",
+          "origin": "reused_R1",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/08-benchmark-seed44/output?scriptVersionId=366266800"
+        }
+      ]
+    },
+    {
+      "case_key": "fe8000_g0p01",
+      "feature_expansion": true,
+      "dimension": 8000,
+      "gamma": 0.01,
+      "paper_average": 66.25,
+      "metrics": {
+        "average_incremental_accuracy_pct": {
+          "mean": 65.11733245149912,
+          "sample_sd": 0.6088830541349757,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 65.16061507936509,
+            "43": 65.7034193121693,
+            "44": 64.48796296296297
+          }
+        },
+        "final_accuracy_pct": {
+          "mean": 56.129999999999995,
+          "sample_sd": 0.5574943945906565,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 55.87,
+            "43": 56.77,
+            "44": 55.75
+          }
+        },
+        "base_forgetting_pp": {
+          "mean": 8.306666666666672,
+          "sample_sd": 0.6201075175591166,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 8.320000000000007,
+            "43": 8.920000000000002,
+            "44": 7.680000000000007
+          }
+        }
+      },
+      "paired_delta_average_vs_r1_pp": {
+        "mean": -0.0022376543209882507,
+        "sample_sd": 0.0020224293861237537,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": -0.003935185185184764,
+          "43": -0.0027777777777799884,
+          "44": 0.0
+        }
+      },
+      "paper_comparison": {
+        "average_deviation_pp": -1.1326675485008764,
+        "average_relative_deviation_pct": -1.7096868656617001,
+        "paper_final_accuracy_pct": null,
+        "paper_base_forgetting_pp": null
+      },
+      "runs": [
+        {
+          "seed": 42,
+          "wandb_run_id": "qcgdklxh",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/qcgdklxh",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/09-r2-ablation-seed42/output?scriptVersionId=366341660"
+        },
+        {
+          "seed": 43,
+          "wandb_run_id": "xfleip26",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/xfleip26",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/10-r2-ablation-seed43/output?scriptVersionId=366341726"
+        },
+        {
+          "seed": 44,
+          "wandb_run_id": "dub202jk",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/dub202jk",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/11-r2-ablation-seed44/output?scriptVersionId=366348428"
+        }
+      ]
+    },
+    {
+      "case_key": "fe8000_g0p001",
+      "feature_expansion": true,
+      "dimension": 8000,
+      "gamma": 0.001,
+      "paper_average": 66.23,
+      "metrics": {
+        "average_incremental_accuracy_pct": {
+          "mean": 65.11632936507937,
+          "sample_sd": 0.6087785668953544,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 65.15760582010583,
+            "43": 65.7034193121693,
+            "44": 64.48796296296297
+          }
+        },
+        "final_accuracy_pct": {
+          "mean": 56.129999999999995,
+          "sample_sd": 0.5574943945906565,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 55.87,
+            "43": 56.77,
+            "44": 55.75
+          }
+        },
+        "base_forgetting_pp": {
+          "mean": 8.306666666666672,
+          "sample_sd": 0.6201075175591166,
+          "n": 3,
+          "ddof": 1,
+          "values_by_seed": {
+            "42": 8.320000000000007,
+            "43": 8.920000000000002,
+            "44": 7.680000000000007
+          }
+        }
+      },
+      "paired_delta_average_vs_r1_pp": {
+        "mean": -0.0032407407407409514,
+        "sample_sd": 0.003495293720031771,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": -0.0069444444444428655,
+          "43": -0.0027777777777799884,
+          "44": 0.0
+        }
+      },
+      "paper_comparison": {
+        "average_deviation_pp": -1.1136706349206378,
+        "average_relative_deviation_pct": -1.6815199077768952,
+        "paper_final_accuracy_pct": null,
+        "paper_base_forgetting_pp": null
+      },
+      "runs": [
+        {
+          "seed": 42,
+          "wandb_run_id": "3yp99ewh",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/3yp99ewh",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/09-r2-ablation-seed42/output?scriptVersionId=366341660"
+        },
+        {
+          "seed": 43,
+          "wandb_run_id": "aler6nj2",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/aler6nj2",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/10-r2-ablation-seed43/output?scriptVersionId=366341726"
+        },
+        {
+          "seed": 44,
+          "wandb_run_id": "l9c50ezb",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/l9c50ezb",
+          "origin": "new_R2",
+          "kaggle_url": "https://www.kaggle.com/code/hsangg206/11-r2-ablation-seed44/output?scriptVersionId=366348428"
+        }
+      ]
+    }
+  ],
+  "inputs": [
+    {
+      "seed": 42,
+      "file": "R2-SEED42-KAGGLE-01-provenance.json",
+      "sha256": "d722d3cc05b3930949e8276e0d401a5eb9953b60d08633184ba1c27db2a5868a",
+      "r1_manifest": "R1-SEED42-KAGGLE-01-provenance.json",
+      "r1_manifest_sha256": "c3ef25c09a5315b82ad3cb1820a176dd447e756e1558ee76d7260a01ce146bb5"
+    },
+    {
+      "seed": 43,
+      "file": "R2-SEED43-KAGGLE-01-provenance.json",
+      "sha256": "f5348a54f118566c03e92aa0e07a99d835fa4cac517cbe3bd53d4669f057265f",
+      "r1_manifest": "R1-SEED43-KAGGLE-01-provenance.json",
+      "r1_manifest_sha256": "c7288d3fb18288c9b70b2fff2b2ed7062e4ea847375c0fac59e359cdd64017d4"
+    },
+    {
+      "seed": 44,
+      "file": "R2-SEED44-KAGGLE-01-provenance.json",
+      "sha256": "9c08068f79eb5ed81fb63c9469846694786348315a20791c891ff1a9bf2ae321",
+      "r1_manifest": "R1-SEED44-KAGGLE-01-provenance.json",
+      "r1_manifest_sha256": "ce3ddef1dddeb8bcf1bf6f702bba3bb9eaacde653075572e756a8489c21894bc"
+    }
+  ],
+  "statistical_unit": "seed; paired changes use same seed checkpoint, mapping, normalization and FE",
+  "excluded": {
+    "gamma0": "outside fixed core scope; no epsilon/pseudoinverse substitution"
+  }
+}
