@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vĩ, Phát
 
-> Sang đang thực hiện một mình; hiện Sang thực hiện cả ba nhóm việc trong kế hoạch. Smoke100 đã có JSON/W&B. [Protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md) đã chốt ngày 04/11; resume CPU/benchmark streaming/metric export và profile d8000 CPU đã có; analytic Kaggle d8000 đã có gey0yop4 finished; BP5/CUDA cũng đã chạy đạt qua API ngày05/11; việc tiếp theo là tracking BP5 và R1 bằng [notebook06](../notebooks/06_benchmark_seed42_ready.ipynb). Chưa chạy benchmark160 epochs.
+> Sang đang thực hiện một mình. Cập nhật06/11: smoke100, resume CPU/CUDA, profile d8000 và BP5 đã có bằng chứng; R1 seed42 đã hoàn tất160 epochs/d8000/K5, Ā65,1646%, final55,87%, [W&B zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished. [Báo cáo R1 seed42](../reports/R1_SEED42_KAGGLE_20261106.md). Còn seeds43/44, R2/R3 và sản phẩm báo cáo/thuyết trình; chưa có mean±SD3 seeds. Vai trò ba thành viên dưới đây là kế hoạch khi các bạn cùng tham gia.
 
 Cập nhật **04/11/2026**, giờ Việt Nam, sau khi nhận JSON full5 và xác minh run W&B blhw74ff. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
@@ -226,8 +226,8 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 **Sang đang làm một mình:** trợ lý đã chạy BP5/CUDA qua API, không cần làm05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình160/d8000/seed42. Xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md), giữ protocol/metrics v1.0.
 
-**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget~59 phút, cửa sổ2 giờ, quota26h từ Sang. Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã Finished và được API công khai đối chiếu. **Tiếp theo:** run R1 seed42; chưa khởi chạy160 epochs.
+**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget~59 phút, cửa sổ2 giờ, quota26h từ Sang. Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã Finished và được API công khai đối chiếu. R1 seed42 đã hoàn tất160 epochs/K5, [W&B zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished, [báo cáo](../reports/R1_SEED42_KAGGLE_20261106.md). **Tiếp theo:** R1 seeds43/44 và R2/R3; không chạy lại seed42 chỉ để lấy bằng chứng.
 
-**Sau đó:** khi G2/G3 CUDA và G6 Kaggle/quota đạt, chạy R1 seed42 trước, rồi43/44; reuse backbone tương ứng cho R2. R3 theo cấu hình d1024 đã chốt. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
+**Sau đó:** tổng hợp đủ3 seeds R1; reuse checkpoint cùng seed cho R2, checkpoint160/seed42 cho R3 d1024. Cấu hình/gamma/batch giữ theo protocol. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 
 **Quy ước hiện trạng:** README và bảng run phản ánh artifact thật trong repo. Source hoặc kết quả chỉ có tại workspace hỗ trợ được ghi rõ chưa công bố; run Kaggle cần xác nhận bằng version và output thực tế.

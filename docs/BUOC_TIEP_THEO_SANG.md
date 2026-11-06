@@ -1,27 +1,30 @@
-# Sang đang ở bước nào? — cập nhật05/11/2026
+# Sang đang ở bước nào? — cập nhật06/11/2026
 
-**Đã chạy thay Sang xong BP5 trên Kaggle. Không cần import/chạy notebook05 lại.**
+**Đã chạy xong notebook06: R1 seed42,160 epochs,d8000,50 base+5×10 lớp. Không cần chạy lại seed42.**
 
-| Bước | Trạng thái và bằng chứng |
+| Nội dung | Trạng thái/bằng chứng |
 |---|---|
-| Analytic d8000 |Đạt trên T4,34,07s/peak RSS3,20GB; [Version1](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365647614), W&B gey0yop4 finished |
-| Resume CUDA |Đạt trong suite GPU53 passed/1 skip; proof nằm trong [JSON BP5](../reports/profile_base_kaggle_ready.json) |
-| BP5 +analytic50+10/d256 |Đạt,76,11s cho training5 epochs, W256×60/test6.000/accuracy41,35%; [Version3](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365703432) |
-| Checkpoint5 |Đã tải và kiểm v2, đủ optimizer/scheduler/RNG/loader state, target5 hoàn tất |
-| Tracking BP5 |Đã đồng bộ [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f), Finished; API công khai xác nhận config/source/summary khớp, [manifest](../reports/BP5-KAGGLE-01-provenance.json) |
-| Ngân sách160 |Dự trù~59 phút, cần tối thiểu84,1 phút để còn30% dự phòng; chuẩn bị phiên2 giờ. Quota26h do Sang cung cấp |
-| Notebook06 |Đã cấu hình160 epochs/d8000/K5/seed42, chưa khởi chạy |
+| R1 seed42 |[Kaggle Version1 /365844618](https://www.kaggle.com/code/hsangg206/06-benchmark-seed42/output?scriptVersionId=365844618) Complete, [W&B zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished và công khai |
+| Kết quả |Ā65,164550%, final55,87%, base forgetting8,32pp; n=1, SD=null |
+| Kiểm cấu hình |160 hàng history,25.000 ảnh/epoch, LR80/120 đúng;6 mốc50→100 lớp; cuối W8000×100/test10.000 |
+| Checkpoint/state |Checkpoint v2 hoàn tất160/160 và R/W/FE đã tải/kiểm; source/class order/normalization khớp, backbone/BN/FE cố định |
+| Tài nguyên |BP41,60 phút; pipeline numeric53,78 phút, peak RSS3,55GB/GPU378,42MiB; phần setup/tests/logging nằm ngoài timer numeric |
+| Tracking |Sync đúng payload offline; API công khai đối chiếu config/source/summary và6 history rows |
+| Các mốc nền |Smoke100, resume CPU/CUDA, profile analytic d8000 và BP5 đều đã có bằng chứng; không cần lặp lại chỉ để lấy log |
+
+[Báo cáo dễ đọc và bảng6 phase](../reports/R1_SEED42_KAGGLE_20261106.md) · [JSON numeric gốc](../reports/benchmark_seed42_kaggle_results.json) · [JSON tổng hợp sau sync](../reports/benchmark_seed42_kaggle_ready.json) · [manifest/checksum](../reports/R1-SEED42-KAGGLE-01-provenance.json).
 
 ## Việc tiếp theo
 
-Đã đồng bộ đúng offline log BP5 vào [W&B pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) và kiểm tra API công khai: Finished, config/source/summary khớp. Không train BP5 lại. [JSON gốc](../reports/archive/BP5-KAGGLE-01-original-ready.json) giữ trạng thái tại lúc Kaggle ghi file; [JSON tổng hợp](../reports/profile_base_kaggle_ready.json) bổ sung metadata sau sync. Credential chỉ dùng tại máy, không đưa lên GitHub hoặc notebook.
+1. Hoàn thiện **R1 seeds43/44** với class order/backbone train mới đúng từng seed; giữ recipe160/d8000/K5. Chưa khởi chạy hai seed này trong yêu cầu chạy06.
+2. Tổng hợp metric trong từng seed rồi mới mean±sample_SD, n=3; hiện65,1646% chỉ là seed42. So cùng metric Ā với66,30% của paper; không so final55,87% với Ā paper.
+3. **R2:** dùng checkpoint160 đã hoàn tất của cùng seed cho no-FE và các gamma; không train lại base cho từng gamma.
+4. **R3:** reuse checkpoint160/seed42, d1024 và batch32/128/512 theo [protocol](protocol_chot.md); joint oracle chạy ngoài vùng timing.
 
-Sau bước tracking là R1 seed42 bằng **[notebook06](../notebooks/06_benchmark_seed42_ready.ipynb)**. Các tham số đã đặt sẵn; checkpoint5 epochs không được dùng để tiếp tục thành160 epochs. Đây là lượt base mới với lịch LR80/120. Chỉ checkpoint160 đang dở, cùng config/runtime/source, mới được dùng resume.
+Checkpoint seed42 nằm trong Output của Version1: `benchmark_seed42/attempts/20261105T051519550968Z-47b72e2791ac/base_checkpoint.pt`. Bản tải đầy đủ ở `reports/local/kaggle_benchmark_seed42_20261105/version1_complete/`; trọng số/NPZ không đẩy GitHub. Không dùng checkpoint seed42 cho class order/backbone của seed43.
 
-## Những con số này chưa có nghĩa là đã tái lập paper
+## Đọc đúng các file kết quả
 
-BP5 chạy50+10 lớp ở d256 nên mean43,215% là trung bình partial hai mốc; full A-bar=null. Không so trực tiếp accuracy41,35% của60 lớp với A-bar66,30%/K5 của paper. R1 thật cần160 epochs/d8000 và đủ5 phase, sau đó mới chạy seeds43/44 và ablation/phân tích theo protocol.
+JSON gốc trên Kaggle ghi `not_logged/offline_pending_sync` vì lúc tạo file đang log offline. Bản tổng hợp sau sync và manifest ghi run thực tế đã Finished; phần numeric không đổi. [Budget BP5](../reports/benchmark_seed42_budget.json) là snapshot dự trù trước benchmark; trạng thái R1 hiện tại nằm trong manifest R1. Source notebook06 đã chạy được giữ nguyên, không tạo lại notebook chỉ để sửa metadata lịch sử.
 
-Notebook06 lưu W&B offline để trợ lý sync từ máy sau lượt GPU; không cần đưa credential vào code Kaggle. File `benchmark_seed42_ready.json`, checkpoint, state và offline payload phải cùng một attempt. Script tạo file notebook không tự khởi chạy GPU.
-
-[Review BP5/budget](../reports/REVIEW_BP5_KAGGLE_20261105.md) · [Cách chạy API](CHAY_KAGGLE_BANG_API.md) · [Protocol](protocol_chot.md) · [Resume chi tiết](RESUME_BENCHMARK_PROFILE.md)
+[Protocol v1.0](protocol_chot.md) · [Metrics v1.0](metrics.md) · [Chạy qua API](CHAY_KAGGLE_BANG_API.md).
