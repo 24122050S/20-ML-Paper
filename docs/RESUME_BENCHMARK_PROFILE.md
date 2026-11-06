@@ -2,7 +2,7 @@
 
 Cập nhật 04/11/2026. Dùng cùng [protocol v1.0](protocol_chot.md) và [metrics v1.0](metrics.md). Notebook mới là **`notebooks/04_resume_benchmark_profile.ipynb`**; notebook02/03 giữ nguyên source của các bằng chứng cũ.
 
-**Cập nhật05/11:** analytic Kaggle, BP5 và CUDA resume đã đạt; [JSON BP5](../reports/profile_base_kaggle_ready.json), [review/budget](../reports/REVIEW_BP5_KAGGLE_20261105.md). Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã sync, Finished và khớp API công khai. Không cần chạy05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã chuẩn bị160/d8000/K5/seed42, chưa khởi chạy; xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md). Các bước04 bên dưới giữ để tái lập analytic.
+**Cập nhật05/11:** analytic Kaggle, BP5 và CUDA resume đã đạt; [JSON BP5](../reports/profile_base_kaggle_ready.json), [review/budget](../reports/REVIEW_BP5_KAGGLE_20261105.md). Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã sync, Finished và khớp API công khai. Không cần chạy05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã chạy xong160/d8000/K5/seed42, Ā65,1646%, final55,87%, [Kaggle v1](https://www.kaggle.com/code/hsangg206/06-benchmark-seed42/output?scriptVersionId=365844618)/[W&B zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished; [báo cáo](../reports/R1_SEED42_KAGGLE_20261106.md); xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md). Các bước04 bên dưới giữ để tái lập analytic.
 
 ## 1. Đã thay đổi gì, vì sao
 
@@ -18,7 +18,7 @@ Cập nhật 04/11/2026. Dùng cùng [protocol v1.0](protocol_chot.md) và [metr
 
 No-FE của benchmark dùng trực tiếp **F(n,64)** từ backbone, giữ cả giá trị âm; không thay bằng random projection64. `joint_reference_status="not_run"` và các error/disagreement fields=null khi không chạy oracle. Smoke vẫn giữ oracle để kiểm chứng nhỏ.
 
-## 2. Sang làm gì trên Kaggle ngay bây giờ
+## 2. Tái lập profile04 khi cần
 
 1. Tải/import **[notebook04](../notebooks/04_resume_benchmark_profile.ipynb)** từ main lên một notebook Kaggle mới. Bật Internet và GPU.
 2. Trong **Input / Add Input**, thêm Output của notebook03 đã chạy thành công. Cần file **`base_checkpoint.pt`** của base2 epochs; `results.json` không chứa trọng số. Nếu Output03 không có checkpoint, chạy lại smoke03 và lưu Output trước.
