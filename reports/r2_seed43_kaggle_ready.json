@@ -1,0 +1,112 @@
+{
+  "status": "complete",
+  "verification_passed": true,
+  "seed": 43,
+  "suite_id": "20261106T165142Z-30ba0dfb8f",
+  "wandb_status": "logged",
+  "tracking_status": "synced",
+  "numeric_source_file": "r2_seed43_kaggle_results.json",
+  "numeric_source_sha256": "5a41d7cde3e14ce19344bf5f2201b6ff1d4be1a919d41a276f27c18266286a94",
+  "cases": {
+    "no_fe_g0p1": {
+      "wandb_status": "logged",
+      "metrics": {
+        "protocol_version": "ACIL-C100-v1.0",
+        "metric_version": "ACIL-metrics-v1.0",
+        "mode": "benchmark",
+        "seed": 43,
+        "n_incremental_phases": 5,
+        "n_evaluations": 6,
+        "complete_protocol": true,
+        "average_incremental_accuracy_pct": 53.43133597883599,
+        "partial_average_accuracy_pct": null,
+        "final_accuracy_pct": 38.6,
+        "final_n_classes": 100,
+        "base_forgetting_pp": 2.260000000000005,
+        "base_accuracy_delta_pp": -2.260000000000005,
+        "n_completed_seeds": 1,
+        "between_seed_sd": null
+      },
+      "tracking": {
+        "case_key": "no_fe_g0p1",
+        "status": "synced",
+        "wandb_run_id": "7wgme4so",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/7wgme4so",
+        "verified_state": "finished",
+        "synced_at_utc": "2026-11-06T17:19:24.221841+00:00",
+        "offline_payload_sha256": "30e2a480d572aa5daa572a51b7594584772d5ca339d5d9a6bcf52852bdc98617",
+        "config_source_summary_match": true,
+        "six_history_rows_match": true,
+        "public_api_verified": true,
+        "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+      }
+    },
+    "fe8000_g0p01": {
+      "wandb_status": "logged",
+      "metrics": {
+        "protocol_version": "ACIL-C100-v1.0",
+        "metric_version": "ACIL-metrics-v1.0",
+        "mode": "benchmark",
+        "seed": 43,
+        "n_incremental_phases": 5,
+        "n_evaluations": 6,
+        "complete_protocol": true,
+        "average_incremental_accuracy_pct": 65.7034193121693,
+        "partial_average_accuracy_pct": null,
+        "final_accuracy_pct": 56.77,
+        "final_n_classes": 100,
+        "base_forgetting_pp": 8.920000000000002,
+        "base_accuracy_delta_pp": -8.920000000000002,
+        "n_completed_seeds": 1,
+        "between_seed_sd": null
+      },
+      "tracking": {
+        "case_key": "fe8000_g0p01",
+        "status": "synced",
+        "wandb_run_id": "xfleip26",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/xfleip26",
+        "verified_state": "finished",
+        "synced_at_utc": "2026-11-06T17:19:32.376595+00:00",
+        "offline_payload_sha256": "c9f45114eec4109f8c816bebc9a98183d3076f4eb3fef992250cf2c7946c73cf",
+        "config_source_summary_match": true,
+        "six_history_rows_match": true,
+        "public_api_verified": true,
+        "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+      }
+    },
+    "fe8000_g0p001": {
+      "wandb_status": "logged",
+      "metrics": {
+        "protocol_version": "ACIL-C100-v1.0",
+        "metric_version": "ACIL-metrics-v1.0",
+        "mode": "benchmark",
+        "seed": 43,
+        "n_incremental_phases": 5,
+        "n_evaluations": 6,
+        "complete_protocol": true,
+        "average_incremental_accuracy_pct": 65.7034193121693,
+        "partial_average_accuracy_pct": null,
+        "final_accuracy_pct": 56.77,
+        "final_n_classes": 100,
+        "base_forgetting_pp": 8.920000000000002,
+        "base_accuracy_delta_pp": -8.920000000000002,
+        "n_completed_seeds": 1,
+        "between_seed_sd": null
+      },
+      "tracking": {
+        "case_key": "fe8000_g0p001",
+        "status": "synced",
+        "wandb_run_id": "aler6nj2",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/aler6nj2",
+        "verified_state": "finished",
+        "synced_at_utc": "2026-11-06T17:19:41.079411+00:00",
+        "offline_payload_sha256": "3435ba2e661c979ec826fb87a0ee8f936bd5a50dbf73ac472ab6f66df033438d",
+        "config_source_summary_match": true,
+        "six_history_rows_match": true,
+        "public_api_verified": true,
+        "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+      }
+    }
+  },
+  "note": "Numeric suite preserved byte-exact in source file; raw offline statuses describe capture time. Actual IDs/URLs/status written only after sync and API verification."
+}
