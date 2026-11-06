@@ -57,7 +57,7 @@ def main():
                  where="post", color="#20252b", linewidth=1.7)
     axes[1].set_yscale("log")
     axes[0].set(title="Base training · 25,000 images/epoch", xlabel="Epoch", ylabel="Training cross entropy", xlim=(1, 160))
-    axes[1].set(title="Shared learning-rate schedule", xlabel="Epoch", ylabel="Learning rate", xlim=(1, 160))
+    axes[1].set(title="Shared LR schedule", xlabel="Epoch", ylabel="Learning rate", xlim=(1, 160))
     for ax in axes:
         ax.grid(axis="y", color="#e1e5e8", linewidth=0.7)
         for epoch in (80, 120):ax.axvline(epoch, color="#9ba6af", linestyle="--", linewidth=0.8)
