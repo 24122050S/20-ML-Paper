@@ -1,0 +1,12 @@
+{
+  "attempt_id": "20261106T115630909869Z-cbdc3fa47b16",
+  "artifacts_dir": "attempts/20261106T115630909869Z-cbdc3fa47b16",
+  "output_dir": "/kaggle/working/benchmark_seed43/attempts/20261106T115630909869Z-cbdc3fa47b16",
+  "requested_seed": 43,
+  "started_at_utc": "2026-11-06T11:56:30.910023+00:00",
+  "status": "complete",
+  "stage": "complete",
+  "checks_passed": true,
+  "updated_at_utc": "2026-11-06T12:48:50.335169+00:00",
+  "results_path": "attempts/20261106T115630909869Z-cbdc3fa47b16/results.json"
+}
