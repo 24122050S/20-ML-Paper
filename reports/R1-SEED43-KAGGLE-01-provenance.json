@@ -1,0 +1,164 @@
+{
+  "id": "R1-SEED43-KAGGLE-01",
+  "published_date": "2026-11-06",
+  "run_date_vietnam": "2026-11-06",
+  "scope": "R1 CIFAR100/K5 seed43; individual full-protocol seed, three-seed statistics published separately",
+  "attempt_id": "20261106T115630909869Z-cbdc3fa47b16",
+  "artifacts": {
+    "benchmark_seed43_kaggle_results.json": {
+      "sha256": "78e6ec6050be9d5a14a36dfd26aec9a09b0c06b9770a1fd6e4feba64d9ad44db",
+      "scope": "unmodified raw Kaggle version1 capture"
+    },
+    "benchmark_seed43_kaggle_progress.json": {
+      "sha256": "14560028dc3b8a499de53e4578fa2b60db5b78adac960ef489209796a5fbda5a",
+      "scope": "unmodified raw Kaggle version1 capture"
+    },
+    "archive/R1-SEED43-KAGGLE-01-original-ready.json": {
+      "sha256": "f72c828aabe24c6d5bf9dd66be788c987c0bf72af1145acb19c56fe80e69b681",
+      "scope": "unmodified raw Kaggle version1 capture"
+    },
+    "benchmark_seed43_kaggle_ready.json": {
+      "sha256": "aa9ae8b2bd291f768e416d9dec7e06a8a6c8314ddd197251ebf2ea51064d82fb",
+      "scope": "original numeric benchmark plus verified tracking metadata only"
+    }
+  },
+  "kaggle": {
+    "kernel": "hsangg206/07-benchmark-seed43",
+    "kernel_id": 143050126,
+    "version_number": 1,
+    "script_version_id": 366266785,
+    "url": "https://www.kaggle.com/code/hsangg206/07-benchmark-seed43/output?scriptVersionId=366266785",
+    "status": "complete",
+    "timeout_seconds": 7200,
+    "accelerator_requested": "NvidiaTeslaT4",
+    "cuda_device_observed": "Tesla T4",
+    "submitted_at_utc": "2026-11-06T11:55:26.373791+00:00",
+    "verification": "authenticated API status; v1-pinned output/source; same attempt across raw readiness/results/progress"
+  },
+  "source": {
+    "repository_commit": "20e51331b1c3b8a209ec42e9adeece93e34a9248",
+    "executed_notebook": "notebooks/07_benchmark_seed43_ready.ipynb",
+    "executed_notebook_sha256": "558caab139dcbf049478c02f3d63f8aabe1a134035392fe17f1890c011843f92",
+    "pinned_remote_notebook_sha256": "717f5b3ec91335be9ba293031aade01d5b745240ae4e1e18412293ea81eefd23",
+    "all_cell_sources_match_pinned_remote": true,
+    "canonical_cell_sources_sha256": "0be51b611e888b9071e24d53b98d9a5029e82963b438fa735e75347136e768d8",
+    "source_bundle_sha256": "5851fa25143689342edabe9ab112635395ed2eae4f19fe95c446eaf96b6ca19c",
+    "source_files_verified": 16,
+    "core_source_matches_commit": "d3e7405dadfb3a2e93212c343665c8bc75ffc657",
+    "core_config_tests_notebook01_to06_changed": false
+  },
+  "checkpoint": {
+    "sha256": "ad352c9a7ccd7162666a9fa89914fdf17c72a8faeb5bdab1c8d123061afd0f4f",
+    "format_version": 2,
+    "completed_epoch": 160,
+    "target_epochs": 160,
+    "fresh_training": true,
+    "training_samples_per_epoch": 25000,
+    "source_class_order_normalization_revision_verified": true,
+    "model_fingerprint_optimizer_scheduler_rng_loader_verified": true,
+    "artifact_location": "benchmark_seed43/attempts/20261106T115630909869Z-cbdc3fa47b16/base_checkpoint.pt",
+    "weights_committed": false
+  },
+  "analytic_state": {
+    "sha256": "dc084acaabf080fc0f115919a94e685f374cfc5da85e6deaae134f8197c5de24",
+    "shapes": {
+      "inverse_gram": [
+        8000,
+        8000
+      ],
+      "weights": [
+        8000,
+        100
+      ],
+      "expansion_matrix": [
+        64,
+        8000
+      ]
+    },
+    "finite_float64": true,
+    "symmetric_r_verified": true,
+    "expansion_hash_and_class_order_verified": true,
+    "persistent_state_bytes": 522496000,
+    "stored_training_samples": 0,
+    "joint_reference_status": "not_run",
+    "arrays_committed": false
+  },
+  "verification": {
+    "metadata_independently_verified": true,
+    "gpu_tests_run": 54,
+    "gpu_tests_passed": 53,
+    "gpu_tests_skipped": 1,
+    "cuda_resume_test_passed": true,
+    "skip_reason": "historical notebook snapshot not included in embedded source bundle",
+    "local_checks": "weights_only CPU checkpoint load, source/context/model fingerprint, optimizer/scheduler/RNG, mapping, float64 arrays and symmetry; no retraining or full d8000 joint oracle"
+  },
+  "metrics": {
+    "protocol_version": "ACIL-C100-v1.0",
+    "metric_version": "ACIL-metrics-v1.0",
+    "mode": "benchmark",
+    "seed": 43,
+    "n_incremental_phases": 5,
+    "n_evaluations": 6,
+    "complete_protocol": true,
+    "average_incremental_accuracy_pct": 65.70619708994708,
+    "partial_average_accuracy_pct": null,
+    "final_accuracy_pct": 56.77,
+    "final_n_classes": 100,
+    "base_forgetting_pp": 8.920000000000002,
+    "base_accuracy_delta_pp": -8.920000000000002,
+    "n_completed_seeds": 1,
+    "between_seed_sd": null
+  },
+  "paper_comparison": {
+    "reference": "Table1 CIFAR100/K5 as pinned in docs/protocol_chot.md and docs/metrics.md",
+    "paper_average_incremental_accuracy_pct": 66.3,
+    "paper_base_forgetting_pp": 9.0,
+    "paper_final_accuracy_pct": null,
+    "average_deviation_pp": -0.593802910052915,
+    "average_relative_deviation_pct": -0.8956303319048492,
+    "base_forgetting_deviation_pp": -0.0799999999999983,
+    "interpretation": "Individual seed only; final mean and sample SD for42/43/44 are in r1_cifar100_k5_summary.json"
+  },
+  "time_and_memory": {
+    "bp160_seconds": 2423.476636858002,
+    "numeric_pipeline_seconds": 3134.733392776,
+    "streaming_phases_wall_seconds": 666.2972047869998,
+    "memory": {
+      "scope": "training+analytic; notebook tests and offline logging excluded",
+      "baseline_cpu_rss_bytes": 640720896,
+      "peak_cpu_rss_bytes": 3558809600,
+      "sampling_interval_seconds": 0.02,
+      "peak_cuda_allocated_bytes": 396805632
+    },
+    "planned_pipeline_seconds": 3531.972354058705,
+    "planned_timeout_seconds": 7200,
+    "numeric_window_spare_fraction": 0.5646203621144444,
+    "quota_before_launch": {
+      "total_hours": 30.0,
+      "used_hours": 4.671369444444444,
+      "reserved_hours": 0,
+      "available_hours": 25.328630555555556
+    },
+    "quota_before_is_live_api_measurement": true,
+    "scope_note": "numeric pipeline timer and sampled memory exclude notebook test setup/offline logging; timeout covers submitted session"
+  },
+  "tracking_sync": {
+    "status": "synced",
+    "seed": 43,
+    "wandb_run_id": "v51m2dan",
+    "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan",
+    "verified_state": "finished",
+    "synced_at_utc": "2026-11-06T12:53:01.382347+00:00",
+    "offline_payload_sha256": "3f51fef46e2cac7dd6b0c7783bb7b5f16ed83fd4af6620517357f0e42ba4a4f3",
+    "config_source_summary_match": true,
+    "six_history_rows_match": true,
+    "public_api_verified": true,
+    "public_verification_method": "fresh requests.Session with trust_env=False; no Authorization or Cookie headers",
+    "numeric_values_changed": false
+  },
+  "next_steps": [
+    "Aggregate accepted42/43/44 with sample SD(ddof=1)",
+    "Reuse matching160-epoch checkpoint for R2; R3 uses seed42 per protocol"
+  ],
+  "historical_budget_note": "BP5 planning/budget files remain historical pre-benchmark evidence; this manifest records actual R1 completion."
+}

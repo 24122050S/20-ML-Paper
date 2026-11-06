@@ -1,0 +1,374 @@
+{
+  "status": "complete",
+  "scope": "R1 CIFAR100/K5, seeds42/43/44 only; R2/R3 tracked separately",
+  "protocol_version": "ACIL-C100-v1.0",
+  "metric_version": "ACIL-metrics-v1.0",
+  "created_at_utc": "2026-11-06T13:02:07.229742+00:00",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "n_completed_seeds": 3,
+  "ddof": 1,
+  "statistical_unit": "one complete seed with its own class order/backbone/FE; not one phase",
+  "metrics": {
+    "average_incremental_accuracy_pct": {
+      "mean": 65.1195701058201,
+      "sample_sd": 0.610361374963005,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": 65.16455026455027,
+        "43": 65.70619708994708,
+        "44": 64.48796296296297
+      }
+    },
+    "final_accuracy_pct": {
+      "mean": 56.129999999999995,
+      "sample_sd": 0.5574943945906565,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": 55.87,
+        "43": 56.77,
+        "44": 55.75
+      }
+    },
+    "base_forgetting_pp": {
+      "mean": 8.306666666666672,
+      "sample_sd": 0.6201075175591166,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": 8.320000000000007,
+        "43": 8.920000000000002,
+        "44": 7.680000000000007
+      }
+    },
+    "base_accuracy_delta_pp": {
+      "mean": -8.306666666666672,
+      "sample_sd": 0.6201075175591166,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": -8.320000000000007,
+        "43": -8.920000000000002,
+        "44": -7.680000000000007
+      }
+    }
+  },
+  "phase_metrics": [
+    {
+      "phase": 0,
+      "n_classes": 50,
+      "test_samples_all_seen": 5000,
+      "accuracy_pct": {
+        "mean": 76.64,
+        "sample_sd": 0.124899959967967,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 76.68,
+          "43": 76.74,
+          "44": 76.5
+        }
+      },
+      "base_accuracy_pct": {
+        "mean": 76.64,
+        "sample_sd": 0.124899959967967,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 76.68,
+          "43": 76.74,
+          "44": 76.5
+        }
+      },
+      "new_class_accuracy_pct": null
+    },
+    {
+      "phase": 1,
+      "n_classes": 60,
+      "test_samples_all_seen": 6000,
+      "accuracy_pct": {
+        "mean": 70.27777777777777,
+        "sample_sd": 0.6904775588382701,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 70.61666666666666,
+          "43": 70.73333333333333,
+          "44": 69.48333333333333
+        }
+      },
+      "base_accuracy_pct": {
+        "mean": 73.50666666666666,
+        "sample_sd": 0.15534906930308717,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 73.38,
+          "43": 73.68,
+          "44": 73.46
+        }
+      },
+      "new_class_accuracy_pct": {
+        "mean": 54.13333333333333,
+        "sample_sd": 3.946306289852996,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 56.8,
+          "43": 56.0,
+          "44": 49.6
+        }
+      }
+    },
+    {
+      "phase": 2,
+      "n_classes": 70,
+      "test_samples_all_seen": 7000,
+      "accuracy_pct": {
+        "mean": 66.29047619047618,
+        "sample_sd": 1.6196707484341786,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 66.44285714285714,
+          "43": 67.82857142857142,
+          "44": 64.6
+        }
+      },
+      "base_accuracy_pct": {
+        "mean": 72.02,
+        "sample_sd": 0.15874507866387338,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 71.84,
+          "43": 72.14,
+          "44": 72.08
+        }
+      },
+      "new_class_accuracy_pct": {
+        "mean": 54.4,
+        "sample_sd": 7.070360669725413,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 52.9,
+          "43": 62.1,
+          "44": 48.2
+        }
+      }
+    },
+    {
+      "phase": 3,
+      "n_classes": 80,
+      "test_samples_all_seen": 8000,
+      "accuracy_pct": {
+        "mean": 62.44583333333333,
+        "sample_sd": 0.6703932303755256,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 62.5,
+          "43": 63.0875,
+          "44": 61.75
+        }
+      },
+      "base_accuracy_pct": {
+        "mean": 70.58666666666667,
+        "sample_sd": 0.3689625093872452,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 70.18,
+          "43": 70.68,
+          "44": 70.9
+        }
+      },
+      "new_class_accuracy_pct": {
+        "mean": 47.9,
+        "sample_sd": 5.610704055642213,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 48.3,
+          "43": 42.1,
+          "44": 53.3
+        }
+      }
+    },
+    {
+      "phase": 4,
+      "n_classes": 90,
+      "test_samples_all_seen": 9000,
+      "accuracy_pct": {
+        "mean": 58.93333333333333,
+        "sample_sd": 0.12619796324000548,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 58.87777777777778,
+          "43": 59.077777777777776,
+          "44": 58.84444444444444
+        }
+      },
+      "base_accuracy_pct": {
+        "mean": 69.22,
+        "sample_sd": 0.43588989435406705,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 69.02,
+          "43": 68.92,
+          "44": 69.72
+        }
+      },
+      "new_class_accuracy_pct": {
+        "mean": 43.43333333333334,
+        "sample_sd": 4.225320500664218,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 40.7,
+          "43": 41.3,
+          "44": 48.3
+        }
+      }
+    },
+    {
+      "phase": 5,
+      "n_classes": 100,
+      "test_samples_all_seen": 10000,
+      "accuracy_pct": {
+        "mean": 56.129999999999995,
+        "sample_sd": 0.5574943945906565,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 55.87,
+          "43": 56.77,
+          "44": 55.75
+        }
+      },
+      "base_accuracy_pct": {
+        "mean": 68.33333333333333,
+        "sample_sd": 0.5005330491918926,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 68.36,
+          "43": 67.82,
+          "44": 68.82
+        }
+      },
+      "new_class_accuracy_pct": {
+        "mean": 42.0,
+        "sample_sd": 4.956813492557492,
+        "n": 3,
+        "ddof": 1,
+        "values_by_seed": {
+          "42": 38.7,
+          "43": 47.7,
+          "44": 39.6
+        }
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "seed": 42,
+      "attempt_id": "20261105T051519550968Z-47b72e2791ac",
+      "results_file": "benchmark_seed42_kaggle_results.json",
+      "manifest_file": "R1-SEED42-KAGGLE-01-provenance.json",
+      "results_sha256": "ceb246be10089e39db2ac4399958bcae86b7f1ffdc731ff3a48fdb8d2af27acc",
+      "checkpoint_sha256": "1f2a747347e26db933b11a9910ee780a8f8597187b40bc2191ad42108cea550d",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/06-benchmark-seed42/output?scriptVersionId=365844618",
+      "wandb_run_id": "zt1014ei",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei"
+    },
+    {
+      "seed": 43,
+      "attempt_id": "20261106T115630909869Z-cbdc3fa47b16",
+      "results_file": "benchmark_seed43_kaggle_results.json",
+      "manifest_file": "R1-SEED43-KAGGLE-01-provenance.json",
+      "results_sha256": "78e6ec6050be9d5a14a36dfd26aec9a09b0c06b9770a1fd6e4feba64d9ad44db",
+      "checkpoint_sha256": "ad352c9a7ccd7162666a9fa89914fdf17c72a8faeb5bdab1c8d123061afd0f4f",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/07-benchmark-seed43/output?scriptVersionId=366266785",
+      "wandb_run_id": "v51m2dan",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan"
+    },
+    {
+      "seed": 44,
+      "attempt_id": "20261106T115631283755Z-8a6dcd5ddf4b",
+      "results_file": "benchmark_seed44_kaggle_results.json",
+      "manifest_file": "R1-SEED44-KAGGLE-01-provenance.json",
+      "results_sha256": "18709cd7215bbb686bd09f1926a466658d6ac52aac977b66f1e14de7a189b1bd",
+      "checkpoint_sha256": "8e6c1eb6cd6d1f6df411af5201841d5e0591662a8ac6f94bd30962061330a63d",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/08-benchmark-seed44/output?scriptVersionId=366266800",
+      "wandb_run_id": "vqcs1ql4",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/vqcs1ql4"
+    }
+  ],
+  "source_sha256": {
+    "src/__init__.py": "bbaf18d6b0088492b409b69a69515c1041c86aa803ba1b1e6f1fe7a2753d2ced",
+    "src/analytic.py": "73c9e5ac823b6b0348c4452bb1fb256e2bdd443a409368224d174af7dd31d6e3",
+    "src/base_training.py": "367b4efb39091206ec2f073b22a427cdb1bc65deec264036d70c3ce3717ae72c",
+    "src/cifar_data.py": "10beb0454ed7b9fa7c12dfe4fbaffdd47d608e84bb86ee662b4fe870ef5d1279",
+    "src/cifar_smoke.py": "9e08c06c389d6a0816518ed02791acf4cd391d5c7cba4b609b1c9a0423da21a9",
+    "src/metrics.py": "5c6015d5e33e9e4fde28754bfd3458e0b52aece7fa7e2559109780764bce35a8",
+    "src/notebook_bundle.py": "deac866df63a930749e6a21ca9b3c2c71508523afa688e13fb37d4b3d6444c72",
+    "src/profile_analytic.py": "3d27dbc8197d4b479cad0dafefd17d08e47ab17514bcb978e489a0327283c506",
+    "src/reporting.py": "1f5b91333c29e610048cab9ed98287ddb84751516ff57d794fc05359fd3fe055",
+    "src/resnet.py": "64ca4b7938282e1dc219d5c496d7f02c77918abcf63b7b715e615534a4f350a0",
+    "src/run_attempt.py": "50291737fb37cd431e081157ffe50850f5ed94efcf4ea744a97ff3a1c97e7115",
+    "src/streaming.py": "39b41b487d37a0a78aa2b4aeda0cc017ad802faebe56c098802d47e192f6f337",
+    "src/verification.py": "5d07f3037e58e65668884f097b916bcddbf981882c361d4c1246a57496f10076",
+    "src/verify_analytic.py": "0f788158c76f191f1848abce30eed98373a3841546bd3021000a4a8e496c1d60",
+    "src/verify_resume.py": "e15e906f85af630e9eb526d5b1ab77036f673847fb7eafec3ea4efa43ae71580",
+    "configs/verify_analytic_update.json": "d915a738726455a7a0b96bfd5928a12504c38595d423a85c8f7b73daaa5bcdfc"
+  },
+  "recipe": {
+    "experiment": "ACIL-R1-C100-K5",
+    "incremental_phases": 5,
+    "run_incremental_phases": 5,
+    "epochs": 160,
+    "batch_size": 128,
+    "eval_batch_size": 256,
+    "learning_rate": 0.1,
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "lr_milestones": [
+      80,
+      120
+    ],
+    "expansion_dim": 8000,
+    "gamma": 0.1,
+    "analytic_batch_size": 128,
+    "num_workers": 0,
+    "device": "cuda",
+    "rtol": 1e-06,
+    "atol": 1e-08,
+    "mode": "benchmark",
+    "base_statistics_batch_size": 128,
+    "feature_expansion": true,
+    "purpose": "benchmark"
+  },
+  "torch_threads_by_seed": {
+    "42": 4,
+    "43": 4,
+    "44": 4
+  },
+  "paper_comparison": {
+    "paper_average_incremental_accuracy_pct": 66.3,
+    "paper_base_forgetting_pp": 9.0,
+    "paper_final_accuracy_pct": null,
+    "average_deviation_pp": -1.1804298941798947,
+    "average_relative_deviation_pct": -1.7804372461235216,
+    "base_forgetting_deviation_pp": -0.693333333333328,
+    "reference": "Table1 CIFAR100/K5 as pinned in docs/protocol_chot.md and docs/metrics.md"
+  }
+}

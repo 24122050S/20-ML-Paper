@@ -1,0 +1,177 @@
+{
+  "id": "R1-C100-K5-3SEEDS",
+  "published_date": "2026-11-06",
+  "scope": "R1 complete with42/43/44; R2/R3 not included",
+  "status": "complete",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "n_completed_seeds": 3,
+  "ddof": 1,
+  "artifacts": {
+    "r1_cifar100_k5_summary.json": {
+      "sha256": "c7cd16b0a27b3cc248c24f109b5f3d30942846e14f36a7fba472ff6ee45eec34"
+    },
+    "R1_CIFAR100_K5_3SEEDS_20261106.md": {
+      "sha256": "d1867f850a175f763d3e7a1dfeea3e713760616d3c475d2ded3aa51367acd926"
+    },
+    "figures/r1_cifar100_k5_accuracy.png": {
+      "sha256": "5b3645a9c0b50d83509b5d6cb94f287bf3eeb3da6cc27618d1dcdc1fee0e601d"
+    },
+    "figures/r1_cifar100_k5_training.png": {
+      "sha256": "a729b27ff91371e13ea0ee088632bad0a31e8e273922a1ccaeb7ce1830bf64b1"
+    }
+  },
+  "inputs": [
+    {
+      "seed": 42,
+      "manifest": "R1-SEED42-KAGGLE-01-provenance.json",
+      "manifest_sha256": "c3ef25c09a5315b82ad3cb1820a176dd447e756e1558ee76d7260a01ce146bb5",
+      "attempt_id": "20261105T051519550968Z-47b72e2791ac",
+      "results_sha256": "ceb246be10089e39db2ac4399958bcae86b7f1ffdc731ff3a48fdb8d2af27acc",
+      "checkpoint_sha256": "1f2a747347e26db933b11a9910ee780a8f8597187b40bc2191ad42108cea550d",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/06-benchmark-seed42/output?scriptVersionId=365844618",
+      "wandb_run_id": "zt1014ei",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei"
+    },
+    {
+      "seed": 43,
+      "manifest": "R1-SEED43-KAGGLE-01-provenance.json",
+      "manifest_sha256": "c7288d3fb18288c9b70b2fff2b2ed7062e4ea847375c0fac59e359cdd64017d4",
+      "attempt_id": "20261106T115630909869Z-cbdc3fa47b16",
+      "results_sha256": "78e6ec6050be9d5a14a36dfd26aec9a09b0c06b9770a1fd6e4feba64d9ad44db",
+      "checkpoint_sha256": "ad352c9a7ccd7162666a9fa89914fdf17c72a8faeb5bdab1c8d123061afd0f4f",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/07-benchmark-seed43/output?scriptVersionId=366266785",
+      "wandb_run_id": "v51m2dan",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan"
+    },
+    {
+      "seed": 44,
+      "manifest": "R1-SEED44-KAGGLE-01-provenance.json",
+      "manifest_sha256": "ce3ddef1dddeb8bcf1bf6f702bba3bb9eaacde653075572e756a8489c21894bc",
+      "attempt_id": "20261106T115631283755Z-8a6dcd5ddf4b",
+      "results_sha256": "18709cd7215bbb686bd09f1926a466658d6ac52aac977b66f1e14de7a189b1bd",
+      "checkpoint_sha256": "8e6c1eb6cd6d1f6df411af5201841d5e0591662a8ac6f94bd30962061330a63d",
+      "kaggle_url": "https://www.kaggle.com/code/hsangg206/08-benchmark-seed44/output?scriptVersionId=366266800",
+      "wandb_run_id": "vqcs1ql4",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/vqcs1ql4"
+    }
+  ],
+  "metrics": {
+    "average_incremental_accuracy_pct": {
+      "mean": 65.1195701058201,
+      "sample_sd": 0.610361374963005,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": 65.16455026455027,
+        "43": 65.70619708994708,
+        "44": 64.48796296296297
+      }
+    },
+    "final_accuracy_pct": {
+      "mean": 56.129999999999995,
+      "sample_sd": 0.5574943945906565,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": 55.87,
+        "43": 56.77,
+        "44": 55.75
+      }
+    },
+    "base_forgetting_pp": {
+      "mean": 8.306666666666672,
+      "sample_sd": 0.6201075175591166,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": 8.320000000000007,
+        "43": 8.920000000000002,
+        "44": 7.680000000000007
+      }
+    },
+    "base_accuracy_delta_pp": {
+      "mean": -8.306666666666672,
+      "sample_sd": 0.6201075175591166,
+      "n": 3,
+      "ddof": 1,
+      "values_by_seed": {
+        "42": -8.320000000000007,
+        "43": -8.920000000000002,
+        "44": -7.680000000000007
+      }
+    }
+  },
+  "paper_comparison": {
+    "paper_average_incremental_accuracy_pct": 66.3,
+    "paper_base_forgetting_pp": 9.0,
+    "paper_final_accuracy_pct": null,
+    "average_deviation_pp": -1.1804298941798947,
+    "average_relative_deviation_pct": -1.7804372461235216,
+    "base_forgetting_deviation_pp": -0.693333333333328,
+    "reference": "Table1 CIFAR100/K5 as pinned in docs/protocol_chot.md and docs/metrics.md"
+  },
+  "analysis_reproducibility": {
+    "scripts": {
+      "scripts/aggregate_r1.py": "7e0d90ccfa9c1110ebc78a2720e8cbbe1aca1b2ad319676cae73a1f18e8a5898",
+      "scripts/plot_r1.py": "c2007c18e978c588f5643b9574f9e18fb5e1b37b46afc6b2b536aa129a70a20f",
+      "scripts/build_r1_seed_notebooks.py": "60d3cd805b914595bf2b82117687bd68c9a7c99f2542d594a315d04f4887790b",
+      "requirements-plots.txt": "bebaa1adb4762893f0ad5d6be9c7a8ff95491706dba2f3afbff7b7a7ef31dc54"
+    },
+    "analysis_code_commit": "ba1cb2da50b05f5c0aa121dc72c197994c5ad0e5",
+    "aggregation_command": "python scripts/aggregate_r1.py",
+    "plot_command": "python scripts/plot_r1.py",
+    "plot_dependencies": "requirements-plots.txt; installed in separate local report environment",
+    "mean_and_sample_sd_crosschecked_with_python_statistics": true
+  },
+  "verification": {
+    "all_three_complete_full_protocol": true,
+    "fresh_independent_backbones_and_class_orders": true,
+    "unique_checkpoint_model_and_fe_hashes": true,
+    "all_downloaded_checkpoints_and_states_verified": true,
+    "gpu_test_scope": "each seed54 tests,53 passed/1 snapshot skip; CUDA TinyCNN resume test passed",
+    "no_retraining_or_full_d8000_joint_oracle_during_acceptance": true,
+    "raw_numeric_files_preserved": true,
+    "no_weights_or_credentials_committed": true
+  },
+  "public_tracking_verification": {
+    "status": "complete",
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "checked_at_utc": "2026-11-06T13:02:08.688326+00:00",
+    "method": "fresh requests.Session per seed; trust_env=False disables netrc; no Authorization/Cookie headers",
+    "runs": [
+      {
+        "seed": 42,
+        "run_id": "zt1014ei",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 43,
+        "run_id": "v51m2dan",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      },
+      {
+        "seed": 44,
+        "run_id": "vqcs1ql4",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/vqcs1ql4",
+        "state": "finished",
+        "config_source_metrics_match": true,
+        "no_authorization_or_cookie": true
+      }
+    ]
+  },
+  "created_at_utc": "2026-11-06T13:02:37.398388+00:00"
+}
