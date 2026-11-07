@@ -14,8 +14,9 @@
 - Đã có test độc lập cho phương pháp và thứ tự log W&B/xuất JSON.
 - VERIFY-01 là mốc lịch sử trên dữ liệu tổng hợp. VERIFY-02 kiểm tra thêm minibatch.
 - Pipeline CIFAR smoke đã có lượt CUDA đủ 100 lớp: [JSON](reports/cifar100_kaggle_full5_results.json), [Kaggle scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714), [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished. W cuối 256×100, test 10.000 ảnh, accuracy 22,05%, mọi check đạt; source/config hashes đã đối chiếu. Đây là smoke 2 epochs/d256.
-- Đã có resume CPU/CUDA, streaming analytic, profile d8000 và BP5; các bằng chứng lịch sử giữ riêng trong [danh mục](reports/README.md). **R1 hoàn tất3 seeds42/43/44**, mỗi seed160 epochs/d8000/gamma0.1/K5. Ā **65,1196 ± 0,6104%**, final **56,1300 ± 0,5575%**, F_base **8,3067 ± 0,6201pp** (mean ± sample SD, n=3, ddof=1). Cả3 W&B Finished/công khai; [báo cáo](reports/R1_CIFAR100_K5_3SEEDS_20261106.md), [summary JSON](reports/r1_cifar100_k5_summary.json), [manifest](reports/R1-C100-K5-3SEEDS-provenance.json). R2 cũng đã hoàn tất trong phạm vi đã chốt; bước tiếp theo R3. [Trạng thái ngắn cho Sang](docs/BUOC_TIEP_THEO_SANG.md).
+- Đã có resume CPU/CUDA, streaming analytic, profile d8000 và BP5; các bằng chứng lịch sử giữ riêng trong [danh mục](reports/README.md). **R1 hoàn tất3 seeds42/43/44**, mỗi seed160 epochs/d8000/gamma0.1/K5. Ā **65,1196 ± 0,6104%**, final **56,1300 ± 0,5575%**, F_base **8,3067 ± 0,6201pp** (mean ± sample SD, n=3, ddof=1). Cả3 W&B Finished/công khai; [báo cáo](reports/R1_CIFAR100_K5_3SEEDS_20261106.md), [summary JSON](reports/r1_cifar100_k5_summary.json), [manifest](reports/R1-C100-K5-3SEEDS-provenance.json). R2 và R3 cũng đã hoàn tất theo kế hoạch; còn đối chiếu code tác giả và sản phẩm nộp. [Trạng thái ngắn cho Sang](docs/BUOC_TIEP_THEO_SANG.md).
 - **R2 hoàn tất ngày 07/11/2026:** 9 lượt analytic mới trên seeds42/43/44 và 3 baseline R1 tái dùng, đủ4 hàng/3 seeds. [Báo cáo R2](reports/R2_CIFAR100_K5_20261107.md), [summary](reports/r2_cifar100_k5_summary.json), [manifest](reports/R2-C100-K5-provenance.json). Cả9 W&B mới Finished/công khai; không train thêm backbone. Phạm vi4/5 hàng Table2, không có gamma0.
+- **R3 hoàn tất 07/11/2026:** batch32/128/512 ×3 timing repeats trên một seed42/d1024;9 tiến trình CPU riêng,54 so sánh phase khớp joint và0 argmax khác.9 W&B Finished/công khai. [Báo cáo](reports/R3_CIFAR100_K5_BATCH_20261107.md), [summary](reports/r3_cifar100_k5_summary.json), [manifest](reports/R3-C100-K5-provenance.json). Đây là3 lần đo thời gian, không phải3 seed benchmark.
 - Project W&B: [hsangg-2006/acil-reproduction](https://wandb.ai/hsangg-2006/acil-reproduction), đã xác nhận Public ngày 02/11/2026.
 
 ## Cấu trúc và cách chạy
@@ -75,6 +76,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── 09_r2_ablation_seed42.ipynb
 │   ├── 10_r2_ablation_seed43.ipynb
 │   ├── 11_r2_ablation_seed44.ipynb
+│   ├── 12_r3_batch_analysis.ipynb
 │   └── archive/05_profile_base_api_v3.ipynb
 ├── configs/
 │   ├── verify_analytic_update.json
@@ -109,6 +111,10 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── r2_seed42_kaggle_results.json
 │   ├── r2_seed43_kaggle_results.json
 │   ├── r2_seed44_kaggle_results.json
+│   ├── r3_cifar100_k5_summary.json
+│   ├── R3_CIFAR100_K5_BATCH_20261107.md
+│   ├── R3-KAGGLE-01-provenance.json
+│   ├── R3-C100-K5-provenance.json
 │   ├── figures/
 │   ├── verify_analytic_update_results.json
 │   └── verify_analytic_update_v2_results.json
@@ -118,7 +124,15 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── r2_runner.py
 │   ├── build_r2_notebooks.py
 │   ├── aggregate_r2.py
-│   └── plot_r2.py
+│   ├── plot_r2.py
+│   ├── r3_worker.py
+│   ├── r3_runner.py
+│   ├── build_r3_notebook.py
+│   ├── aggregate_r3.py
+│   ├── plot_r3.py
+│   ├── reconcile_r3_tracking.py
+│   ├── tests/test_r3_analysis.py
+│   └── tests/test_r3_tracking.py
 ├── .gitattributes
 ├── .gitignore
 ├── README.md
@@ -216,7 +230,7 @@ VERIFY-02 Version 9 đã Save & Run All thành công trên Kaggle CPU ngày 02/1
 
 Notebook Kaggle được ghi nhận **Private** trong các lần đối chiếu version; cần kiểm quyền truy cập trước khi nộp. Source, notebook và JSON đã lưu trên GitHub; notebook 01 có output, còn bản 02 mang source bundle của Version 2. W&B project đã được ghi nhận Public.
 
-Trạng thái cập nhật **07/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite hiện tại: **54 tests, 53 đạt và 1 skip CUDA** trên local CPU; bootstrap04 từ bundle trong kernel mới đạt52/54, skip CUDA và test snapshot02/03 không phân phối trong bundle. [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base160 epochs, d8000, gamma0.1; R1/R2/R3 theo core scope. Resume CPU đã so model/optimizer/scheduler/RNG/history chính xác; streaming đủ100 lớp khớp accuracy oracle CPU ở cả6 mốc. [Bằng chứng mới](reports/RESUME-PROFILE-01-provenance.json) và [báo cáo thay đổi](reports/REVIEW_RESUME_PROFILE_20261104.md) ghi phạm vi từng phép kiểm. Analytic d8000 trên Kaggle T4 đã đạt qua [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4); BP5/CUDA cũng đã đạt: GPU bundle54 tests,53 passed/1 historical-snapshot skip. [Review BP5](reports/REVIEW_BP5_KAGGLE_20261105.md) ghi checkpoint v2, RAM/GPU và ngân sách~59 phút; chuẩn bị2 giờ để còn hơn30% dự phòng. [Notebook06](notebooks/06_benchmark_seed42_ready.ipynb) đã chạy R1 seed42 trên T4:160 epochs,6 đánh giá, Ā65,1646%, final55,87%, W8000×100; [báo cáo](reports/R1_SEED42_KAGGLE_20261106.md). R1 hiện đã đủ42/43/44: Ā65,1196 ± 0,6104% (n=3, ddof=1), [summary](reports/r1_cifar100_k5_summary.json)/[báo cáo tổng hợp](reports/R1_CIFAR100_K5_3SEEDS_20261106.md); R2 đã hoàn tất, còn R3 và sản phẩm nộp. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
+Trạng thái cập nhật **07/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite hiện tại: **54 tests, 53 đạt và 1 skip CUDA** trên local CPU; bootstrap04 từ bundle trong kernel mới đạt52/54, skip CUDA và test snapshot02/03 không phân phối trong bundle. [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base160 epochs, d8000, gamma0.1; R1/R2/R3 theo core scope. Resume CPU đã so model/optimizer/scheduler/RNG/history chính xác; streaming đủ100 lớp khớp accuracy oracle CPU ở cả6 mốc. [Bằng chứng mới](reports/RESUME-PROFILE-01-provenance.json) và [báo cáo thay đổi](reports/REVIEW_RESUME_PROFILE_20261104.md) ghi phạm vi từng phép kiểm. Analytic d8000 trên Kaggle T4 đã đạt qua [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4); BP5/CUDA cũng đã đạt: GPU bundle54 tests,53 passed/1 historical-snapshot skip. [Review BP5](reports/REVIEW_BP5_KAGGLE_20261105.md) ghi checkpoint v2, RAM/GPU và ngân sách~59 phút; chuẩn bị2 giờ để còn hơn30% dự phòng. [Notebook06](notebooks/06_benchmark_seed42_ready.ipynb) đã chạy R1 seed42 trên T4:160 epochs,6 đánh giá, Ā65,1646%, final55,87%, W8000×100; [báo cáo](reports/R1_SEED42_KAGGLE_20261106.md). R1 hiện đã đủ42/43/44: Ā65,1196 ± 0,6104% (n=3, ddof=1), [summary](reports/r1_cifar100_k5_summary.json)/[báo cáo tổng hợp](reports/R1_CIFAR100_K5_3SEEDS_20261106.md); R2/R3 đã hoàn tất theo kế hoạch; còn đối chiếu code tác giả và sản phẩm nộp. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
 
 Analytic của notebook04 là Public Version1 với source bundle khớp và W&B finished; cùng kernel này hiện có BP5 ở Version3. Version-pinned output API đã đối chiếu raw bytes của analytic V1 /365647614 và BP5 V3 /365703432. BP5 cung cấp executed CUDA test proof trong JSON. [Review analytic Kaggle](reports/REVIEW_PROFILE_KAGGLE_20261104.md) và [review BP5](reports/REVIEW_BP5_KAGGLE_20261105.md) ghi phạm vi từng lượt.
 
@@ -250,7 +264,7 @@ Các lệnh trên kiểm subset CPU và tài nguyên; JSON giữ trạng thái t
 
 ## Tổng hợp R1
 
-Đã đủ3 seed độc lập42/43/44. Xem [bảng theo seed/phase và hình](reports/R1_CIFAR100_K5_3SEEDS_20261106.md). Tái tạo bằng `python scripts/aggregate_r1.py`; vẽ bằng môi trường riêng với `requirements-plots.txt` và `python scripts/plot_r1.py`. Các script này không gửi GPU job. Summary chỉ complete khi đủ3 input/provenance hợp lệ; SD dùng ddof=1. R2 đã hoàn tất; R3 tiếp tục theo [protocol](docs/protocol_chot.md).
+Đã đủ3 seed độc lập42/43/44. Xem [bảng theo seed/phase và hình](reports/R1_CIFAR100_K5_3SEEDS_20261106.md). Tái tạo bằng `python scripts/aggregate_r1.py`; vẽ bằng môi trường riêng với `requirements-plots.txt` và `python scripts/plot_r1.py`. Các script này không gửi GPU job. Summary chỉ complete khi đủ3 input/provenance hợp lệ; SD dùng ddof=1. R2/R3 đã hoàn tất theo [protocol](docs/protocol_chot.md); các báo cáo riêng ghi đúng phạm vi từng bộ.
 
 ## R2: bỏ expansion và thay gamma — hoàn tất 07/11/2026
 
@@ -277,4 +291,32 @@ n=3 seeds42/43/44, sample SD với ddof=1. [Báo cáo và hình](reports/R2_CIFA
 
 Các cấu hình dùng đúng checkpoint160 cùng seed, cùng class order/normalization/HF revision; hai gamma mới giữ FE hash giống R1. Không train lại backbone. No-FE dùng trực tiếp F64. JSON numeric giữ nguyên trạng thái lúc capture offline; ready/manifest bổ sung actual run ID/URL sau khi sync và kiểm công khai. NPZ mới được load/kiểm đầy đủ trên Kaggle CPU, lưu tại Output đúng version; local chỉ tải JSON/proof/log, không tải NPZ lớn.
 
-Tái tạo bảng: `python scripts/aggregate_r2.py`. Tái tạo hình: cài `requirements-plots.txt` trong môi trường riêng rồi `python scripts/plot_r2.py`. Để chạy lại thực nghiệm, import notebook09/10/11, bật Internet/GPU và gắn đúng R1 Input version1 theo cell cấu hình; `CHECKPOINT=None` tìm checkpoint theo SHA đã pin và sẽ lỗi nếu không có, không tự train. W&B tạo offline trước, cần đồng bộ bằng `wandb sync` trên payload đúng lượt và xác minh xong mới công bố tracking. Giới hạn hai phiên batch GPU của tài khoản tại lúc chạy khiến seed44 được gửi sau42/43. R2 tái lập4/5 hàng Table2; gamma0 ngoài scope v1.0. **Tiếp theo R3**, chưa có bộ kết quả R3 hoặc PPTX hoàn chỉnh trong lượt này.
+Tái tạo bảng: `python scripts/aggregate_r2.py`. Tái tạo hình: cài `requirements-plots.txt` trong môi trường riêng rồi `python scripts/plot_r2.py`. Để chạy lại thực nghiệm, import notebook09/10/11, bật Internet/GPU và gắn đúng R1 Input version1 theo cell cấu hình; `CHECKPOINT=None` tìm checkpoint theo SHA đã pin và sẽ lỗi nếu không có, không tự train. W&B tạo offline trước, cần đồng bộ bằng `wandb sync` trên payload đúng lượt và xác minh xong mới công bố tracking. Giới hạn hai phiên batch GPU của tài khoản tại lúc chạy khiến seed44 được gửi sau42/43. R2 tái lập4/5 hàng Table2; gamma0 ngoài scope v1.0. R3 cũng đã có [báo cáo hoàn tất](reports/R3_CIFAR100_K5_BATCH_20261107.md); còn đối chiếu code tác giả và PPTX/poster.
+
+## R3: phân tích batch size — hoàn tất 07/11/2026
+
+| Batch | Analytic mean ± SD (s) | Peak RSS mean ± SD (MiB) | Argmax khác joint |
+|---:|---:|---:|---:|
+| 32 | 17,3334 ± 0,0784 | 151,3503 ± 0,9749 | 0 |
+| 128 | 6,9247 ± 0,1098 | 146,1029 ± 0,9158 | 0 |
+| 512 | 4,9975 ± 0,1123 | 164,5521 ± 4,3843 | 0 |
+
+n=3 timing repeats trên **một seed42**, sample SD với ddof=1. Thời gian chỉ gồm6 cửa sổ học analytic (có FE); CNN/cache/evaluation/oracle/IO/log nằm ngoài. RSS là toàn process CPU lấy mẫu5ms, gồm runtime/input/allocator; R/W/FE luôn9.28125MiB. [Báo cáo/hình](reports/R3_CIFAR100_K5_BATCH_20261107.md) có bảng base/incremental, sai số,6 mốc accuracy, giới hạn phép đo và nguồn run. Cả54 so sánh R/W/score đạt rtol1e-6/atol1e-8, không có argmax khác joint.
+
+| Experiment | Source snapshot | Cấu hình | Kết quả | Kaggle version | W&B |
+|---|---|---|---|---|---|
+| R3/b32_r1 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch32, repeat1, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [luf7uv40](https://wandb.ai/hsangg-2006/acil-reproduction/runs/luf7uv40) Finished |
+| R3/b128_r1 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch128, repeat1, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [o54hbdfp](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o54hbdfp) Finished |
+| R3/b512_r1 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch512, repeat1, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [lnk0grbq](https://wandb.ai/hsangg-2006/acil-reproduction/runs/lnk0grbq) Finished |
+| R3/b128_r2 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch128, repeat2, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [4481bnn1](https://wandb.ai/hsangg-2006/acil-reproduction/runs/4481bnn1) Finished |
+| R3/b512_r2 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch512, repeat2, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [5ehmjvh3](https://wandb.ai/hsangg-2006/acil-reproduction/runs/5ehmjvh3) Finished |
+| R3/b32_r2 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch32, repeat2, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [yqxph1bb](https://wandb.ai/hsangg-2006/acil-reproduction/runs/yqxph1bb) Finished |
+| R3/b512_r3 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch512, repeat3, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [xesh2kjl](https://wandb.ai/hsangg-2006/acil-reproduction/runs/xesh2kjl) Finished |
+| R3/b32_r3 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch32, repeat3, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [59vlfxzv](https://wandb.ai/hsangg-2006/acil-reproduction/runs/59vlfxzv) Finished |
+| R3/b128_r3 | [Notebook12 @ eaf2566](https://github.com/24122050S/20-ML-Paper/blob/eaf256660fa896ca16ebe3a908868244f07f07d6/notebooks/12_r3_batch_analysis.ipynb) | batch128, repeat3, seed42/d1024 | [Raw JSON](reports/r3_cifar100_k5_results.json) | [v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048) | [3gv0moj7](https://wandb.ai/hsangg-2006/acil-reproduction/runs/3gv0moj7) Finished |
+
+[Kế hoạch chốt trước run](docs/R3_KE_HOACH_DO.md) · [Summary](reports/r3_cifar100_k5_summary.json) · [Manifest](reports/R3-C100-K5-provenance.json). Đã tải/kiểm đủ fixture và60 NPZ ở local, giải lại joint từ full fixed features để so54 trạng thái. Raw JSON giữ trạng thái capture offline; ready/manifest ghi actual tracking sau sync. Tái tạo bảng bằng `python scripts/aggregate_r3.py`, vẽ với môi trường riêng có `requirements-plots.txt` rồi `python scripts/plot_r3.py`. Để chạy lại, import notebook12 và gắn Input R1 seed42/version1, bật GPU/Internet; cache F64 chỉ phục vụ nghiên cứu/oracle, không phải replay storage của learner. Các notebook/script R1/R2 và bằng chứng lịch sử được giữ nguyên.
+
+Sau `wandb sync`, dùng `python scripts/reconcile_r3_tracking.py --suite <raw-r3_ready.json>` để chốt summary từ raw report và thêm alias `r3/learning_seconds_total`, `r3/max_abs_score_error_all_phases`, tránh nhầm giá trị phase cuối với tổng/max cả chuỗi. Helper chỉ nhận run đã Finished và ghi hash raw suite; các run công bố đã qua bước này và được kiểm API công khai. History/numeric JSON giữ nguyên.
+
+**Đã có đủ ba bộ thực nghiệm R1/R2/R3 trong kế hoạch.** Phần chưa hoàn tất của sản phẩm giữa kỳ là đối chiếu code tác giả theo protocol, nội dung phân tích/nguồn và PPTX; poster theo hạn cuối kỳ. Không đồng nhất hoàn tất thí nghiệm với hoàn tất toàn bộ yêu cầu môn.

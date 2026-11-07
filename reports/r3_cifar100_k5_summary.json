@@ -1,0 +1,781 @@
+{
+  "status": "complete",
+  "seed": 42,
+  "dimension": 1024,
+  "gamma": 0.1,
+  "n_seeds": 1,
+  "n_cases": 9,
+  "n_phase_comparisons": 54,
+  "timing_repeats_per_batch": 3,
+  "ddof": 1,
+  "statistical_unit": "timing repeat on one seed; accuracy is not a3-seed benchmark",
+  "rows": [
+    {
+      "batch_size": 32,
+      "timing_repeats": 3,
+      "metrics": {
+        "base_seconds": {
+          "mean": 10.710433023333337,
+          "sample_sd": 0.06720725944198642,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 10.787957978999998,
+            "2": 10.674708086999999,
+            "3": 10.668633004000014
+          }
+        },
+        "incremental_seconds": {
+          "mean": 6.622970403999943,
+          "sample_sd": 0.09676622234586311,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 6.552518666999902,
+            "2": 6.7333036379999385,
+            "3": 6.58308890699999
+          }
+        },
+        "learning_seconds": {
+          "mean": 17.33340342733328,
+          "sample_sd": 0.07838462417312976,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 17.3404766459999,
+            "2": 17.408011724999938,
+            "3": 17.251721911000004
+          }
+        },
+        "baseline_rss_bytes": {
+          "mean": 93892608.0,
+          "sample_sd": 1232977.6451371696,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 95313920.0,
+            "2": 93253632.0,
+            "3": 93110272.0
+          }
+        },
+        "peak_learning_rss_bytes": {
+          "mean": 158702250.66666666,
+          "sample_sd": 1022207.1131142325,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 159879168.0,
+            "2": 158191616.0,
+            "3": 158035968.0
+          }
+        },
+        "rss_increase_bytes": {
+          "mean": 64809642.666666664,
+          "sample_sd": 211741.1475300286,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 64565248.0,
+            "2": 64937984.0,
+            "3": 64925696.0
+          }
+        }
+      },
+      "accuracy": {
+        "average_incremental_accuracy_pct": 63.10403439153439,
+        "final_accuracy_pct": 51.73,
+        "base_forgetting_pp": 5.959999999999994,
+        "n_independent_seeds": 1,
+        "between_seed_sd": null,
+        "same_all_repeats_and_joint": true
+      },
+      "comparison": {
+        "phase_comparisons": 18,
+        "max_relative_w_error": 1.1589530505279064e-11,
+        "max_relative_r_error": 3.822789639870494e-15,
+        "max_abs_r_error": 7.592017292612496e-15,
+        "max_abs_score_error": 2.4747981441919364e-12,
+        "prediction_disagreements": 0,
+        "passed": true
+      },
+      "base_batches": 782,
+      "incremental_batches_per_phase": 157,
+      "persistent_analytic_state_bytes": 9732096,
+      "runs": [
+        {
+          "case_key": "b32_r1",
+          "repeat": 1,
+          "status": "synced",
+          "wandb_run_id": "luf7uv40",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/luf7uv40",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:40:47.005315+00:00",
+          "offline_payload_sha256": "6f45aeb17bc85f89b974613f7637f69cacb5fde550f209bdc9d83c6e3df83923",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 17.3404766459999,
+              "max_abs_score_error": 2.4747981441919364e-12
+            },
+            "expected": {
+              "base_seconds": 10.787957978999998,
+              "incremental_seconds": 6.552518666999902,
+              "learning_seconds": 17.3404766459999,
+              "baseline_rss_bytes": 95313920,
+              "peak_learning_rss_bytes": 159879168,
+              "rss_increase_bytes": 64565248,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 1.1589530505279064e-11,
+              "max_relative_r_error": 3.822789639870494e-15,
+              "max_abs_score_error": 2.4747981441919364e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 17.3404766459999,
+              "r3/max_abs_score_error_all_phases": 2.4747981441919364e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        },
+        {
+          "case_key": "b32_r2",
+          "repeat": 2,
+          "status": "synced",
+          "wandb_run_id": "yqxph1bb",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/yqxph1bb",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:41:48.250941+00:00",
+          "offline_payload_sha256": "697ed2ede5d30964f54c631fd6e3cc264ab5d73a20df89931248112be7c882e7",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 1.6819584039999995,
+              "max_abs_score_error": 1.8829521275520733e-12
+            },
+            "expected": {
+              "base_seconds": 10.674708086999999,
+              "incremental_seconds": 6.7333036379999385,
+              "learning_seconds": 17.408011724999938,
+              "baseline_rss_bytes": 93253632,
+              "peak_learning_rss_bytes": 158191616,
+              "rss_increase_bytes": 64937984,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 1.1589530505279064e-11,
+              "max_relative_r_error": 3.822789639870494e-15,
+              "max_abs_score_error": 2.4747981441919364e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 17.408011724999938,
+              "r3/max_abs_score_error_all_phases": 2.4747981441919364e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        },
+        {
+          "case_key": "b32_r3",
+          "repeat": 3,
+          "status": "synced",
+          "wandb_run_id": "59vlfxzv",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/59vlfxzv",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:42:16.841242+00:00",
+          "offline_payload_sha256": "b20325fb8f4dff073561e7c8255f4fefaad10099938e5f36683f21716337936b",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 1.640362137000011,
+              "max_abs_score_error": 1.8829521275520733e-12
+            },
+            "expected": {
+              "base_seconds": 10.668633004000014,
+              "incremental_seconds": 6.58308890699999,
+              "learning_seconds": 17.251721911000004,
+              "baseline_rss_bytes": 93110272,
+              "peak_learning_rss_bytes": 158035968,
+              "rss_increase_bytes": 64925696,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 1.1589530505279064e-11,
+              "max_relative_r_error": 3.822789639870494e-15,
+              "max_abs_score_error": 2.4747981441919364e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 17.251721911000004,
+              "r3/max_abs_score_error_all_phases": 2.4747981441919364e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        }
+      ],
+      "learning_time_ratio_vs_batch128": 2.5031316586996692
+    },
+    {
+      "batch_size": 128,
+      "timing_repeats": 3,
+      "metrics": {
+        "base_seconds": {
+          "mean": 3.1937245026666496,
+          "sample_sd": 0.06786014534891179,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 3.139249933999963,
+            "2": 3.172182792000001,
+            "3": 3.2697407819999853
+          }
+        },
+        "incremental_seconds": {
+          "mean": 3.730962565666649,
+          "sample_sd": 0.0419590578630003,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 3.6989910429999213,
+            "2": 3.715421690000028,
+            "3": 3.7784749639999973
+          }
+        },
+        "learning_seconds": {
+          "mean": 6.924687068333299,
+          "sample_sd": 0.10978929620429512,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 6.838240976999884,
+            "2": 6.887604482000029,
+            "3": 7.048215745999983
+          }
+        },
+        "baseline_rss_bytes": {
+          "mean": 94401877.33333333,
+          "sample_sd": 1091915.0367337805,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 95092736.0,
+            "2": 93143040.0,
+            "3": 94969856.0
+          }
+        },
+        "peak_learning_rss_bytes": {
+          "mean": 153199957.33333334,
+          "sample_sd": 960303.1016618313,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 153804800.0,
+            "2": 152092672.0,
+            "3": 153702400.0
+          }
+        },
+        "rss_increase_bytes": {
+          "mean": 58798080.0,
+          "sample_sd": 131646.7399064633,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 58712064.0,
+            "2": 58949632.0,
+            "3": 58732544.0
+          }
+        }
+      },
+      "accuracy": {
+        "average_incremental_accuracy_pct": 63.10403439153439,
+        "final_accuracy_pct": 51.73,
+        "base_forgetting_pp": 5.959999999999994,
+        "n_independent_seeds": 1,
+        "between_seed_sd": null,
+        "same_all_repeats_and_joint": true
+      },
+      "comparison": {
+        "phase_comparisons": 18,
+        "max_relative_w_error": 9.678848635168014e-12,
+        "max_relative_r_error": 3.3994123226173527e-15,
+        "max_abs_r_error": 6.495563635577906e-15,
+        "max_abs_score_error": 2.3023805084676496e-12,
+        "prediction_disagreements": 0,
+        "passed": true
+      },
+      "base_batches": 196,
+      "incremental_batches_per_phase": 40,
+      "persistent_analytic_state_bytes": 9732096,
+      "runs": [
+        {
+          "case_key": "b128_r1",
+          "repeat": 1,
+          "status": "synced",
+          "wandb_run_id": "o54hbdfp",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/o54hbdfp",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:40:50.409956+00:00",
+          "offline_payload_sha256": "7880339731772b10216d651854c1b1529a4d5ab9a150f544714b20ef91669954",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 6.838240976999884,
+              "max_abs_score_error": 2.3023805084676496e-12
+            },
+            "expected": {
+              "base_seconds": 3.139249933999963,
+              "incremental_seconds": 3.6989910429999213,
+              "learning_seconds": 6.838240976999884,
+              "baseline_rss_bytes": 95092736,
+              "peak_learning_rss_bytes": 153804800,
+              "rss_increase_bytes": 58712064,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 9.678848635168014e-12,
+              "max_relative_r_error": 3.3994123226173527e-15,
+              "max_abs_score_error": 2.3023805084676496e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 6.838240976999884,
+              "r3/max_abs_score_error_all_phases": 2.3023805084676496e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        },
+        {
+          "case_key": "b128_r2",
+          "repeat": 2,
+          "status": "synced",
+          "wandb_run_id": "4481bnn1",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/4481bnn1",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:41:19.595120+00:00",
+          "offline_payload_sha256": "e5017dad32780c27fe4aa7d0235ada908b62ef546f829d3ac3b49f84544d33d5",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 0.7099585459999957,
+              "max_abs_score_error": 2.2921387010654826e-12
+            },
+            "expected": {
+              "base_seconds": 3.172182792000001,
+              "incremental_seconds": 3.715421690000028,
+              "learning_seconds": 6.887604482000029,
+              "baseline_rss_bytes": 93143040,
+              "peak_learning_rss_bytes": 152092672,
+              "rss_increase_bytes": 58949632,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 9.678848635168014e-12,
+              "max_relative_r_error": 3.3994123226173527e-15,
+              "max_abs_score_error": 2.3023805084676496e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 6.887604482000029,
+              "r3/max_abs_score_error_all_phases": 2.3023805084676496e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        },
+        {
+          "case_key": "b128_r3",
+          "repeat": 3,
+          "status": "synced",
+          "wandb_run_id": "3gv0moj7",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/3gv0moj7",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:42:32.181595+00:00",
+          "offline_payload_sha256": "718af673c510f3a852f1f8e24c3223145a867a0f6993122f0da6d6683edb20dc",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 0.742171830000018,
+              "max_abs_score_error": 2.2921387010654826e-12
+            },
+            "expected": {
+              "base_seconds": 3.2697407819999853,
+              "incremental_seconds": 3.7784749639999973,
+              "learning_seconds": 7.048215745999983,
+              "baseline_rss_bytes": 94969856,
+              "peak_learning_rss_bytes": 153702400,
+              "rss_increase_bytes": 58732544,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 9.678848635168014e-12,
+              "max_relative_r_error": 3.3994123226173527e-15,
+              "max_abs_score_error": 2.3023805084676496e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 7.048215745999983,
+              "r3/max_abs_score_error_all_phases": 2.3023805084676496e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        }
+      ],
+      "learning_time_ratio_vs_batch128": 1.0
+    },
+    {
+      "batch_size": 512,
+      "timing_repeats": 3,
+      "metrics": {
+        "base_seconds": {
+          "mean": 1.284289458333338,
+          "sample_sd": 0.0664066764364025,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 1.2152858019999826,
+            "2": 1.347751919000018,
+            "3": 1.2898306540000135
+          }
+        },
+        "incremental_seconds": {
+          "mean": 3.713222635333333,
+          "sample_sd": 0.05400897594880474,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 3.65351098900004,
+            "2": 3.7274945259999868,
+            "3": 3.758662390999973
+          }
+        },
+        "learning_seconds": {
+          "mean": 4.997512093666671,
+          "sample_sd": 0.11227046788143129,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 4.8687967910000225,
+            "2": 5.075246445000005,
+            "3": 5.0484930449999865
+          }
+        },
+        "baseline_rss_bytes": {
+          "mean": 93899434.66666667,
+          "sample_sd": 1178953.276911911,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 93233152.0,
+            "2": 93204480.0,
+            "3": 95260672.0
+          }
+        },
+        "peak_learning_rss_bytes": {
+          "mean": 172545365.33333334,
+          "sample_sd": 4597318.602123343,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 167325696.0,
+            "2": 174317568.0,
+            "3": 175992832.0
+          }
+        },
+        "rss_increase_bytes": {
+          "mean": 78645930.66666667,
+          "sample_sd": 3947945.55907618,
+          "n": 3,
+          "ddof": 1,
+          "values_by_repeat": {
+            "1": 74092544.0,
+            "2": 81113088.0,
+            "3": 80732160.0
+          }
+        }
+      },
+      "accuracy": {
+        "average_incremental_accuracy_pct": 63.10403439153439,
+        "final_accuracy_pct": 51.73,
+        "base_forgetting_pp": 5.959999999999994,
+        "n_independent_seeds": 1,
+        "between_seed_sd": null,
+        "same_all_repeats_and_joint": true
+      },
+      "comparison": {
+        "phase_comparisons": 18,
+        "max_relative_w_error": 9.782383587019231e-12,
+        "max_relative_r_error": 3.2720569130358704e-15,
+        "max_abs_r_error": 5.856067524686302e-15,
+        "max_abs_score_error": 2.1777857295290914e-12,
+        "prediction_disagreements": 0,
+        "passed": true
+      },
+      "base_batches": 49,
+      "incremental_batches_per_phase": 10,
+      "persistent_analytic_state_bytes": 9732096,
+      "runs": [
+        {
+          "case_key": "b512_r1",
+          "repeat": 1,
+          "status": "synced",
+          "wandb_run_id": "lnk0grbq",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/lnk0grbq",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:41:05.439960+00:00",
+          "offline_payload_sha256": "f7a0c9e79a1d62ce7ffac3187715eed2e15ce7ad7f79ade4c32a75a0395a5367",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 0.7490281969999728,
+              "max_abs_score_error": 1.6213141940113476e-12
+            },
+            "expected": {
+              "base_seconds": 1.2152858019999826,
+              "incremental_seconds": 3.65351098900004,
+              "learning_seconds": 4.8687967910000225,
+              "baseline_rss_bytes": 93233152,
+              "peak_learning_rss_bytes": 167325696,
+              "rss_increase_bytes": 74092544,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 9.782383587019231e-12,
+              "max_relative_r_error": 3.2720569130358704e-15,
+              "max_abs_score_error": 2.1777857295290914e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 4.8687967910000225,
+              "r3/max_abs_score_error_all_phases": 2.1777857295290914e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        },
+        {
+          "case_key": "b512_r2",
+          "repeat": 2,
+          "status": "synced",
+          "wandb_run_id": "5ehmjvh3",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/5ehmjvh3",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:41:34.112301+00:00",
+          "offline_payload_sha256": "ecbc067d6b97cbb6aec297660934891eca8129421c7a9471b0ab37cc89092bb0",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 0.7080614230000037,
+              "max_abs_score_error": 1.6213141940113476e-12
+            },
+            "expected": {
+              "base_seconds": 1.347751919000018,
+              "incremental_seconds": 3.7274945259999868,
+              "learning_seconds": 5.075246445000005,
+              "baseline_rss_bytes": 93204480,
+              "peak_learning_rss_bytes": 174317568,
+              "rss_increase_bytes": 81113088,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 9.782383587019231e-12,
+              "max_relative_r_error": 3.2720569130358704e-15,
+              "max_abs_score_error": 2.1777857295290914e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 5.075246445000005,
+              "r3/max_abs_score_error_all_phases": 2.1777857295290914e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        },
+        {
+          "case_key": "b512_r3",
+          "repeat": 3,
+          "status": "synced",
+          "wandb_run_id": "xesh2kjl",
+          "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/xesh2kjl",
+          "verified_state": "finished",
+          "synced_at_utc": "2026-11-07T01:42:02.642614+00:00",
+          "offline_payload_sha256": "97b5fa5eb1eb5aef7cca0fa7269b4ddee0367317c4ba4f828b10a26542869453",
+          "config_source_summary_match": true,
+          "six_history_rows_match": true,
+          "public_api_verified": true,
+          "summary_reconciliation": {
+            "before": {
+              "learning_seconds": 0.7187117319999743,
+              "max_abs_score_error": 1.6213141940113476e-12
+            },
+            "expected": {
+              "base_seconds": 1.2898306540000135,
+              "incremental_seconds": 3.758662390999973,
+              "learning_seconds": 5.0484930449999865,
+              "baseline_rss_bytes": 95260672,
+              "peak_learning_rss_bytes": 175992832,
+              "rss_increase_bytes": 80732160,
+              "persistent_analytic_state_bytes": 9732096,
+              "verification_passed": true,
+              "joint_comparison_passed": true,
+              "training_executed_this_run": false,
+              "average_incremental_accuracy_pct": 63.10403439153439,
+              "final_accuracy_pct": 51.73,
+              "max_relative_w_error": 9.782383587019231e-12,
+              "max_relative_r_error": 3.2720569130358704e-15,
+              "max_abs_score_error": 2.1777857295290914e-12,
+              "prediction_disagreements": 0,
+              "r3/learning_seconds_total": 5.0484930449999865,
+              "r3/max_abs_score_error_all_phases": 2.1777857295290914e-12,
+              "r3/summary_reconciled_from_raw": true,
+              "r3/raw_suite_sha256": "a78b40248acbfba8fc03d7a28ac1e79917eb1188cabb8233345d24a9ef04909b"
+            },
+            "method": "after Finished/sync; summary derived from raw six-phase report, unique r3 aliases added"
+          },
+          "summary_float_comparison": {
+            "relative_tolerance": 1e-14,
+            "absolute_tolerance": 0,
+            "scope": "JSON round-trip only; int/bool/hash exact"
+          },
+          "public_verification_method": "fresh session, trust_env=False, no Authorization/Cookie"
+        }
+      ],
+      "learning_time_ratio_vs_batch128": 0.72169500864817
+    }
+  ],
+  "oracle_phase_accuracy": [
+    {
+      "phase": 0,
+      "n_classes": 50,
+      "accuracy_pct": 76.82,
+      "base_accuracy_pct": 76.82
+    },
+    {
+      "phase": 1,
+      "n_classes": 60,
+      "accuracy_pct": 69.55,
+      "base_accuracy_pct": 74.24
+    },
+    {
+      "phase": 2,
+      "n_classes": 70,
+      "accuracy_pct": 64.87142857142857,
+      "base_accuracy_pct": 73.3
+    },
+    {
+      "phase": 3,
+      "n_classes": 80,
+      "accuracy_pct": 59.975,
+      "base_accuracy_pct": 72.3
+    },
+    {
+      "phase": 4,
+      "n_classes": 90,
+      "accuracy_pct": 55.67777777777778,
+      "base_accuracy_pct": 71.76
+    },
+    {
+      "phase": 5,
+      "n_classes": 100,
+      "accuracy_pct": 51.73,
+      "base_accuracy_pct": 70.86
+    }
+  ],
+  "fixture_sha256": "8b73747a3a9c70a18bd3e5bfdbcc5fa536777a778d9ee11f784a714cebfc92f5",
+  "input_manifest": "R3-KAGGLE-01-provenance.json",
+  "input_manifest_sha256": "b94b20b771dbe791ccb3159ffd993661baf7f3c888b27b52ae1b6c52e949f1a8",
+  "same_batch_repeats_bitwise_equal": true,
+  "created_at_utc": "2026-11-07T01:43:07.406957+00:00",
+  "timing_scope": "FE transform + base Gram/solve + incremental RLS; sum of6 isolated learning windows",
+  "limitations": [
+    "one data/model seed",
+    "sampled RSS can miss short peaks; includes runtime/input/allocator",
+    "cached F64 is research fixture, not learner replay memory",
+    "d1024 analysis is separate from d8000 benchmark"
+  ]
+}
