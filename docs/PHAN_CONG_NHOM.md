@@ -1,6 +1,6 @@
 # Phân công ACIL: Sang, Vĩ, Phát
 
-> Sang đang thực hiện một mình. R1 đã hoàn tất42/43/44: Ā65,1196 ± 0,6104%, final56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (mean±sample_SD, n=3, ddof=1), cả3 W&B Finished/công khai. [Báo cáo R1](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json). R2 cũng đã hoàn tất4 hàng/3 seeds,9 analytic runs mới và3 baseline R1 tái dùng ([báo cáo R2](../reports/R2_CIFAR100_K5_20261107.md)). Còn R3 và sản phẩm thuyết trình/poster; vai trò ba thành viên bên dưới là kế hoạch khi các bạn cùng tham gia.
+> Sang đang thực hiện một mình. R1 đã hoàn tất42/43/44: Ā65,1196 ± 0,6104%, final56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (mean±sample_SD, n=3, ddof=1), cả3 W&B Finished/công khai. [Báo cáo R1](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json). R2 cũng đã hoàn tất4 hàng/3 seeds,9 analytic runs mới và3 baseline R1 tái dùng ([báo cáo R2](../reports/R2_CIFAR100_K5_20261107.md)). R3 cũng đã đủ9 timing runs/54 so sánh joint ([báo cáo](../reports/R3_CIFAR100_K5_BATCH_20261107.md)); còn đối chiếu code tác giả và sản phẩm thuyết trình/poster; vai trò ba thành viên bên dưới là kế hoạch khi các bạn cùng tham gia.
 
 Cập nhật **07/11/2026**, giờ Việt Nam, sau khi nghiệm thu R1/R2 và tracking công khai. Nền tảng chạy chính: **Kaggle**.
 Hạn chính thức: PPTX **21/11/2026 lúc 23:59**, poster **05/12/2026 lúc 23:59**.
@@ -56,6 +56,8 @@ Kaggle được ghi nhận Private trong manifest lần đối chiếu Version 2
 - **Kiểm tra:** Phát đọc để chuyển thành câu diễn giải dễ hiểu.
 
 ### S03 — Thiết kế và chạy phân tích bổ sung R3
+
+**Hoàn tất 07/11/2026:**9 phép đo batch32/128/512 ×3 repeats trên seed42/d1024;54 phase comparisons đạt ngưỡng joint và0 argmax khác. [Báo cáo/hình](../reports/R3_CIFAR100_K5_BATCH_20261107.md) · [Manifest](../reports/R3-C100-K5-provenance.json). Đây là3 timing repeats, không phải3 seeds. Các mốc bên dưới là kế hoạch ban đầu.
 
 - **Thiết kế xong:** 06/11; kết quả đầu 10/11; chốt 13/11.
 - **Làm trước:** sweep batch size 32/128/512, giữ cùng checkpoint, expansion, class order, gamma, precision và thứ tự mẫu. Đo sai lệch W, score, số nhãn khác nhau, thời gian; giải thích vì sao batching lý tưởng không đổi nghiệm.
@@ -228,8 +230,8 @@ Mỗi task chỉ hoàn tất khi có file/commit/run và người kiểm tra ch�
 
 **Sang đang làm một mình:** trợ lý đã chạy BP5/CUDA qua API, không cần làm05 lại. [Notebook06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình160/d8000/seed42. Xem [trạng thái ngắn](BUOC_TIEP_THEO_SANG.md), giữ protocol/metrics v1.0.
 
-**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget R1 ban đầu~59 phút, cửa sổ2 giờ; quota26h là số Sang cung cấp trước BP5, không phải quota còn lại hiện tại. Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã Finished và được API công khai đối chiếu. R1 seed42 đã hoàn tất160 epochs/K5, [W&B zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished, [báo cáo](../reports/R1_SEED42_KAGGLE_20261106.md). R1 hiện đã đủ3 seeds, Ā65,1196 ± 0,6104%, [báo cáo tổng hợp](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md). **Tiếp theo:** R3; R2 đã hoàn tất theo báo cáo ở mụcP03. Không train lại base cho từng batch.
+**Đã có:** checkpoint v2/resume CPU+CUDA test, streaming/no-FE/metrics, profile d8000 T4 và BP5 Version3; [BP5 JSON](../reports/profile_base_kaggle_ready.json)/checkpoint đã kiểm. Budget R1 ban đầu~59 phút, cửa sổ2 giờ; quota26h là số Sang cung cấp trước BP5, không phải quota còn lại hiện tại. Tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) đã Finished và được API công khai đối chiếu. R1 seed42 đã hoàn tất160 epochs/K5, [W&B zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished, [báo cáo](../reports/R1_SEED42_KAGGLE_20261106.md). R1 hiện đã đủ3 seeds, Ā65,1196 ± 0,6104%, [báo cáo tổng hợp](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md). **Tiếp theo:** đối chiếu source tác giả và ghép PPTX/poster; R1/R2/R3 đã có đủ kết quả theo các báo cáo.
 
-**Sau đó:** dùng checkpoint160/seed42 cho R3 d1024; tổng hợp phân tích và ghép deck/poster. Cấu hình/gamma/batch giữ theo protocol. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
+**Sau đó:** dùng báo cáo R1/R2/R3 đã hoàn tất để viết phân tích, đối chiếu code tác giả và ghép deck/poster. Cấu hình/gamma/batch giữ theo protocol. Nếu Vĩ/Phát tham gia lại, chia việc theo bảng vai trò.
 
 **Quy ước hiện trạng:** README và bảng run phản ánh artifact thật trong repo. Source hoặc kết quả chỉ có tại workspace hỗ trợ được ghi rõ chưa công bố; run Kaggle cần xác nhận bằng version và output thực tế.
