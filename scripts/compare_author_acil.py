@@ -217,6 +217,11 @@ def execute(args):
         assert git(author, 'rev-parse', 'HEAD') == AUTHOR_COMMIT and not git(author, 'status', '--porcelain')
         for name, expected in meta['files'].items(): assert sha(fixture/name) == expected, name
         for name, expected in meta['provenance']['source_sha256'].items(): assert sha(ROOT/name) == expected, name
+        reference_case = next(case for case in suite['cases'] if case['key']=='b128_r1')
+        for row in reference_case['report']['results']:
+            assert sha(r3_root/'cases/b128_r1'/row['state_file'])==row['state_sha256']
+        for row in suite['oracle']['results']:
+            assert sha(r3_root/'oracle'/row['file'])==row['sha256']
         assert sha(checkpoint) == meta['reference']['checkpoint_sha256']
         saved = torch.load(checkpoint, map_location='cpu', weights_only=True)
         assert saved['completed_epoch'] == saved['target_epochs'] == 160 and saved['training_complete']
@@ -254,7 +259,7 @@ def execute(args):
                         ref_r, ref_w = old['inverse_gram'], old['weights']
                         group_check = comparison(inverse, weights, ref_r, ref_w, scores, test_h @ ref_w)
                     oracle_row = suite['oracle']['results'][phase]
-                    with np.load(r3_root/'oracle'/oracle_row['state_file']) as old:
+                    with np.load(r3_root/'oracle'/oracle_row['file']) as old:
                         joint_check = comparison(inverse, weights, old['inverse_gram'], old['weights'], scores, test_h @ old['weights'])
                 else:
                     ref_r, ref_w = own_state
