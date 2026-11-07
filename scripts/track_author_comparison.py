@@ -22,13 +22,16 @@ def matches(actual, expected):
     return True
 
 
-def track(suite_path, output):
+def track(suite_path, output, diagnostic_path=None):
     """Tạo payload một lần; sync lại payload nếu cần; chỉ ready khi public/finished."""
     import requests
     import wandb
     suite_path,output=Path(suite_path),Path(output)
     raw=suite_path.read_bytes();suite=json.loads(raw);digest=hashlib.sha256(raw).hexdigest()
-    assert suite['status']=='complete' and suite['verification_passed']
+    assert suite['status'] in ('complete','failed')
+    if suite['status']=='failed':
+        assert suite['error_type']=='RuntimeError' and suite['error']=='Author comparison differs beyond preregistered thresholds; evidence preserved'
+    assert suite['author_source_unchanged_after_execution']
     assert suite['verification_scope'].startswith('analytic C1/C2')
     assert {case['case_key'] for case in suite['cases']}=={'controlled','native_main'}
     work=output.parent;work.mkdir(parents=True,exist_ok=True)
@@ -38,9 +41,20 @@ def track(suite_path, output):
     else:
         capture={'numeric_sha256':digest,'runs':[]}
     def save(path,value):path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8',newline='\n')
+    cases=list(suite['cases']);diagnostic_digest=None
+    if diagnostic_path is not None:
+        diagnostic_raw=Path(diagnostic_path).read_bytes();diagnostic=json.loads(diagnostic_raw)
+        diagnostic_digest=hashlib.sha256(diagnostic_raw).hexdigest()
+        assert diagnostic['status']=='complete' and diagnostic['source_suite_sha256']==digest
+        cases.append({'case_key':'base_state_diagnostic','verification_passed':diagnostic['verification_passed'],
+            'results':[{'phase':r['phase'],'n_classes':r['n_classes'],'test_samples':r['n_classes']*100,
+                'accuracy_pct':r['accuracy_pct'],'group_comparison':r['comparison'],'passed':r['comparison']['passed']} for r in diagnostic['results']],
+            'metrics':{'final_accuracy_pct':diagnostic['results'][-1]['accuracy_pct'],'n_independent_seeds':1,'between_seed_sd':None}})
     api=wandb.Api(timeout=45);verified=[]
-    for case in suite['cases']:
-        rows=case['results'];assert len(rows)==6 and all(row['passed'] for row in rows)
+    for case in cases:
+        rows=case['results'];is_diagnostic=case['case_key']=='base_state_diagnostic'
+        assert len(rows)==(5 if is_diagnostic else 6)
+        assert bool(case['verification_passed'])==all(r['passed'] for r in rows)
         key=case['case_key']
         config={'experiment':'ACIL-author-comparison','case_key':key,'seed':42,'dimension':1024,'gamma':.1,
             'analytic_batch_size':128,'n_train':50000,'n_test':10000,'n_phases':5,'dtype':'float64','device':'cpu',
@@ -48,27 +62,33 @@ def track(suite_path, output):
             'fixture_sha256':suite['fixture_sha256'],'base_checkpoint_sha256':suite['base_checkpoint_sha256'],
             'runner_sha256':suite['execution_source']['runner_sha256'],'execution_source_commit':suite['execution_source']['group_git_commit'],
             'numeric_results_sha256':digest,'numeric_environment':suite['environment'],'training_executed':False,
+            'raw_suite_status':suite['status'],'raw_suite_verification_passed':suite['verification_passed'],
+            'case_equivalence_passed':case['verification_passed'],'base_state_injected':is_diagnostic,
+            'posthoc_diagnostic_sha256':diagnostic_digest if is_diagnostic else None,
             'scope':'one seed/d1024; same completed group checkpoint; not native fresh training benchmark',
-            'feature_expansion_origin':'R3 N01 seed1042' if key=='controlled' else 'author native RandomBuffer seed42',
+            'feature_expansion_origin':'author native RandomBuffer seed42' if key=='native_main' else 'R3 N01 seed1042',
             'backbone_fp32_all_checks_passed':suite['diagnostics']['all_fp32_backbone_checks_passed']}
         expected={**{k:v for k,v in case['metrics'].items() if v is not None},
-            'author_compare/analytic_equivalence_passed':True,'author_compare/n_phase_comparisons':6,
+            'author_compare/analytic_equivalence_passed':case['verification_passed'],'author_compare/n_phase_comparisons':len(rows),
+            'author_compare/n_phases_outside_allclose':sum(not r['passed'] for r in rows),
             'author_compare/total_prediction_disagreements_vs_group':sum(r['group_comparison']['prediction_disagreements'] for r in rows),
             'author_compare/max_relative_w_error_vs_group':max(r['group_comparison']['relative_w_error'] for r in rows),
-            'author_compare/max_relative_w_error_vs_joint':max(r['joint_comparison']['relative_w_error'] for r in rows),
             'author_compare/max_abs_score_error_vs_group':max(r['group_comparison']['max_abs_score_error'] for r in rows),
             'author_compare/raw_results_sha256':digest,'author_compare/backbone_fp32_all_checks_passed':suite['diagnostics']['all_fp32_backbone_checks_passed']}
+        if not is_diagnostic:expected['author_compare/max_relative_w_error_vs_joint']=max(r['joint_comparison']['relative_w_error'] for r in rows)
         prior=next((r for r in capture['runs'] if r['case_key']==key),None)
         if prior is None:
             with wandb.init(entity='hsangg-2006',project='acil-reproduction',mode='offline',dir=str(work),
                 name='AUTHOR-COMPARE-'+key,job_type='author-code-comparison',tags=['author-comparison',key,'seed42','d1024'],config=config) as run:
                 for r in rows:
-                    run.log({'phase':r['phase'],'n_classes':r['n_classes'],'test_samples':r['test_samples'],
-                        'accuracy_pct':r['accuracy_pct'],'base_accuracy_pct':r['base_accuracy_pct'],
+                    history_row={'phase':r['phase'],'n_classes':r['n_classes'],'test_samples':r['test_samples'],
+                        'accuracy_pct':r['accuracy_pct'],
                         'group_relative_w_error':r['group_comparison']['relative_w_error'],
-                        'joint_relative_w_error':r['joint_comparison']['relative_w_error'],
                         'group_max_abs_score_error':r['group_comparison']['max_abs_score_error'],
-                        'prediction_disagreements':r['group_comparison']['prediction_disagreements'],'phase_comparison_passed':r['passed']},step=r['phase'])
+                        'prediction_disagreements':r['group_comparison']['prediction_disagreements'],'phase_comparison_passed':r['passed']}
+                    if 'base_accuracy_pct' in r:history_row['base_accuracy_pct']=r['base_accuracy_pct']
+                    if 'joint_comparison' in r:history_row['joint_relative_w_error']=r['joint_comparison']['relative_w_error']
+                    run.log(history_row,step=r['phase'])
                 run.summary.update(expected)
                 prior={'case_key':key,'offline_run_id':run.id,'offline_dir':str(Path(run.dir).parent)}
             payload=Path(prior['offline_dir'])/('run-'+prior['offline_run_id']+'.wandb')
@@ -84,10 +104,10 @@ def track(suite_path, output):
         actual=api.run('hsangg-2006/acil-reproduction/'+prior['offline_run_id'])
         assert actual.state=='finished' and all(actual.config[k]==v for k,v in config.items())
         assert matches(dict(actual.summary),expected),'Tracking summary mismatch; numerical results unchanged'
-        history=sorted(actual.scan_history(keys=['phase','accuracy_pct','base_accuracy_pct','group_relative_w_error','prediction_disagreements']),key=lambda r:r['phase'])
-        assert len(history)==6
+        history=sorted(actual.scan_history(keys=['phase','accuracy_pct','group_relative_w_error','prediction_disagreements']),key=lambda r:r['phase'])
+        assert len(history)==len(rows)
         for item,row in zip(history,rows):
-            assert matches(item,{'phase':row['phase'],'accuracy_pct':row['accuracy_pct'],'base_accuracy_pct':row['base_accuracy_pct'],
+            assert matches(item,{'phase':row['phase'],'accuracy_pct':row['accuracy_pct'],
                 'group_relative_w_error':row['group_comparison']['relative_w_error'],'prediction_disagreements':row['group_comparison']['prediction_disagreements']})
         session=requests.Session();session.trust_env=False
         query='query($e:String!,$p:String!,$r:String!){project(name:$p,entityName:$e){run(name:$r){name state config summaryMetrics}}}'
@@ -98,15 +118,20 @@ def track(suite_path, output):
         public_config={k:v['value'] for k,v in json.loads(public['config']).items() if isinstance(v,dict) and 'value'in v}
         assert all(public_config[k]==v for k,v in config.items()) and matches(json.loads(public['summaryMetrics']),expected)
         verified.append({'case_key':key,'wandb_run_id':actual.id,'wandb_run_url':actual.url,'status':'synced','verified_state':'finished',
-            'public_api_verified':True,'six_history_rows_match':True,'config_source_summary_match':True,
+            'public_api_verified':True,'n_history_rows_match':len(rows),'config_source_summary_match':True,
+            'analytic_equivalence_passed':case['verification_passed'],
             'offline_payload_sha256':prior['offline_payload_sha256'],'checked_at_utc':datetime.now(timezone.utc).isoformat()})
-        print(key,actual.url,'Finished/public,6 rows matched',flush=True)
+        print(key,actual.url,'Finished/public,history matched; equivalence=',case['verification_passed'],flush=True)
     ready={'status':'complete','tracking_status':'synced','numeric_source_file':suite_path.name,'numeric_sha256':digest,
-        'n_new_runs':2,'verification_scope':suite['verification_scope'],'runs':verified}
+        'n_new_runs':len(cases),'verification_scope':suite['verification_scope'],
+        'raw_suite_status':suite['status'],'all_main_analytic_checks_passed':suite['verification_passed'],
+        'diagnostic_sha256':diagnostic_digest,'runs':verified,
+        'finished_means':'tracking execution finished; equivalence flags preserve scientific failures'}
     save(output,ready);return ready
 
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--suite',required=True,type=Path);parser.add_argument('--output',required=True,type=Path)
-    args=parser.parse_args();track(args.suite,args.output)
+    parser.add_argument('--diagnostic',type=Path)
+    args=parser.parse_args();track(args.suite,args.output,args.diagnostic)
