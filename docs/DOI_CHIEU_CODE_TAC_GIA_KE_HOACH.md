@@ -35,3 +35,7 @@ Chốt trước khi chạy số. Mục tiêu là thực thi source tác giả v�
 - Dữ liệu ảnh chẩn đoán được chọn theo nhãn/index trước kết quả, không chọn ảnh theo độ khớp. Trọng số và cache không commit Git.
 - Hai lượt chính có W&B riêng trong project hiện tại, log từ kết quả đã kiểm; giữ source numeric và metadata tracking riêng, xác minh Finished/public/config/history sau logging. Không chạy lại số chỉ để sync.
 - Báo cáo phải phân biệt: thực thi code tác giả đã hoàn tất; tương đương trong điều kiện kiểm soát có đạt hay không; benchmark native fresh training chưa chạy. Kết quả chỉ n=1/d1024.
+
+## Bổ sung sau phép chẩn đoán đầu tiên, trước khi chạy C1/C2
+
+Attempt đầu dừng do assertion ở kiểm feature/logits backbone FP32; chưa chạy C1/C2. Giữ traceback/source hash/failed attempt. Không đổi ngưỡng FP32 đã chốt. Sửa observer để **ghi lại kết quả không khớp thay vì chặn hai phép analytic độc lập**, thêm hook đo tensor ngay trước global pooling trên1.000ảnh, và follow-up FP64 trên100ảnh (1ảnh/lớp) với rtol/atol1e-12. Các phép mới dùng để định vị sai khác, không thay thế điều kiện FP32 ban đầu. Suite `verification_passed` chỉ có phạm vi tương đương analytic C1/C2; trạng thái backbone và các failure/difference phải báo riêng. Đây là bổ sung chẩn đoán có phiên bản, không thay FE/gamma/d hoặc điều kiện chấp nhận analytic sau khi thấy score.
