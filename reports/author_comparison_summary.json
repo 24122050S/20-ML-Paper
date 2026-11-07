@@ -1,0 +1,132 @@
+{
+  "status": "complete_with_differences",
+  "scope": "two primary cases plus one posthoc diagnostic; one seed/d1024, no fresh BP",
+  "raw_gate_status": "failed",
+  "raw_gate_passed": false,
+  "author_commit": "0afd6bf87622e808ce7f730f8556e78229b9e758",
+  "n_independent_seeds": 1,
+  "between_seed_sd": null,
+  "n_primary_cases": 2,
+  "n_posthoc_diagnostics": 1,
+  "n_primary_phase_comparisons": 12,
+  "n_posthoc_incremental_comparisons": 5,
+  "rows": [
+    {
+      "case_key": "controlled",
+      "n_phase_comparisons": 6,
+      "metrics": {
+        "average_incremental_accuracy_pct": 63.10403439153439,
+        "final_accuracy_pct": 51.73,
+        "base_forgetting_pp": 5.959999999999994
+      },
+      "between_seed_sd": null,
+      "equivalence_passed": false,
+      "group_checks_pass_count": {
+        "r_allclose": 6,
+        "w_allclose": 6,
+        "score_allclose": 4,
+        "same_predictions": 6
+      },
+      "max_relative_w_error_vs_group": 3.025331271946837e-08,
+      "max_relative_w_error_vs_joint": 3.025335058466014e-08,
+      "max_abs_score_error_vs_group": 2.0838302083880933e-08,
+      "prediction_disagreements": 0,
+      "tracking": {
+        "case_key": "controlled",
+        "wandb_run_id": "0tlcy6id",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/0tlcy6id",
+        "status": "synced",
+        "verified_state": "finished",
+        "public_api_verified": true,
+        "n_history_rows_match": 6,
+        "config_source_summary_match": true,
+        "analytic_equivalence_passed": false,
+        "offline_payload_sha256": "c3d791b7627dd6283228225bdbdef2b7610baffb3c7e43248feb3e00655eeec9",
+        "checked_at_utc": "2026-11-07T02:55:28.875837+00:00"
+      }
+    },
+    {
+      "case_key": "native_main",
+      "n_phase_comparisons": 6,
+      "metrics": {
+        "average_incremental_accuracy_pct": 63.149153439153444,
+        "final_accuracy_pct": 52.24,
+        "base_forgetting_pp": 5.200000000000003
+      },
+      "between_seed_sd": null,
+      "equivalence_passed": true,
+      "group_checks_pass_count": {
+        "r_allclose": 6,
+        "w_allclose": 6,
+        "score_allclose": 6,
+        "same_predictions": 6
+      },
+      "max_relative_w_error_vs_group": 6.91120951756268e-11,
+      "max_relative_w_error_vs_joint": 6.911689979644282e-11,
+      "max_abs_score_error_vs_group": 3.348757382504175e-11,
+      "prediction_disagreements": 0,
+      "tracking": {
+        "case_key": "native_main",
+        "wandb_run_id": "8muywodv",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/8muywodv",
+        "status": "synced",
+        "verified_state": "finished",
+        "public_api_verified": true,
+        "n_history_rows_match": 6,
+        "config_source_summary_match": true,
+        "analytic_equivalence_passed": true,
+        "offline_payload_sha256": "fa04f9c337aafd96564e9a47ab1d529630fad934500016582895cf6c23e1ecf5",
+        "checked_at_utc": "2026-11-07T02:55:45.119137+00:00"
+      }
+    }
+  ],
+  "c1_score_elements_outside_tolerance": 2,
+  "c1_total_score_elements": 3550000,
+  "posthoc_diagnostic": {
+    "base_state_injected": true,
+    "equivalence_passed": true,
+    "n_incremental_updates": 5,
+    "max_relative_w_error": 5.606701598547518e-13,
+    "max_abs_score_error": 6.645378691771953e-13,
+    "tracking": {
+      "case_key": "base_state_diagnostic",
+      "wandb_run_id": "yeb0jqfb",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/yeb0jqfb",
+      "status": "synced",
+      "verified_state": "finished",
+      "public_api_verified": true,
+      "n_history_rows_match": 5,
+      "config_source_summary_match": true,
+      "analytic_equivalence_passed": true,
+      "offline_payload_sha256": "5700b8145ae81ab35df2e9adc2ab1684b5e2cb8fc4cc81e45329aa6240500746",
+      "checked_at_utc": "2026-11-07T02:56:00.957401+00:00"
+    }
+  },
+  "c2_minus_c1_single_seed": {
+    "average_incremental_accuracy_pct": 0.045119047619053276,
+    "final_accuracy_pct": 0.5100000000000051,
+    "base_forgetting_pp": -0.7599999999999909
+  },
+  "backbone_fp32_checks_all_passed": false,
+  "backbone_prediction_disagreements": 0,
+  "mapping_failure_reproduced": {
+    "failure_reproduced": true,
+    "exception_type": "IndexError",
+    "message": "Target 91 is out of bounds.",
+    "where": "author ACILLearner.base_training epoch0 validation before optimizer steps",
+    "scope_limit": "shuffle_seed=42 with labels not remapped; not a claim all default configurations fail"
+  },
+  "inputs_sha256": {
+    "author_comparison_results.json": "71523ba4888c3d5b63f9c4467d60875bc9c3fde58cc98e7cb2456270a941cbe4",
+    "author_comparison_base_diagnostic.json": "a6e7d86b898020a89337060d020280b1e1fca86e0164ab4cf05d933be1355913",
+    "author_comparison_ready.json": "a980b5ed00d6aabcc34895f7a25e7851d2d84d30837487af2a701cad4c8c1ff0",
+    "author_comparison_native_IL.csv": "c47c20f0405c7901ba08c7256d0d378714f6bdfee7eb36a9743ebee38e8a3d7d"
+  },
+  "limitations": [
+    "not native fresh training300epochs/d8192",
+    "shared group representation/cache and mapping",
+    "C1R is posthoc with injected base, not replacement for C1",
+    "Finished tracking does not imply equivalence passed"
+  ],
+  "created_at_utc": "2026-11-07T03:06:31.903202+00:00"
+}

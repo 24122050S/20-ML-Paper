@@ -1,0 +1,270 @@
+{
+  "id": "AUTHOR-COMPARE-01",
+  "published_date": "2026-11-07",
+  "status": "complete_with_differences",
+  "scope": "author code executed and compared on full fixed features, one seed42/d1024; not native fresh training",
+  "author": {
+    "repository": "https://github.com/ZHUANGHP/Analytic-continual-learning",
+    "commit": "0afd6bf87622e808ce7f730f8556e78229b9e758",
+    "snapshot_year": 2024,
+    "tracked_source_sha256": {
+      ".gitignore": "18835fd7610806365c35780197dfd7f7a6b85dfdc4a2bdce85e54c6e4e6bfdaa",
+      "LICENSE": "9a567384dace3784c8a5338a993561be82282e903a2846035aec0a44f27238cb",
+      "README.md": "73fbeb6885d761417b9c2915455f239ef139c38a14a71ef57060b966cf3d7484",
+      "README_CN.md": "45a0fcd7fec2b276425e59853033a42fc29777d230d101a712e02b98cbd836de",
+      "Supplementary Material for DS-AL .pdf": "cfdbbb5450b912d22d0a1d0e7edbbe5b22630394ffc9da65e5a9517859119275",
+      "analytic/ACIL.py": "bc4ceabdfa41a975ea3189136ee90b050b5dbb145a143619f9d128cf4ebcc602",
+      "analytic/AEFOCL.py": "ef7c3254864bc0b9301f503300ec43bf1b830ccdfbf80ada54287b75866c5a4a",
+      "analytic/AIR.py": "693fdc75dc91430383ba937bda1f3f417dd3b6e9b24949816873719b92600c51",
+      "analytic/AnalyticLinear.py": "545057838c1e90f05b361cd4a3d5a13630da37b3d6fe64f66e9861dea39b0f19",
+      "analytic/Buffer.py": "f7f522d9200585e0fab2a672d7828c0bd7536793abda4076e25aa8b3c4cb94c7",
+      "analytic/DSAL.py": "23cbd2b39e01bcc79d156ad03a8e602d3c77be98e7525ef2ae0b31899de385f9",
+      "analytic/GKEAL.py": "f9a913fd0a12c8912ce6bada21763ef77ef8daa6ef4d9930570171442ba071db",
+      "analytic/Learner.py": "d32c4a404859445bd7e280fb651ccc07ba0760960dd3969f71e2b562539fdbda",
+      "analytic/__init__.py": "2013a6e0adf0aaa64f26fdbd97814c4b5a8240a94f7f83eb23e11913b6075e90",
+      "config.py": "2411299643a47018d3ddb110097d4af123abba990c7ab22bcc79ec05c0c54f4d",
+      "datasets/CIFAR.py": "7e98c098abd47e801e316a850a78604a5ff631d6f9bb41c9a7cf3d4144c48322",
+      "datasets/DatasetWrapper.py": "9e278e11ecf969fd7e4df5292c9e59e8808be260e2379166b7ce7b09dcc4c512",
+      "datasets/Features.py": "00678e7e888a157b7b6a2510c2eec88756602878e96ac7c90abfa2b8c3e6db85",
+      "datasets/ImageNet.py": "05390ac78ff4715e99906695dec312d734d16d212653dfe8bb245a91dcc07d57",
+      "datasets/MNIST.py": "12d0e9026998f9c79a067e361398246f12b9565328f92aefda0128425ae09e3d",
+      "datasets/__init__.py": "29e8eff2fc3272aa3889594d0ab9f3934da39d6b1ae2f2b1bccff9209d837a90",
+      "environment.yaml": "d14d96ac901dcb584cf1ee92662ccb99faf1e0771ef3f572753e660cbbf1df7e",
+      "figures/acc@1.svg": "0c1f815049002252a49a8b81022a88dfeffefe28b945840dab4c45f5a55bad50",
+      "figures/acc_cmp.jpg": "35c334290586f95a61d32b167d9534ff20c0e73fa18f96498b3acfc217421489",
+      "main.py": "86653a53e90c7481d411093a74ead9374115e22ce2fe3ebe49285d4229774634",
+      "models/CifarResNet.py": "5e457078fc7239f2d8c2081aec7e11b8c043ccd9428906ed6c9f334a9b0a5d12",
+      "models/__init__.py": "db2b5a035e767ddef4a399a390b77877bcf55ab5e855010b00ee14fabfd29801",
+      "utils/__init__.py": "f12d2d5992a762cd6363ad16fa4ca008b4a3473aa2c0849bd1f8356ccf756055",
+      "utils/metrics.py": "0cfd27c1a4f8ed3c84b079b511f59e7f2f8eee129b80efe69fff9e9010309e3a",
+      "utils/set_determinism.py": "58b4a7392383bf2a5e806ac4f5bc83b9189c791778884e3e78a03a5e98c98a32",
+      "utils/set_weight_decay.py": "bc945a4e2a8a60be2be33afd66394c2c93ea08c9c94b1d5e4513005e210a2fa5",
+      "utils/validate.py": "e6bf78b2f4244abbcb2a7479ca03c267c2c2c4e36cc8ee4a9cf13e2b729b320a"
+    },
+    "unchanged_before_after": true,
+    "core_copied_into_group_src": false
+  },
+  "execution": {
+    "comparison_source_commit": "2d74c46bb22e08783bfc4b5ed5d61c4b4cc7503f",
+    "runner_sha256": "9f963a5b48bf0a8f9a393dd74cec07a14231ea6ab820bd3115e9950ad904f998",
+    "pre_numeric_plan_sha256": "d38db15169d5858c3a6ada071ea99d5adfbef404f5e74dbc6b7f8fecc03a63d8",
+    "posthoc_source_commit": "5429ad9da3ee6397900e415947c7c7e89e9622c0",
+    "posthoc_script_sha256": "edabbcac8b76ef4cbb4f4b8158f142cbb81f4ffab000325055dbea4ae69b2fd8",
+    "base_checkpoint_sha256": "1f2a747347e26db933b11a9910ee780a8f8597187b40bc2191ad42108cea550d",
+    "fixture_sha256": "8b73747a3a9c70a18bd3e5bfdbcc5fa536777a778d9ee11f784a714cebfc92f5",
+    "native_entry_point": "main.main(args), original function with documented boundary adapters",
+    "native_shell_cli_parser_executed": false,
+    "new_backbone_training": false,
+    "device": "cpu",
+    "threads": 4,
+    "environment": {
+      "python": "3.12.7",
+      "torch": "2.5.1+cpu",
+      "numpy": "2.1.3",
+      "packages": {
+        "torchvision": "0.20.1+cpu",
+        "scipy": "1.14.1",
+        "scikit-learn": "1.5.2",
+        "Pillow": "11.1.0",
+        "tqdm": "4.67.1",
+        "PyYAML": "6.0.2",
+        "threadpoolctl": "3.6.0"
+      },
+      "platform": "Windows-11-10.0.26200-SP0",
+      "device": "cpu",
+      "separate_venv": "D:\\ML_Paper\\tmp\\author_compare_venv",
+      "author_yaml_python": "3.11",
+      "python_deviation": "3.12 instead of3.11; torch2.5.1 meets declared torch>=2.2"
+    },
+    "negative_gate_preserved": true,
+    "raw_suite_status": "failed",
+    "raw_suite_verification_passed": false,
+    "n_primary_cases": 2,
+    "n_posthoc_diagnostics": 1
+  },
+  "attempt_history": [
+    {
+      "attempt_id": "20261107T021831279939Z-f0a482b3",
+      "source_commit": "d1e4ef94f3cef42103d855af064993391a256f44",
+      "source_sha256": "37a7081f50a61d7d8ffd9e815d071c82df8630c470af7224eda2f3839c767223",
+      "raw_status": "failed",
+      "error_type": "AssertionError",
+      "error": "",
+      "completed_main_cases": 0,
+      "published_file": "archive/AUTHOR-COMPARE-01-attempt1-failed.json"
+    },
+    {
+      "attempt_id": "20261107T022051220928Z-08b062e7",
+      "source_commit": "3d0b1566b1078a226ae3db00bfa0b32025c04aca",
+      "source_sha256": "fec4858786250eed2d1cd6b7d4e90a4bbe06736140656053390f569150d34679",
+      "raw_status": "failed",
+      "error_type": "KeyError",
+      "error": "'state_file'",
+      "completed_main_cases": 0,
+      "published_file": "archive/AUTHOR-COMPARE-01-attempt2-failed.json"
+    },
+    {
+      "attempt_id": "20261107T024808735862Z-16783f93",
+      "source_commit": "2d74c46bb22e08783bfc4b5ed5d61c4b4cc7503f",
+      "source_sha256": "9f963a5b48bf0a8f9a393dd74cec07a14231ea6ab820bd3115e9950ad904f998",
+      "raw_status": "failed",
+      "error_type": "RuntimeError",
+      "error": "Author comparison differs beyond preregistered thresholds; evidence preserved",
+      "completed_main_cases": 2,
+      "published_file": "author_comparison_results.json"
+    }
+  ],
+  "artifacts": {
+    "author_comparison_results.json": {
+      "sha256": "71523ba4888c3d5b63f9c4467d60875bc9c3fde58cc98e7cb2456270a941cbe4",
+      "bytes": 39774
+    },
+    "author_comparison_base_diagnostic.json": {
+      "sha256": "a6e7d86b898020a89337060d020280b1e1fca86e0164ab4cf05d933be1355913",
+      "bytes": 5312
+    },
+    "author_comparison_ready.json": {
+      "sha256": "a980b5ed00d6aabcc34895f7a25e7851d2d84d30837487af2a701cad4c8c1ff0",
+      "bytes": 2270
+    },
+    "author_comparison_summary.json": {
+      "sha256": "7041969bbf1a6b2a89d0f54edb175acbcda26cac7a29e9d986b56ca125005e2d",
+      "bytes": 5266
+    },
+    "author_comparison_native_IL.csv": {
+      "sha256": "c47c20f0405c7901ba08c7256d0d378714f6bdfee7eb36a9743ebee38e8a3d7d",
+      "bytes": 486
+    },
+    "author_comparison_native_args.json": {
+      "sha256": "6884d93b4ec17db96efca6627d9bf08b8a73c1bb61c50e69903665304ab8642e",
+      "bytes": 1099
+    },
+    "author_comparison_environment_freeze.txt": {
+      "sha256": "c94b33a0fec601fa9fc6999a64fb8a0476122fb07b8de2ea9c6b1adffc3fd5e6",
+      "bytes": 366
+    },
+    "AUTHOR_CODE_COMPARISON_20261107.md": {
+      "sha256": "5a0d7bcd13be21310086f6a39e82dd2087d782cf7022e0ac9f08febbdc049afe",
+      "bytes": 16963
+    },
+    "BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md": {
+      "sha256": "fab1018a3e884d394d43f6560fedc225741ef82b2e6d0d298cb28e937f0a2ff8",
+      "bytes": 45355
+    },
+    "figures/author_acil_comparison.png": {
+      "sha256": "bf7d29f04094dcc7489f7c426d24964334995237a9d9e65932fc8dfb8126be57",
+      "bytes": 147086
+    },
+    "archive/AUTHOR-COMPARE-01-attempt1-failed.json": {
+      "sha256": "a8130be94bedadabefbce1189d4a7f4e2c41362be93b10dcb24e5a7194c3c293",
+      "bytes": 4719
+    },
+    "archive/AUTHOR-COMPARE-01-attempt2-failed.json": {
+      "sha256": "67d940f98137587fe42a3bc73799ae4f84ada5981988732c4b48942e126a70dc",
+      "bytes": 20058
+    }
+  },
+  "csv_publication": {
+    "original_raw_sha256": "68e22dfa55c0d50d4546cd35c9cd86602f54c2766361454256e30b1e2cc0b497",
+    "published_lf_sha256": "c47c20f0405c7901ba08c7256d0d378714f6bdfee7eb36a9743ebee38e8a3d7d",
+    "conversion": "UTF8 CRLF->LF only, original kept local",
+    "all_csv_cells_unchanged": true
+  },
+  "analysis": {
+    "code_commit": "5695d6bef6534d9ef6a011ed64dd8266e2adf521",
+    "scripts_and_docs_sha256": {
+      "scripts/compare_author_acil.py": "9f963a5b48bf0a8f9a393dd74cec07a14231ea6ab820bd3115e9950ad904f998",
+      "scripts/diagnose_author_base_precision.py": "edabbcac8b76ef4cbb4f4b8158f142cbb81f4ffab000325055dbea4ae69b2fd8",
+      "scripts/track_author_comparison.py": "cf0135bbfe418eeba7f13c2ba9151d905d0a80ef58de5970bb180d2038910ca3",
+      "scripts/aggregate_author_comparison.py": "038f4423d7cb7c79d693a9cc4393d66b126468d4f7d4fff34c7789ee4ddaeaf8",
+      "scripts/plot_author_comparison.py": "b164327e0b57e53f62538b60f1d4f7efe6e1d7dff61fd368bb8cffd5bc221aec",
+      "scripts/tests/test_author_comparison.py": "83e72d23c954a3328624c0d1ba68aa935927c22ecddef15bf5375b3aa4656d14",
+      "docs/DOI_CHIEU_CODE_TAC_GIA_KE_HOACH.md": "c96a0da48646fccf9af9551399bb3dd3812db068393854c4a19a1b38f67a34f9",
+      "docs/HUONG_DAN_CHAY_CODE_TAC_GIA.md": "53cd846f52ee05c2f9d05faa4767813536d6242ad26ffab188c9c9ed026e2a79",
+      "requirements-author-comparison.txt": "8c6890577a3ba78b9e9409dd492c442ef858dd891dddb92496a78aa7383b4105"
+    },
+    "aggregation_command": "python scripts/aggregate_author_comparison.py",
+    "plot_command": "python scripts/plot_author_comparison.py",
+    "statistical_unit": "one seed; three tracked runs are two conditions plus a posthoc state-injection diagnostic, not three seeds"
+  },
+  "verification": {
+    "all17_local_npz_checked": true,
+    "independent_joint_recomputed_for12_primary_states": true,
+    "matched_base_diagnostic5states_compared_to_verified_r3": true,
+    "audit_sha256": "e2ed6559203f5ced81adc5e9569fc2d8f4f400c9b988200e73fcf672da436318",
+    "c1_r_w_allclose": true,
+    "c1_predictions_all_phases_match": true,
+    "c1_score_allclose_phases": 4,
+    "c1_score_elements_outside_tolerance": 2,
+    "c1_total_score_elements": 3550000,
+    "c2_all6phase_checks_passed": true,
+    "posthoc_all5updates_passed": true,
+    "backbone_fp32_all_checks_passed": false,
+    "backbone_predictions_equal1000images": true,
+    "conditional_shuffled_label_failure_reproduced": true,
+    "tolerances_unchanged": true,
+    "targeted_regression_tests": {
+      "tests_run": 2,
+      "passed": 2
+    },
+    "large_new_states_location": "local only, not uploaded to Kaggle or W&B artifacts",
+    "existing_r1_r2_r3_numeric_artifacts_unchanged": true
+  },
+  "public_tracking_verification": {
+    "n_runs": 3,
+    "n_history_rows": 17,
+    "all_finished_public": true,
+    "runs": [
+      {
+        "case_key": "controlled",
+        "wandb_run_id": "0tlcy6id",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/0tlcy6id",
+        "status": "synced",
+        "verified_state": "finished",
+        "public_api_verified": true,
+        "n_history_rows_match": 6,
+        "config_source_summary_match": true,
+        "analytic_equivalence_passed": false,
+        "offline_payload_sha256": "c3d791b7627dd6283228225bdbdef2b7610baffb3c7e43248feb3e00655eeec9",
+        "checked_at_utc": "2026-11-07T02:55:28.875837+00:00"
+      },
+      {
+        "case_key": "native_main",
+        "wandb_run_id": "8muywodv",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/8muywodv",
+        "status": "synced",
+        "verified_state": "finished",
+        "public_api_verified": true,
+        "n_history_rows_match": 6,
+        "config_source_summary_match": true,
+        "analytic_equivalence_passed": true,
+        "offline_payload_sha256": "fa04f9c337aafd96564e9a47ab1d529630fad934500016582895cf6c23e1ecf5",
+        "checked_at_utc": "2026-11-07T02:55:45.119137+00:00"
+      },
+      {
+        "case_key": "base_state_diagnostic",
+        "wandb_run_id": "yeb0jqfb",
+        "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/yeb0jqfb",
+        "status": "synced",
+        "verified_state": "finished",
+        "public_api_verified": true,
+        "n_history_rows_match": 5,
+        "config_source_summary_match": true,
+        "analytic_equivalence_passed": true,
+        "offline_payload_sha256": "5700b8145ae81ab35df2e9adc2ab1684b5e2cb8fc4cc81e45329aa6240500746",
+        "checked_at_utc": "2026-11-07T02:56:00.957401+00:00"
+      }
+    ],
+    "method": "SDK and fresh HTTP session trust_env=False without Authorization/Cookie; false/true/true flags retained"
+  },
+  "limitations": [
+    "author Python3.11 YAML vs actualPython3.12",
+    "source2024 updated implementation, not snapshot2022",
+    "shared frozen group backbone/features/global labels; no native300epochs/d8192 training",
+    "C1 strict score gate fails, not relabeled as passed",
+    "posthoc matched base state diagnostic does not replace cold-start C1",
+    "native FE and minibatch order both differ between C1/C2",
+    "17 new matrices retained locally; public sources+fixture enable rerun"
+  ],
+  "created_at_utc": "2026-11-07T03:12:28.851908+00:00"
+}
