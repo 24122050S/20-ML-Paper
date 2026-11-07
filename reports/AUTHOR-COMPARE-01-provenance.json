@@ -42,7 +42,75 @@
       "utils/validate.py": "e6bf78b2f4244abbcb2a7479ca03c267c2c2c4e36cc8ee4a9cf13e2b729b320a"
     },
     "unchanged_before_after": true,
-    "core_copied_into_group_src": false
+    "core_copied_into_group_src": false,
+    "runtime_hash_representation": "exact executed Windows checkout bytes; text usesCRLF",
+    "canonical_git_blob_sha256": {
+      ".gitignore": "e6e16e3d3c7fb31af5db76c297178372932809c7eff280bcfc2ac40572bff4e9",
+      "LICENSE": "f0c75c5e56fe399d783603ae04b669debe1ea68b8b7800c3be2073da86a0b16d",
+      "README.md": "60c5f05cacdd424501e57cf70e39bf4aa66246a6735b34fc1196515a50244bc7",
+      "README_CN.md": "7174011025815c4ca68b5e93e05675ee2d16f26242b30856f2e9cd362eec815b",
+      "Supplementary Material for DS-AL .pdf": "cfdbbb5450b912d22d0a1d0e7edbbe5b22630394ffc9da65e5a9517859119275",
+      "analytic/ACIL.py": "5ad0ab226733da4b31130a70e56f4be2fddb0ca520460b61b5a3ce59b7acbf5c",
+      "analytic/AEFOCL.py": "9c374ec872f3381db7076693d2b34bb81f06330126d2e57661cd47d763d89fd7",
+      "analytic/AIR.py": "5f392fae30db6437fdac48fc6706e7f328787f6c45b0a5439399c813d9b5ee0e",
+      "analytic/AnalyticLinear.py": "7e64da8fd60fdc11bc7a608a9163a4f2befa1a4dcbdd5fccfa0bfccf2aa763a7",
+      "analytic/Buffer.py": "4f88a2a1edd42882cf80cad6e67d9afbfd611d97bacd01b1d65dca3f7dab4d39",
+      "analytic/DSAL.py": "1119362bc2c00499c479ea5346d1ec7f0c7542771468fefef1975811bf7c5233",
+      "analytic/GKEAL.py": "fa12dd48bf50e643aa5137a1197af67ef832e9346b8a1b8259e701aea352f8f3",
+      "analytic/Learner.py": "d7bc708d784fc8a8976f6591ba5fbab17d5e968bde737ba1a05d52e45e436c46",
+      "analytic/__init__.py": "95bc8c44135410d7dc28851456b9e34a49e4b6a7dbbfa848f8b74a7a4201df90",
+      "config.py": "6d62cbc701650edc8bb470b07ffeed6d55f251a488c62ea9d422c094f4f26dee",
+      "datasets/CIFAR.py": "bb440c1c60554fc02039f087d1639f219a1616c3736fef3395d2895dd1a15652",
+      "datasets/DatasetWrapper.py": "ef9f46fea4e904cde8eee3bf7eea2a4e2f66cd048650b0a913c6d989fd1a2470",
+      "datasets/Features.py": "d850d0f6a3295492280d689fc40a5410dabb93a41285694c3f233f6750dbac4e",
+      "datasets/ImageNet.py": "b220d91de7913ef17e114c810286ee1ee19bc204447f454b7f97b2d77dacb9c4",
+      "datasets/MNIST.py": "90b69b4144c2a181d487d77876abcef7a021a2f4e2ce9d98e00dc9275a397fee",
+      "datasets/__init__.py": "4feface50aba53f8dd3a4092ec0b94ba5e56500291649be91777e365b5d07c16",
+      "environment.yaml": "3aa52965c98ea2d986a264b7b383493071073bd2fdac425b95d137b5b6f5af4b",
+      "figures/acc@1.svg": "29c9c6df5bff135190b1b0586c28804d0b282b3fe03d9f3eb40238101ea6e8b7",
+      "figures/acc_cmp.jpg": "35c334290586f95a61d32b167d9534ff20c0e73fa18f96498b3acfc217421489",
+      "main.py": "5351127e91a299d626bf3ee8494c73547cdd74ae53dd57361eb704fd8e36a747",
+      "models/CifarResNet.py": "7a2d7bd64ac9887a7d6921ea3de8c8899e947c2fa213e570a054c589143be144",
+      "models/__init__.py": "89bb0f6fa93f3655fe6acc0864b4457dae0108248d01b50b6c0bef3879c851a1",
+      "utils/__init__.py": "07f281e09081fce43fe3da1dff1438bbc949382fa4d3d6c2f8c08356fe03b96b",
+      "utils/metrics.py": "a2ee85c9ebca23fff55fcca43deca1b072c7add5efe16d33656eed0014b37f20",
+      "utils/set_determinism.py": "dc1d9f409b248e9881206d592e8aea8e91dffdcdbfbbfc3bacac89cbacdc1221",
+      "utils/set_weight_decay.py": "7d6e5f1ae792ae38681834a26df9c43e8f70af307df4faeb9cde3795348afd88",
+      "utils/validate.py": "c047234b57c580da75be07fec0fad9137166cf0cfea5e64a35152eab642806b8"
+    },
+    "normalized_runtime_source_matches_git": true,
+    "files_with_line_ending_only_differences": [
+      ".gitignore",
+      "LICENSE",
+      "README.md",
+      "README_CN.md",
+      "analytic/ACIL.py",
+      "analytic/AEFOCL.py",
+      "analytic/AIR.py",
+      "analytic/AnalyticLinear.py",
+      "analytic/Buffer.py",
+      "analytic/DSAL.py",
+      "analytic/GKEAL.py",
+      "analytic/Learner.py",
+      "analytic/__init__.py",
+      "config.py",
+      "datasets/CIFAR.py",
+      "datasets/DatasetWrapper.py",
+      "datasets/Features.py",
+      "datasets/ImageNet.py",
+      "datasets/MNIST.py",
+      "datasets/__init__.py",
+      "environment.yaml",
+      "figures/acc@1.svg",
+      "main.py",
+      "models/CifarResNet.py",
+      "models/__init__.py",
+      "utils/__init__.py",
+      "utils/metrics.py",
+      "utils/set_determinism.py",
+      "utils/set_weight_decay.py",
+      "utils/validate.py"
+    ]
   },
   "execution": {
     "comparison_source_commit": "2d74c46bb22e08783bfc4b5ed5d61c4b4cc7503f",
@@ -144,8 +212,8 @@
       "bytes": 366
     },
     "AUTHOR_CODE_COMPARISON_20261107.md": {
-      "sha256": "5a0d7bcd13be21310086f6a39e82dd2087d782cf7022e0ac9f08febbdc049afe",
-      "bytes": 16963
+      "sha256": "cc74eac2b02024c0795c60a7ca9bb2b4df7755d9fdab37b20d60bb1e6d4065ac",
+      "bytes": 17171
     },
     "BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md": {
       "sha256": "fab1018a3e884d394d43f6560fedc225741ef82b2e6d0d298cb28e937f0a2ff8",
@@ -266,5 +334,6 @@
     "native FE and minibatch order both differ between C1/C2",
     "17 new matrices retained locally; public sources+fixture enable rerun"
   ],
-  "created_at_utc": "2026-11-07T03:12:28.851908+00:00"
+  "created_at_utc": "2026-11-07T03:12:28.851908+00:00",
+  "source_hash_note_updated_at_utc": "2026-11-07T03:21:01.748896+00:00"
 }
