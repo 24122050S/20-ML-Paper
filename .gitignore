@@ -5,6 +5,7 @@ __pycache__/
 
 # Môi trường và thông tin bí mật
 .venv/
+.venv-author/
 venv/
 .env
 .env.*
