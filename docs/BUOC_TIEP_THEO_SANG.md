@@ -1,13 +1,13 @@
 # Sang đang ở bước nào? — cập nhật 07/11/2026
 
-**Ba bộ thực nghiệm R1/R2/R3 trong kế hoạch đã hoàn tất.** Còn đối chiếu code tác giả, hoàn thiện nội dung giữa kỳ/PPTX và poster.
+**Ba bộ thực nghiệm R1/R2/R3 trong kế hoạch đã hoàn tất.** Đã chạy [đối chiếu tác giả](../reports/AUTHOR_CODE_COMPARISON_20261107.md) với các sai khác được giữ để phân tích; còn hoàn thiện nội dung giữa kỳ/PPTX và poster.
 
 | Phần | Đã làm | Bằng chứng |
 |---|---|---|
 | R1 — kết quả chính | 3 seeds42/43/44; mỗi seed train base mới160 epochs/d8000/gamma0.1/K5; Ā65,1196 ±0,6104% | [Báo cáo R1](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md) |
 | R2 — ablation | 4/5 hàng Table2, mỗi hàng3 seeds;9 run mới +3 baseline R1, gamma0 ngoài scope | [Báo cáo R2](../reports/R2_CIFAR100_K5_20261107.md) |
 | R3 — batch size | 32/128/512 ×3 timing repeats trên seed42/d1024;54 so sánh phase đạt joint,0 argmax khác;9 W&B mới Finished/công khai | [Báo cáo R3](../reports/R3_CIFAR100_K5_BATCH_20261107.md), [summary](../reports/r3_cifar100_k5_summary.json) |
-| Đối chiếu implementation tác giả | Chưa có artifact chạy source tác giả trong repo | [Protocol mục6](protocol_chot.md) |
+| Đối chiếu implementation tác giả | Đã chạy2lượt chính +1diagnostic, full features CIFAR100/K5; giữ C1 strict score failures và phân tích nguyên nhân | [đối chiếu tác giả](../reports/AUTHOR_CODE_COMPARISON_20261107.md),3W&B Finished/public |
 | PPTX/poster | Chưa có sản phẩm hoàn chỉnh được nghiệm thu | Hạn PPTX21/11/2026, poster05/12/2026,23:59 |
 
 ## R3 vừa hoàn tất
@@ -22,7 +22,7 @@ Mean ± sample SD của3 lần đo, **không phải3 seed**. Timer chỉ gồm a
 
 ## Việc tiếp theo
 
-1. **Đối chiếu code tác giả theo protocol:** dùng môi trường riêng, pin commit/config/checkpoint, chạy và lưu kết quả; đối chiếu mapping → preprocessing → feature → FE → analytic → metric. Chỉ đọc code chưa được ghi là đã chạy. Không chép implementation cốt lõi của tác giả vào module nhóm.
+1. **Đưa kết quả đối chiếu tác giả vào slide:** [đối chiếu tác giả](../reports/AUTHOR_CODE_COMPARISON_20261107.md) đã có3W&B public. Ghi rõ n=1/d1024, C1 có2phần tử score ngoài tolerance và C1R là diagnostic tiêm state base; không viết mọi output khớp hoặc gọi là native fresh training.
 2. **Ghép nội dung giữa kỳ:** dùng các bảng/hình R1/R2/R3 đã xuất, giải thích công thức và điều kiện tương đương joint, trình bày sai lệch với paper và giới hạn. Giữ nguồn paper/run cho từng hình/bảng.
 3. **Nghiệm thu PPTX trước21/11,23:59**, rồi hoàn thiện đề xuất/phân tích và poster trước05/12,23:59 theo hạn đã cung cấp. Nội dung/notes/nguồn/định dạng phải kiểm theo yêu cầu môn.
 

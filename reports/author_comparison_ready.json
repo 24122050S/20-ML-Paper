@@ -1,0 +1,53 @@
+{
+  "status": "complete",
+  "tracking_status": "synced",
+  "numeric_source_file": "author_comparison_results.json",
+  "numeric_sha256": "71523ba4888c3d5b63f9c4467d60875bc9c3fde58cc98e7cb2456270a941cbe4",
+  "n_new_runs": 3,
+  "verification_scope": "analytic C1/C2 equivalence at fixed input features; backbone diagnostics retain observed differences",
+  "raw_suite_status": "failed",
+  "all_main_analytic_checks_passed": false,
+  "diagnostic_sha256": "a6e7d86b898020a89337060d020280b1e1fca86e0164ab4cf05d933be1355913",
+  "runs": [
+    {
+      "case_key": "controlled",
+      "wandb_run_id": "0tlcy6id",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/0tlcy6id",
+      "status": "synced",
+      "verified_state": "finished",
+      "public_api_verified": true,
+      "n_history_rows_match": 6,
+      "config_source_summary_match": true,
+      "analytic_equivalence_passed": false,
+      "offline_payload_sha256": "c3d791b7627dd6283228225bdbdef2b7610baffb3c7e43248feb3e00655eeec9",
+      "checked_at_utc": "2026-11-07T02:55:28.875837+00:00"
+    },
+    {
+      "case_key": "native_main",
+      "wandb_run_id": "8muywodv",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/8muywodv",
+      "status": "synced",
+      "verified_state": "finished",
+      "public_api_verified": true,
+      "n_history_rows_match": 6,
+      "config_source_summary_match": true,
+      "analytic_equivalence_passed": true,
+      "offline_payload_sha256": "fa04f9c337aafd96564e9a47ab1d529630fad934500016582895cf6c23e1ecf5",
+      "checked_at_utc": "2026-11-07T02:55:45.119137+00:00"
+    },
+    {
+      "case_key": "base_state_diagnostic",
+      "wandb_run_id": "yeb0jqfb",
+      "wandb_run_url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/yeb0jqfb",
+      "status": "synced",
+      "verified_state": "finished",
+      "public_api_verified": true,
+      "n_history_rows_match": 5,
+      "config_source_summary_match": true,
+      "analytic_equivalence_passed": true,
+      "offline_payload_sha256": "5700b8145ae81ab35df2e9adc2ab1684b5e2cb8fc4cc81e45329aa6240500746",
+      "checked_at_utc": "2026-11-07T02:56:00.957401+00:00"
+    }
+  ],
+  "finished_means": "tracking execution finished; equivalence flags preserve scientific failures"
+}
