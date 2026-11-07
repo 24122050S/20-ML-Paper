@@ -31,16 +31,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── Dac_ta_ACIL.md
 │   ├── protocol_chot.md
 │   ├── metrics.md
-│   ├── RESUME_BENCHMARK_PROFILE.md
-│   ├── BUOC_TIEP_THEO_SANG.md
-│   ├── CHAY_KAGGLE_BANG_API.md
-│   ├── HUONG_DAN_KAGGLE.md
-│   ├── HUONG_DAN_CIFAR_SMOKE.md
-│   ├── SUA_LOI_TRANG_THAI_RUN.md
-│   ├── SUA_LOI_CHECKSUM_JSON.md
 │   ├── PHAN_CONG_NHOM.md
-│   ├── THAY_DOI_VERIFY02.md
-│   └── THAY_DOI_CIFAR_SMOKE.md
 ├── src/
 │   ├── __init__.py
 │   ├── analytic.py
