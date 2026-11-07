@@ -178,43 +178,43 @@ def execute(args):
     torch.set_num_threads(4); torch.set_num_interop_threads(4)
     author = Path(args.author_root).resolve(); r3_root = Path(args.r3_root).resolve()
     fixture = r3_root/'fixture'; checkpoint = Path(args.checkpoint).resolve()
-    suite = json.loads((r3_root.parents[1]/'r3_ready.json').read_bytes())
-    meta = json.loads((fixture/'fixture.json').read_bytes())
-    assert sha(fixture/'fixture.json') == suite['fixture_sha256']
-    assert git(author, 'rev-parse', 'HEAD') == AUTHOR_COMMIT and not git(author, 'status', '--porcelain')
-    for name, expected in meta['files'].items(): assert sha(fixture/name) == expected, name
-    for name, expected in meta['provenance']['source_sha256'].items(): assert sha(ROOT/name) == expected, name
-    assert sha(checkpoint) == meta['reference']['checkpoint_sha256']
-    saved = torch.load(checkpoint, map_location='cpu', weights_only=True)
-    assert saved['completed_epoch'] == saved['target_epochs'] == 160 and saved['training_complete']
-    assert saved['class_order'] == meta['class_order'] and saved['normalization'] == meta['normalization']
-    source_names = git(author, 'ls-files').splitlines()
-    original_hashes = {name: sha(author/name) for name in source_names}
-    sys.path.insert(0, str(author))
-    from analytic import ACIL, ACILLearner
-    from datasets.Features import Features
-    author_main = importlib.import_module('main')
-    assert Path(author_main.__file__).resolve() == author/'main.py'
-
     attempt = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ') + '-' + uuid.uuid4().hex[:8]
     root = Path(args.output_dir).resolve(); output = root/'attempts'/attempt; output.mkdir(parents=True)
     state = {'status': 'running', 'verification_passed': False, 'attempt_id': attempt, 'output_dir': str(output),
         'author_repository': 'https://github.com/ZHUANGHP/Analytic-continual-learning', 'author_commit': AUTHOR_COMMIT,
-        'author_source_sha256': original_hashes, 'fixture_sha256': suite['fixture_sha256'],
-        'base_checkpoint_sha256': sha(checkpoint), 'n_train': 50000, 'n_test': 10000, 'seed': 42, 'dimension': 1024,
+        'n_train': 50000, 'n_test': 10000, 'seed': 42, 'dimension': 1024,
         'gamma': .1, 'batch_size': 128, 'threads': 4, 'training_executed': False, 'cases': [],
         'execution_source': {'runner_sha256': sha(__file__), 'plan_sha256': sha(ROOT/'docs/DOI_CHIEU_CODE_TAC_GIA_KE_HOACH.md'),
-            'group_git_commit': git(ROOT, 'rev-parse', 'HEAD'), 'group_source_dirty': bool(git(ROOT, 'status', '--porcelain'))},
-        'environment': {'python': platform.python_version(), 'torch': str(torch.__version__), 'numpy': np.__version__,
-            'packages': {name: importlib.metadata.version(name) for name in ('torchvision','scipy','scikit-learn','Pillow','tqdm','PyYAML','threadpoolctl')},
-            'platform': platform.platform(), 'device': 'cpu', 'separate_venv': sys.prefix,
-            'author_yaml_python': '3.11', 'python_deviation': '3.12 instead of3.11; torch2.5.1 meets declared torch>=2.2'}}
+            'group_git_commit': git(ROOT, 'rev-parse', 'HEAD'), 'group_source_dirty': bool(git(ROOT, 'status', '--porcelain'))}}
     def progress(stage):
         state['stage'] = stage; save(root/'progress.json', state); save(output/'progress.json', state)
         print('AUTHOR_COMPARE', stage, flush=True)
-    progress('input_validated')
+    progress('validating_inputs')
     started = time.perf_counter()
     try:
+        suite = json.loads((r3_root.parents[1]/'r3_ready.json').read_bytes())
+        meta = json.loads((fixture/'fixture.json').read_bytes())
+        assert sha(fixture/'fixture.json') == suite['fixture_sha256']
+        assert git(author, 'rev-parse', 'HEAD') == AUTHOR_COMMIT and not git(author, 'status', '--porcelain')
+        for name, expected in meta['files'].items(): assert sha(fixture/name) == expected, name
+        for name, expected in meta['provenance']['source_sha256'].items(): assert sha(ROOT/name) == expected, name
+        assert sha(checkpoint) == meta['reference']['checkpoint_sha256']
+        saved = torch.load(checkpoint, map_location='cpu', weights_only=True)
+        assert saved['completed_epoch'] == saved['target_epochs'] == 160 and saved['training_complete']
+        assert saved['class_order'] == meta['class_order'] and saved['normalization'] == meta['normalization']
+        source_names = git(author, 'ls-files').splitlines()
+        original_hashes = {name: sha(author/name) for name in source_names}
+        state.update(author_source_sha256=original_hashes, fixture_sha256=suite['fixture_sha256'], base_checkpoint_sha256=sha(checkpoint))
+        state['environment'] = {'python': platform.python_version(), 'torch': str(torch.__version__), 'numpy': np.__version__,
+            'packages': {name: importlib.metadata.version(name) for name in ('torchvision','scipy','scikit-learn','Pillow','tqdm','PyYAML','threadpoolctl')},
+            'platform': platform.platform(), 'device': 'cpu', 'separate_venv': sys.prefix,
+            'author_yaml_python': '3.11', 'python_deviation': '3.12 instead of3.11; torch2.5.1 meets declared torch>=2.2'}
+        sys.path.insert(0, str(author))
+        from analytic import ACIL, ACILLearner
+        from datasets.Features import Features
+        author_main = importlib.import_module('main')
+        assert Path(author_main.__file__).resolve() == author/'main.py'
+        progress('input_validated')
         with threadpool_limits(limits=4):
             state['diagnostics'], backbone = diagnostics(author, fixture, r3_root, saved, output/'diagnostics')
             progress('diagnostics_complete')
