@@ -27,126 +27,88 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 
 ```text
 20-ML-Paper/
-├── docs/
-│   ├── Dac_ta_ACIL.md
-│   ├── protocol_chot.md
-│   ├── metrics.md
-│   ├── PHAN_CONG_NHOM.md
-├── src/
-│   ├── __init__.py
-│   ├── analytic.py
-│   ├── verification.py
-│   ├── reporting.py
-│   ├── verify_analytic.py
-│   ├── cifar_data.py
-│   ├── resnet.py
-│   ├── cifar_smoke.py
-│   ├── base_training.py
-│   ├── streaming.py
-│   ├── metrics.py
-│   ├── profile_analytic.py
-│   ├── verify_resume.py
-│   ├── run_attempt.py
-│   └── notebook_bundle.py
-├── tests/
-│   ├── test_analytic_update.py
-│   ├── test_reporting.py
-│   ├── test_cifar_pipeline.py
-│   ├── test_run_attempts.py
-│   ├── test_notebook_distribution.py
-│   ├── test_resume.py
-│   ├── test_streaming_metrics.py
-│   └── test_profile.py
+├── src/                          # Code nhóm tự viết
+│   ├── analytic.py               # Analytic head: phương trình (4), (9), (10) và joint ridge tham chiếu
+│   ├── verification.py           # Dữ liệu tổng hợp, so joint/phase/minibatch
+│   ├── verify_analytic.py        # CLI chạy VERIFY-02
+│   ├── cifar_data.py             # Tải CIFAR-100, chia lớp theo seed, normalization từ base train
+│   ├── resnet.py                 # ResNet-32 cho CIFAR
+│   ├── base_training.py          # Base training bằng BP, checkpoint và resume theo epoch
+│   ├── cifar_smoke.py            # Pipeline smoke có joint oracle
+│   ├── streaming.py              # Pipeline benchmark không giữ dữ liệu phase cũ
+│   ├── metrics.py                # Ā, final accuracy, F_base
+│   ├── profile_analytic.py       # Đo thời gian/RAM cho analytic d=8000
+│   ├── verify_resume.py          # Kiểm chạy liên tục so với resume
+│   ├── run_attempt.py            # Thư mục và trạng thái riêng cho từng lượt chạy
+│   ├── reporting.py              # Xuất JSON, source hashes, W&B
+│   └── notebook_bundle.py        # Đóng gói source vào notebook Kaggle
+├── tests/                        # Unit test cho các module trong src/
 ├── notebooks/
-│   ├── 01_verify_analytic_update.ipynb
-│   ├── 02_cifar100_smoke.ipynb
-│   ├── 03_cifar100_safe_attempts.ipynb
-│   ├── 04_resume_benchmark_profile.ipynb
-│   ├── 05_profile_base_ready.ipynb
-│   ├── 06_benchmark_seed42_ready.ipynb
-│   ├── 07_benchmark_seed43_ready.ipynb
-│   ├── 08_benchmark_seed44_ready.ipynb
-│   ├── 09_r2_ablation_seed42.ipynb
-│   ├── 10_r2_ablation_seed43.ipynb
-│   ├── 11_r2_ablation_seed44.ipynb
-│   ├── 12_r3_batch_analysis.ipynb
-│   └── archive/05_profile_base_api_v3.ipynb
+│   ├── 01_verify_analytic_update.ipynb      # VERIFY-01/02
+│   ├── 02_cifar100_smoke.ipynb              # Smoke 50+10 lớp
+│   ├── 03_cifar100_safe_attempts.ipynb      # Smoke đủ 100 lớp
+│   ├── 04_resume_benchmark_profile.ipynb    # Profile d=8000 và BP5
+│   ├── 05_profile_base_ready.ipynb          # Bản dựng lại của profile BP5
+│   ├── 06_benchmark_seed42_ready.ipynb      # R1 seed 42
+│   ├── 07_benchmark_seed43_ready.ipynb      # R1 seed 43
+│   ├── 08_benchmark_seed44_ready.ipynb      # R1 seed 44
+│   ├── 09_r2_ablation_seed42.ipynb          # R2 seed 42
+│   ├── 10_r2_ablation_seed43.ipynb          # R2 seed 43
+│   ├── 11_r2_ablation_seed44.ipynb          # R2 seed 44
+│   ├── 12_r3_batch_analysis.ipynb           # R3
+│   └── archive/
+├── scripts/
+│   ├── build_*.py                # Tạo notebook từ source hiện tại
+│   ├── r2_runner.py, r3_runner.py, r3_worker.py   # Chạy R2/R3
+│   ├── aggregate_r1.py, aggregate_r2.py, aggregate_r3.py   # Tổng hợp mean ± SD từ JSON
+│   ├── plot_r1.py, plot_r2.py, plot_r3.py   # Vẽ hình trong reports/figures/
+│   ├── compare_author_acil.py, diagnose_author_base_precision.py   # Chạy đối chiếu code tác giả
+│   ├── aggregate_author_comparison.py, plot_author_comparison.py, track_author_comparison.py
+│   ├── reconcile_r3_tracking.py
+│   └── tests/                    # Test cho scripts R3 và đối chiếu tác giả
 ├── configs/
 │   ├── verify_analytic_update.json
 │   ├── cifar100_smoke.json
-│   └── cifar100_benchmark_k5.json
+│   └── cifar100_benchmark_k5.json          # Cấu hình R1
+├── docs/
+│   ├── protocol_chot.md          # Protocol benchmark v1.0
+│   ├── metrics.md                # Định nghĩa metric v1.0
+│   ├── Dac_ta_ACIL.md            # Đặc tả module analytic
+│   ├── PHAN_CONG_NHOM.md
+│   ├── R3_KE_HOACH_DO.md, DOI_CHIEU_CODE_TAC_GIA_KE_HOACH.md   # Kế hoạch đăng ký trước khi chạy
+│   ├── HUONG_DAN_*.md, CHAY_KAGGLE_BANG_API.md, RESUME_BENCHMARK_PROFILE.md   # Hướng dẫn chạy
+│   └── SUA_LOI_*.md, THAY_DOI_*.md, BUOC_TIEP_THEO_SANG.md   # Nhật ký thay đổi
 ├── reports/
-│   ├── archive/
-│   ├── README.md
-│   ├── VERIFY-02-provenance.json
-│   ├── CIFAR-SMOKE-01-provenance.json
-│   ├── cifar100_smoke_results.json
-│   ├── cifar100_kaggle_results.json
-│   ├── CIFAR-KAGGLE-01-provenance.json
-│   ├── cifar100_kaggle_full5_results.json
-│   ├── CIFAR-KAGGLE-02-provenance.json
-│   ├── resume_cpu_verification.json
-│   ├── cifar100_streaming_cpu_verification.json
-│   ├── profile_d8000_cpu_results.json
-│   ├── RESUME-PROFILE-01-provenance.json
-│   ├── profile_d8000_kaggle_results.json
-│   ├── profile_d8000_kaggle_progress.json
-│   ├── PROFILE-KAGGLE-01-provenance.json
-│   ├── profile_base_kaggle_ready.json
-│   ├── BP5-KAGGLE-01-provenance.json
-│   ├── benchmark_seed42_budget.json
-│   ├── r1_cifar100_k5_summary.json
-│   ├── R1_CIFAR100_K5_3SEEDS_20261106.md
-│   ├── R1-C100-K5-3SEEDS-provenance.json
-│   ├── r2_cifar100_k5_summary.json
-│   ├── R2_CIFAR100_K5_20261107.md
-│   ├── R2-C100-K5-provenance.json
-│   ├── r2_seed42_kaggle_results.json
-│   ├── r2_seed43_kaggle_results.json
-│   ├── r2_seed44_kaggle_results.json
-│   ├── r3_cifar100_k5_summary.json
-│   ├── R3_CIFAR100_K5_BATCH_20261107.md
-│   ├── R3-KAGGLE-01-provenance.json
-│   ├── R3-C100-K5-provenance.json
-│   ├── figures/
-│   ├── verify_analytic_update_results.json
-│   └── verify_analytic_update_v2_results.json
-├── scripts/
-│   ├── build_profile_base_notebook.py
-│   ├── build_benchmark_notebook.py
-│   ├── r2_runner.py
-│   ├── build_r2_notebooks.py
-│   ├── aggregate_r2.py
-│   ├── plot_r2.py
-│   ├── r3_worker.py
-│   ├── r3_runner.py
-│   ├── build_r3_notebook.py
-│   ├── aggregate_r3.py
-│   ├── plot_r3.py
-│   ├── reconcile_r3_tracking.py
-│   ├── tests/test_r3_analysis.py
-│   └── tests/test_r3_tracking.py
+│   ├── BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md   # Báo cáo tổng hợp R1/R2/R3 và đối chiếu tác giả
+│   ├── R1_*.md, R2_*.md, R3_*.md, AUTHOR_CODE_COMPARISON_*.md, REVIEW_*.md   # Báo cáo từng bộ
+│   ├── r1_*_summary.json, r2_*_summary.json, r3_*_summary.json   # Số liệu tổng hợp
+│   ├── *_results.json, *_ready.json, *_progress.json   # JSON gốc từng lượt chạy
+│   ├── *-provenance.json         # Manifest: source, version Kaggle, W&B, SHA-256
+│   ├── figures/                  # Hình R1/R2/R3 và đối chiếu tác giả
+│   ├── archive/                  # JSON gốc trước khi đồng bộ tracking và các lượt lỗi được giữ lại
+│   └── README.md                 # Danh mục bằng chứng
+├── requirements-verification.txt # Chỉ NumPy, cho module analytic
+├── requirements-tracking.txt     # + wandb
+├── requirements-cifar.txt        # + PyTorch, dữ liệu, SciPy
+├── requirements-dev.txt          # + chạy notebook local
+├── requirements-plots.txt        # matplotlib cho hình báo cáo
+├── requirements-author-comparison.txt   # Môi trường riêng cho code tác giả
 ├── .gitattributes
 ├── .gitignore
-├── README.md
-├── requirements-verification.txt
-├── requirements-tracking.txt
-├── requirements-cifar.txt
-└── requirements-dev.txt
+└── README.md
 ```
 
 `.git/`, `.venv/` và `reports/local/` là thư mục dùng trên máy; không đưa lên GitHub. `configs/`, các module reporting/verification và test tracking được giữ vì notebook VERIFY-02 đang dùng chúng.
 
-| Đường dẫn                                 | Nội dung thực sự có                                                |
-| --------------------------------------------- | ---------------------------------------------------------------------- |
-| `src/analytic.py`                           | Joint ridge, khởi tạo R/W, cập nhật theo nhãn toàn cục          |
-| `src/verification.py`                       | Dữ liệu tổng hợp và kiểm chứng ba cách học                    |
-| `src/reporting.py`                          | Source hashes, run ID/URL động, xuất JSON sau logging               |
-| `configs/verify_analytic_update.json`       | Config VERIFY-02                                                       |
-| `tests/`                                    | Test phương pháp và lỗi logging/finish của tracking              |
-| `notebooks/01_verify_analytic_update.ipynb` | Notebook dùng module, chạy local hoặc import riêng trên Kaggle    |
-| `docs/`                                     | Đặc tả và phân công theo hiện trạng repo                       |
-| `reports/`                                  | Kết quả lịch sử/đã công bố; `reports/local/` bị Git bỏ qua |
+| Đường dẫn | Nội dung |
+|---|---|
+| `src/` | Code nhóm tự viết: analytic head, dữ liệu, backbone, training, pipeline, metric |
+| `tests/`, `scripts/tests/` | Unit test cho phương pháp, pipeline, resume, metric, tracking và các script phân tích |
+| `notebooks/` | Notebook chạy trên Kaggle; từ notebook 02 trở đi, source được đóng gói sẵn trong notebook |
+| `scripts/` | Tạo notebook, chạy R2/R3, tổng hợp số liệu, vẽ hình, đối chiếu code tác giả |
+| `configs/` | Cấu hình VERIFY-02, smoke và benchmark R1 |
+| `docs/` | Protocol, định nghĩa metric, đặc tả, hướng dẫn chạy và phân công |
+| `reports/` | Kết quả đã công bố, manifest và hình; `reports/local/` bị Git bỏ qua |
 
 Từ thư mục gốc, Python 3.10 trở lên; môi trường local được kiểm tra bằng Python 3.12:
 
@@ -257,7 +219,7 @@ Các lệnh trên kiểm subset CPU và tài nguyên; JSON giữ trạng thái t
 |---|---|---|
 | Kiến trúc ResNet-32, shortcut option A | K. He, X. Zhang, S. Ren và J. Sun, "Deep Residual Learning for Image Recognition", CVPR 2016, mục 4.2 | `src/resnet.py` viết lại theo mô tả kiến trúc; không chép code có sẵn |
 | Dataset CIFAR-100 | A. Krizhevsky, "Learning Multiple Layers of Features from Tiny Images", Tech. Rep., University of Toronto, 2009 | Dữ liệu cho mọi thí nghiệm CIFAR |
-| Bản phân phối CIFAR-100 | Hugging Face [`uoft-cs/cifar100`](https://huggingface.co/datasets/uoft-cs/cifar100), revision `aadb3af77e9048adbea6b47c21a81e47dd092ae5` | `src/cifar_data.py` tải tự động và kiểm SHA-256 từng file |
+| Bản phân phối CIFAR-100 | Hugging Face [`uoft-cs/cifar100`](https://huggingface.co/datasets/uoft-cs/cifar100), revision `aadb3af77e9048adbea6b47c21a81e47dd092ae5` | `src/cifar_data.py` tải tự động và ghi SHA-256 từng file vào JSON kết quả |
 | Protocol CIL: 50 lớp base + K phase | A. Douillard và cộng sự, PODNet, ECCV 2020; Y. Liu, B. Schiele và Q. Sun, AANets, CVPR 2021; theo ACIL mục 4.1 | Định nghĩa chia lớp trong `docs/protocol_chot.md`; sai khác về thứ tự lớp ghi ở mục 6 |
 | Code tác giả ACIL | [ZHUANGHP/Analytic-continual-learning](https://github.com/ZHUANGHP/Analytic-continual-learning/tree/0afd6bf87622e808ce7f730f8556e78229b9e758), commit `0afd6bf` | Chỉ chạy trong môi trường riêng để đối chiếu; không chép vào `src/` |
 
