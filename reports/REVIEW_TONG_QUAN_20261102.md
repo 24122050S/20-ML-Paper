@@ -1,10 +1,10 @@
 # Review tổng quan tiến độ ACIL — 02/11/2026
 
-> Lập ngày02/11; cập nhật trạng thái mới nhất **07/11/2026**: R1 đủ3 seeds, R2 đủ4 hàng/3 seeds (9 analytic runs mới +3 baseline R1), tracking công khai đã kiểm. [Báo cáo R1](R1_CIFAR100_K5_3SEEDS_20261106.md) · [Báo cáo R2](R2_CIFAR100_K5_20261107.md). R3 cũng hoàn tất9 phép đo/54 so sánh joint ([báo cáo](R3_CIFAR100_K5_BATCH_20261107.md)); đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md); còn sản phẩm PPTX/poster. Chi tiết smoke/ngày cũ bên dưới giữ vai trò lịch sử; không dùng chúng làm trạng thái benchmark hiện tại.
+> Lập ngày 02/11; cập nhật trạng thái mới nhất **07/11/2026**: R1 đủ 3 seeds, R2 đủ 4 hàng/3 seeds (9 analytic runs mới +3 baseline R1), tracking công khai đã kiểm. [Báo cáo R1](R1_CIFAR100_K5_3SEEDS_20261106.md) · [Báo cáo R2](R2_CIFAR100_K5_20261107.md). R3 cũng hoàn tất 9 phép đo/54 so sánh joint ([báo cáo](R3_CIFAR100_K5_BATCH_20261107.md)); đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md); còn sản phẩm PPTX/poster. Chi tiết smoke/ngày cũ bên dưới giữ vai trò lịch sử; không dùng chúng làm trạng thái benchmark hiện tại.
 
 ## Kết luận về vị trí hiện tại
 
-Đã có implementation analytic được kiểm chứng, benchmark R1 đủ 3 seeds và ablation R2 đủ 4 hàng/3 seeds. R3 cũng đã hoàn tất theo kế hoạch. Đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md), gồm cả strict score failures của C1 và5/5updates khớp sau matched base state. Chưa có sản phẩm slide deck giữa kỳ/poster cuối kỳ hoàn chỉnh.
+Đã có implementation analytic được kiểm chứng, benchmark R1 đủ 3 seeds và ablation R2 đủ 4 hàng/3 seeds. R3 cũng đã hoàn tất theo kế hoạch. Đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md), gồm cả strict score failures của C1 và 5/5 updates khớp sau matched base state. Chưa có sản phẩm slide deck giữa kỳ/poster cuối kỳ hoàn chỉnh.
 
 Sang hiện tự thực hiện công việc; không cần chờ bàn giao từ Vĩ/Phát. Đã xác nhận với Sang rằng bài ACIL được giảng viên duyệt. Các phân công ba người trước đây là kế hoạch lịch sử, không phải danh sách việc đã hoàn tất.
 
@@ -30,10 +30,10 @@ Không quy đổi số file hoặc số test thành phần trăm hoàn thành đ
 | Kiểm chứng tổng hợp | Đã có bằng chứng public trong repo/W&B | VERIFY-02: Kaggle Version 9, source 217684f, run wi4wau2d, W 24×2 → 24×4 → 24×6 |
 | CIFAR-100 loader/protocol | Đã lên main và chạy local/Kaggle | HF revision cố định, kiểm 50.000 train/10.000 test, mapping dùng chung, chia base 50 và 5 nhóm mới x 10 |
 | ResNet-32/base training | Có lượt train mới 2 epochs trên CPU và CUDA | 25.000 ảnh base; trọng số đổi, reload checkpoint khớp, freeze đúng; JSON của hai môi trường giữ riêng |
-| Ghép analytic trên ảnh thật | Chuỗi đủ 5 phase, 100 lớp có tracking | [JSON full5](cifar100_kaggle_full5_results.json), W cuối 256×100, test 10.000 ảnh, accuracy 22,05%, mọi check đạt; W&B blhw74ff finished |
-| Tests | Suite54 tests:53 đạt,1 skip CUDA trên local CPU | Analytic, reporting gồm UTF-8/LF, CIFAR, attempt và notebook distribution; 11/20 tests thuộc snapshot VERIFY-02/CPU cũ |
+| Ghép analytic trên ảnh thật | Chuỗi đủ 5 phase, 100 lớp có tracking | [JSON full 5](cifar100_kaggle_full5_results.json), W cuối 256×100, test 10.000 ảnh, accuracy 22,05%, mọi check đạt; W&B blhw74ff finished |
+| Tests | Suite 54 tests:53 đạt,1 skip CUDA trên local CPU | Analytic, reporting gồm UTF-8/LF, CIFAR, attempt và notebook distribution; 11/20 tests thuộc snapshot VERIFY-02/CPU cũ |
 | Notebook 02 | Có run Kaggle Version 2 đã đối chiếu | JSON CUDA, source hashes trong bundle, manifest và W&B; giữ bản 02 làm snapshot lịch sử |
-| Notebook 03 | Full5 có JSON/source hashes và W&B xác nhận | [scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714); giao diện/số version hiển thị Kaggle chưa được đọc độc lập, ghi rõ trong manifest |
+| Notebook 03 | Full 5 có JSON/source hashes và W&B xác nhận | [scriptVersionId 365084714](https://www.kaggle.com/code/hsangg206/03-cifar100-safe-attempts/output?scriptVersionId=365084714); giao diện/số version hiển thị Kaggle chưa được đọc độc lập, ghi rõ trong manifest |
 | Repo/tracking nền tảng | Đã có | GitHub và project W&B đã public; repo local có Git độc lập, requirements, hướng dẫn và manifest |
 
 Các con số của lượt CPU ban đầu trong [JSON CPU](cifar100_smoke_results.json):
@@ -56,9 +56,9 @@ Lượt mới CIFAR-KAGGLE-02 chạy đủ 100 lớp: accuracy lần lượt 33,
 | VERIFY-02 tổng hợp | Có | Có source/output/JSON | Version 9 đã chạy | wi4wau2d, ghi nhận Finished |
 | CIFAR-SMOKE-01 CPU | Đã chạy, checkpoint/state lưu local | Có source pipeline, JSON CPU và manifest | Không áp dụng cho lượt CPU này | `not_logged`, ID/URL null |
 | CIFAR-KAGGLE-01 CUDA | JSON đã tải về | Có JSON/manifest và source bundle trong notebook 02 | Version 2 / 364942764, 50+10 lớp | o2r63pj2, ghi nhận Finished; JSON `logged` |
-| CIFAR-KAGGLE-02 CUDA | JSON do Sang tải và cung cấp | Có JSON/manifest/source bundle tham chiếu immutable | Link scriptVersionId365084714 do Sang cung cấp; giao diện chưa đọc độc lập | blhw74ff finished, public API khớp JSON/config/source |
+| CIFAR-KAGGLE-02 CUDA | JSON do Sang tải và cung cấp | Có JSON/manifest/source bundle tham chiếu immutable | Link scriptVersionId 365084714 do Sang cung cấp; giao diện chưa đọc độc lập | blhw74ff finished, public API khớp JSON/config/source |
 | Dọn cấu trúc/đặc tả và pipeline | Đã có trong checkout | Đã lên main qua PR #5 | Source bundle của Version 2 truy nguyên bằng hashes | Không phải run riêng |
-| Sửa attempt và cell kích thước | Đã kiểm tra local/kernel mới | Đã lên main qua PR #7; notebook 03 đã tạo | JSON full5 của bản 03 status complete, 100 lớp | blhw74ff finished |
+| Sửa attempt và cell kích thước | Đã kiểm tra local/kernel mới | Đã lên main qua PR #7; notebook 03 đã tạo | JSON full 5 của bản 03 status complete, 100 lớp | blhw74ff finished |
 
 Pipeline CIFAR hiện đã có trên GitHub main. `source_dirty=true` và commit cha 8e2a143 trong JSON CPU vẫn mô tả **thời điểm lượt CPU được thực thi**, không phải trạng thái source hôm nay. Lượt Kaggle có git_commit null vì chạy source giải nén từ bundle; manifest và hashes giữ liên kết tới source thực thi. Không chỉnh metadata lịch sử để giả lập một run trên commit mới.
 
@@ -70,15 +70,15 @@ Kaggle được ghi nhận Private trong lần đối chiếu version; repo/W&B 
 
 | Hạng mục | Hiện trạng | Bằng chứng / việc còn lại |
 |---|---|---|
-| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2 base160/d8000/gamma0.1; R3 dùng checkpoint160/d1024/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming/CUDA/BP5 đã đạt; budget2 giờ đã lập; tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) Finished, đã đối chiếu API công khai |
-| Kết quả chính R1 | Hoàn tất42/43/44, n=3 | Ā65,1196 ± 0,6104%, final56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (sample SD, ddof=1); [báo cáo](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json), cả3 public W&B Finished |
+| Scope/protocol tái lập | Đã chốt [v1.0](../docs/protocol_chot.md), core CIFAR100/K5 | R1/R2 base 160/d8000/gamma0.1; R3 dùng checkpoint 160/d1024/gamma0.1; sai khác và readiness gates có trong tài liệu; runner streaming/CUDA/BP5 đã đạt; budget2 giờ đã lập; tracking BP5 [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) Finished, đã đối chiếu API công khai |
+| Kết quả chính R1 | Hoàn tất 42/43/44, n=3 | Ā 65,1196 ± 0,6104%, final 56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (sample SD, ddof=1); [báo cáo](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json), cả 3 public W&B Finished |
 | Mốc smoke 100 lớp | Đã có JSON/manifest; W&B blhw74ff finished và config/source/summary khớp | Giữ Output checkpoint/state; quyền xem và số version hiển thị Kaggle còn cần kiểm trước nộp. [Manifest](CIFAR-KAGGLE-02-provenance.json) phân biệt phần đã kiểm và phần user cung cấp |
-| Ablation R2 | Hoàn tất4 hàng/3 seeds | [Báo cáo/hình](R2_CIFAR100_K5_20261107.md), [summary](r2_cifar100_k5_summary.json), [manifest](R2-C100-K5-provenance.json);9 run mới và3 baseline R1, không train thêm backbone; phạm vi4/5 Table2, gamma0 ngoài scope |
-| Phân tích bổ sung R3 | Hoàn tất9 timing runs/54 so sánh joint | Batch32/128/512,d1024,gamma0.1,seed42;3timing repeats/batch, oracle riêng,0 argmax khác; [báo cáo](R3_CIFAR100_K5_BATCH_20261107.md)/[summary](r3_cifar100_k5_summary.json),9W&B Finished/công khai |
-| Đối chiếu code tác giả | Đã thực thi trong môi trường riêng; C1 có score differences, C2/C1R đạt; không chép core | [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md), JSON/manifests và3W&B |
-| Metrics tổng hợp | Đã chốt [metrics v1.0](../docs/metrics.md), ví dụ smoke đã tính lại | A-bar có base; F-base/delta có dấu rõ; summary R1/R2/R3 đã có; R1/R2 thống kê3 seeds, R3 thống kê3 timing repeats trên1 seed, đều tính lại từ JSON thật |
-| Seeds benchmark | R1 và R2 đủ seeds42/43/44 | R1 train base mới từng seed; R2 dùng checkpoint cùng seed. Mean ± sample SD với n=3, ddof=1; không lấy phase hoặc unit test làm seed benchmark. R3 chỉ dùng1 seed với3 timing repeats |
-| Công bố kết quả tiếp theo | R1 đủ3 seeds | [Manifest tổng hợp](R1-C100-K5-3SEEDS-provenance.json) nối3 manifest/version/source/checkpoint/W&B; R2/R3 đã đủ theo kế hoạch; đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md); tiếp theo sản phẩm nộp |
+| Ablation R2 | Hoàn tất 4 hàng/3 seeds | [Báo cáo/hình](R2_CIFAR100_K5_20261107.md), [summary](r2_cifar100_k5_summary.json), [manifest](R2-C100-K5-provenance.json);9 run mới và 3 baseline R1, không train thêm backbone; phạm vi4/5 Table 2, gamma 0 ngoài scope |
+| Phân tích bổ sung R3 | Hoàn tất 9 timing runs/54 so sánh joint | Batch 32/128/512,d1024,gamma 0.1, seed 42;3 timing repeats/batch, oracle riêng,0 argmax khác; [báo cáo](R3_CIFAR100_K5_BATCH_20261107.md)/[summary](r3_cifar100_k5_summary.json),9W&B Finished/công khai |
+| Đối chiếu code tác giả | Đã thực thi trong môi trường riêng; C1 có score differences, C2/C1R đạt; không chép core | [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md), JSON/manifests và 3 W&B |
+| Metrics tổng hợp | Đã chốt [metrics v1.0](../docs/metrics.md), ví dụ smoke đã tính lại | A-bar có base; F-base/delta có dấu rõ; summary R1/R2/R3 đã có; R1/R2 thống kê 3 seeds, R3 thống kê 3 timing repeats trên 1 seed, đều tính lại từ JSON thật |
+| Seeds benchmark | R1 và R2 đủ seeds 42/43/44 | R1 train base mới từng seed; R2 dùng checkpoint cùng seed. Mean ± sample SD với n=3, ddof=1; không lấy phase hoặc unit test làm seed benchmark. R3 chỉ dùng 1 seed với 3 timing repeats |
+| Công bố kết quả tiếp theo | R1 đủ 3 seeds | [Manifest tổng hợp](R1-C100-K5-3SEEDS-provenance.json) nối 3 manifest/version/source/checkpoint/W&B; R2/R3 đã đủ theo kế hoạch; đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md); tiếp theo sản phẩm nộp |
 
 Một checkpoint 2 epochs không phải checkpoint benchmark hoàn chỉnh. Chạy thêm đủ phase với chính checkpoint đó trước hết vẫn là kiểm tra pipeline đầy đủ.
 
@@ -87,10 +87,10 @@ Một checkpoint 2 epochs không phải checkpoint benchmark hoàn chỉnh. Ch�
 1. `src/cifar_smoke.py` hiện giới hạn K=5; K=25 trong roadmap không thể hoàn thành chỉ bằng đổi một giá trị JSON.
 2. `--reuse-checkpoint` dùng lại base đã hoàn thành. Đã có checkpoint v2 mỗi epoch và resume đủ optimizer/scheduler/RNG/loader. CPU continuous so với resume và CUDA TinyCNN test đều đạt; BP5 GPU/checkpoint đã kiểm. Xem review BP5 để phân biệt phạm vi từng phép kiểm.
 3. Analytic vẫn là NumPy CPU. GPU giúp base training/trích feature; cần đo riêng chi phí analytic trước khi tăng expansion.
-4. Mode smoke giữ oracle để kiểm nhỏ; mode benchmark mới đọc batch, không giữ train history và không gọi oracle. Đã kiểm đủ100 lớp CPU; phân biệt peak process RAM với bytes R/W/FE.
+4. Mode smoke giữ oracle để kiểm nhỏ; mode benchmark mới đọc batch, không giữ train history và không gọi oracle. Đã kiểm đủ 100 lớp CPU; phân biệt peak process RAM với bytes R/W/FE.
 5. Đã có no-FE đúng nghĩa: dùng F64 trực tiếp, không ReLU/projection; có test. Gamma=0 đang bị từ chối; không thay epsilon rồi gọi là zero.
 
-Hai lỗi của snapshot trước đã được xử lý trong PR #7: attempt mới thất bại không dùng lại pass cũ; cell cuối notebook 03 tính số cột W theo config. Khi chạy source mới dùng bản04; bản02/03 giữ source snapshot của các bằng chứng Kaggle. Xem [báo cáo sửa trạng thái](../docs/SUA_LOI_TRANG_THAI_RUN.md).
+Hai lỗi của snapshot trước đã được xử lý trong PR #7: attempt mới thất bại không dùng lại pass cũ; cell cuối notebook 03 tính số cột W theo config. Khi chạy source mới dùng bản 04; bản 02/03 giữ source snapshot của các bằng chứng Kaggle. Xem [báo cáo sửa trạng thái](../docs/SUA_LOI_TRANG_THAI_RUN.md).
 
 Đây là các việc mở rộng từ một smoke runner đã đạt sang experiment runner. Chúng không làm mất giá trị những kiểm chứng hiện có.
 
@@ -111,13 +111,13 @@ P1 về phụ thuộc tập base và P2 về bộ nhớ hiện là ý tưởng. 
 ## 6. Thứ tự làm cho một người
 
 1. **Trình bày kết quả đối chiếu tác giả:** [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md) đã thực thi, giữ các strict failures và chẩn đoán state base; đưa đúng nguồn/giới hạn vào slide.
-2. **Ghép cả R1/R2/R3 vào deck:** dùng bảng/hình tự làm và run links; [R1](R1_CIFAR100_K5_3SEEDS_20261106.md), [R2](R2_CIFAR100_K5_20261107.md), [R3](R3_CIFAR100_K5_BATCH_20261107.md). R1/R2 dùng3 seeds; R3 dùng3 timing repeats trên1seed. R2 là4/5 Table2, không có gamma0.
+2. **Ghép cả R1/R2/R3 vào deck:** dùng bảng/hình tự làm và run links; [R1](R1_CIFAR100_K5_3SEEDS_20261106.md), [R2](R2_CIFAR100_K5_20261107.md), [R3](R3_CIFAR100_K5_BATCH_20261107.md). R1/R2 dùng 3 seeds; R3 dùng 3 timing repeats trên 1 seed. R2 là 4/5 Table 2, không có gamma 0.
 3. **Hoàn thiện đọc hiểu và phân tích sai lệch:** nối công thức với code, điều kiện tương đương joint, khác biệt protocol và giới hạn. Nêu giả thuyết giải thích riêng với nguyên nhân đã kiểm.
 4. **Nghiệm thu PPTX rồi poster:** kiểm nội dung/notes/nguồn/định dạng/hạn chính thức. Hoàn tất ba bộ thực nghiệm không đồng nghĩa toàn bộ yêu cầu môn đã hoàn tất.
 
 [Đề chính thức](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reproduction) chấp nhận cả máy cá nhân và hosted notebook. Kaggle/GPU là lựa chọn tài nguyên của kế hoạch. Mỗi lượt local/Kaggle được ghi đúng môi trường, source và trạng thái tracking của chính nó.
 
-[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) giữ v1.0. R1 đã đủ42/43/44 với mean±sample_SD(ddof=1), [báo cáo tổng hợp](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json). R2/R3 đã hoàn tất theo các báo cáo. Đối chiếu source tác giả đã có bằng chứng và phân tích khác biệt; việc ưu tiên tiếp theo là **hoàn thiện PPTX**; còn deck/poster và phân tích theo yêu cầu môn. Các báo cáo nghiệm thu từng seed giữ vai trò snapshot lịch sử, không thay bằng số tổng hợp.
+[Protocol](../docs/protocol_chot.md) và [metrics](../docs/metrics.md) giữ v1.0. R1 đã đủ 42/43/44 với mean±sample_SD(ddof=1), [báo cáo tổng hợp](R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](r1_cifar100_k5_summary.json). R2/R3 đã hoàn tất theo các báo cáo. Đối chiếu source tác giả đã có bằng chứng và phân tích khác biệt; việc ưu tiên tiếp theo là **hoàn thiện PPTX**; còn deck/poster và phân tích theo yêu cầu môn. Các báo cáo nghiệm thu từng seed giữ vai trò snapshot lịch sử, không thay bằng số tổng hợp.
 
 ## 7. Cách dùng tài liệu để đỡ rối
 
