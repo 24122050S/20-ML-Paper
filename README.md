@@ -247,8 +247,27 @@ Các lệnh trên kiểm subset CPU và tài nguyên; JSON giữ trạng thái t
 
 ## Nguồn và hỗ trợ
 
-- Zhuang et al., [ACIL: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection](https://proceedings.neurips.cc/paper_files/paper/2022/hash/4b74a42fc81fc7ee252f6bcb6e26c8be-Abstract-Conference.html), NeurIPS 2022, mục 3.1–3.2, phương trình (4), (9), (10).
-- NumPy cho đại số; W&B cho tracking; GitHub/Kaggle cho source và môi trường chạy.
+**Bài báo tái lập**
+
+- H. Zhuang, Z. Weng, H. Wei, R. Xie, K.-A. Toh và Z. Lin, [ACIL: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection](https://proceedings.neurips.cc/paper_files/paper/2022/hash/4b74a42fc81fc7ee252f6bcb6e26c8be-Abstract-Conference.html), NeurIPS 2022. Analytic head trong `src/analytic.py` tự cài từ mục 3.1–3.2, phương trình (4), (9), (10).
+
+**Thành phần dùng lại, không phải đóng góp của nhóm**
+
+| Thành phần | Nguồn | Cách dùng trong repo |
+|---|---|---|
+| Kiến trúc ResNet-32, shortcut option A | K. He, X. Zhang, S. Ren và J. Sun, "Deep Residual Learning for Image Recognition", CVPR 2016, mục 4.2 | `src/resnet.py` viết lại theo mô tả kiến trúc; không chép code có sẵn |
+| Dataset CIFAR-100 | A. Krizhevsky, "Learning Multiple Layers of Features from Tiny Images", Tech. Rep., University of Toronto, 2009 | Dữ liệu cho mọi thí nghiệm CIFAR |
+| Bản phân phối CIFAR-100 | Hugging Face [`uoft-cs/cifar100`](https://huggingface.co/datasets/uoft-cs/cifar100), revision `aadb3af77e9048adbea6b47c21a81e47dd092ae5` | `src/cifar_data.py` tải tự động và kiểm SHA-256 từng file |
+| Protocol CIL: 50 lớp base + K phase | A. Douillard và cộng sự, PODNet, ECCV 2020; Y. Liu, B. Schiele và Q. Sun, AANets, CVPR 2021; theo ACIL mục 4.1 | Định nghĩa chia lớp trong `docs/protocol_chot.md`; sai khác về thứ tự lớp ghi ở mục 6 |
+| Code tác giả ACIL | [ZHUANGHP/Analytic-continual-learning](https://github.com/ZHUANGHP/Analytic-continual-learning/tree/0afd6bf87622e808ce7f730f8556e78229b9e758), commit `0afd6bf` | Chỉ chạy trong môi trường riêng để đối chiếu; không chép vào `src/` |
+
+**Thư viện và nền tảng**
+
+- Tính toán: NumPy 2.1.3, SciPy 1.17.0, PyTorch 2.11.0. Dữ liệu: huggingface_hub 1.10.1, pyarrow 23.0.1, Pillow 11.1.0. Hình: matplotlib 3.9.2. Phiên bản khóa trong các file `requirements-*.txt`.
+- Tracking: Weights & Biases (wandb 0.28.1). Môi trường chạy: Kaggle Notebooks (GPU T4). Lưu source: GitHub.
+
+**Công cụ AI**
+
 - Notebook/code khởi đầu và các sửa đổi được hỗ trợ bởi ChatGPT. Nhóm chịu trách nhiệm đọc, kiểm chứng và giải thích toàn bộ sản phẩm.
 
 [Phân công Sang/Vĩ/Phát](docs/PHAN_CONG_NHOM.md) · [Đặc tả analytic](docs/Dac_ta_ACIL.md) · [Báo cáo thay đổi](docs/THAY_DOI_VERIFY02.md)
