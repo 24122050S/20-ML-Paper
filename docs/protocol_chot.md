@@ -95,6 +95,16 @@ Lưu ý nguồn: paper mục 4.1 ghi crop/flip/normalize cho BP. README tác gi�
 | Training | Recipe 160/milestone từ paper | Repo mới 300/cosine/augmentation khác; score README mới không phải score Table 1 |
 | Precision | BP32, analytic 64 | Ghi dtype và tolerance; không bảo đảm bitwise giữa môi trường |
 
+**Ghi chú bổ sung 08/11/2026 về thứ tự lớp (không đổi protocol v1.0, không chạy lại):** ACIL mục 4.1 nói theo protocol của PODNet và AANets (tài liệu tham khảo [4], [11] của paper). Hai repo này dùng **một thứ tự lớp cố định cho mọi lượt chạy**:
+
+| Nguồn | Cách chọn thứ tự | 10 lớp đầu |
+|---|---|---|
+| [AANets, `base_trainer.py`](https://github.com/yaoyao-liu/class-incremental-learning/blob/main/adaptive-aggregation-networks/trainer/base_trainer.py), hàm `init_class_order` | `np.random.seed(1993)` rồi `np.random.shuffle(np.arange(100))`; `--random_seed` mặc định 1993 trong [`main.py`](https://github.com/yaoyao-liu/class-incremental-learning/blob/main/adaptive-aggregation-networks/main.py) | 68, 56, 78, 8, 23, 84, 90, 65, 74, 76 (nhóm tính lại bằng NumPy legacy RNG; chưa đối chiếu file pickle của tác giả) |
+| [PODNet, `cifar100_3orders.yaml`](https://github.com/arthurdouillard/incremental_learning.pytorch/blob/master/options/data/cifar100_3orders.yaml) | 3 danh sách cố định ghi sẵn trong file | Thứ tự 1: 87, 0, 52, 58, 44, 91, 68, 97, 51, 15 |
+| Nhóm, R1/R2 | `np.random.default_rng(seed).permutation(100)`, mỗi seed một thứ tự | seed 42: 59, 21, 56, 18, 33, 42, 50, 27, 92, 71 |
+
+Hệ quả khi phân tích: tập 50 lớp base và các phase của nhóm khác với tập của paper, nên SD giữa 3 seed của nhóm gồm cả biến thiên do chọn lớp, còn paper (theo các repo trên) giữ cố định yếu tố này. Paper không nêu rõ thứ tự nào được dùng cho Table 1, nên chưa quy được gap R1−paper cho yếu tố này. Muốn đo ảnh hưởng thì phải chạy thêm với thứ tự cố định và đăng ký trước như một thí nghiệm riêng.
+
 Phần đối chiếu code gốc là đầu ra bắt buộc của reproduction: chạy source tác giả trong môi trường riêng, pin commit/config/checkpoint, lưu output và W&B. Không ghi “đã chạy code gốc” chỉ vì đã đọc. So sánh theo tầng: mapping → preprocessing → feature → FE → analytic → metric; chỉ quy nguyên nhân cho tầng có bằng chứng. Cập nhật 07/11: đã chạy source tác giả nguyên bản qua C1/C2 và diagnostic C1R, [đối chiếu tác giả](../reports/AUTHOR_CODE_COMPARISON_20261107.md). C1 có 2 phase score allclose không đạt, giữ nguyên gate; C2 và C1R đạt trong phạm vi đã công bố. Chưa chạy fresh training 300 epochs theo mặc định repo tác giả.
 
 ## 7. Ngân sách và thứ tự thực hiện
