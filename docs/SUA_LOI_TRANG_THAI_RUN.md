@@ -4,7 +4,7 @@ Ngày 03/11/2026. Phạm vi: vòng đời và lưu artifact của một lần g�
 
 ## Lỗi cũ
 
-Lượt seed42 đã complete. Gọi lượt seed43 vào cùng output, nhưng checkpoint không tồn tại. Runner ghi config/protocol mới rồi phát sinh FileNotFoundError trước khi thay results/progress. Người đọc chỉ hai file kết quả thấy seed42 verification_passed=true và stage complete của lượt trước.
+Lượt seed 42 đã complete. Gọi lượt seed 43 vào cùng output, nhưng checkpoint không tồn tại. Runner ghi config/protocol mới rồi phát sinh FileNotFoundError trước khi thay results/progress. Người đọc chỉ hai file kết quả thấy seed 42 verification_passed=true và stage complete của lượt trước.
 
 ## Thiết kế mới
 
@@ -40,13 +40,13 @@ JSON flat cũ được copy nguyên bytes sang thư mục legacy trước khi ro
 
 Notebook 02 và JSON/manifest của những run đã công bố được giữ nguyên. Generator tạo notebook 03 mới và chặn ghi đè notebook 02, vì manifest Kaggle Version 2 dẫn tới source bundle của bản 02.
 
-Notebook 03 gọi login W&B qua callback bên trong attempt; nếu secret/login lỗi thì vẫn có failed status. Cell cuối kiểm kích thước và số phase theo config, hỗ trợ cả mốc 60 và 100 lớp. Mặc định vẫn smoke một phase mới, 2 epochs, expansion256.
+Notebook 03 gọi login W&B qua callback bên trong attempt; nếu secret/login lỗi thì vẫn có failed status. Cell cuối kiểm kích thước và số phase theo config, hỗ trợ cả mốc 60 và 100 lớp. Mặc định vẫn smoke một phase mới, 2 epochs, expansion 256.
 
 ## Kiểm tra đã thực hiện
 
-- 37 tests đầy đủ trên máy, gồm test seed42 complete → seed43 thiếu checkpoint; sai seed checkpoint; lỗi config/JSON/download; lỗi giữa training; W&B finish; Ctrl+C; hai attempt ghi metadata theo thứ tự kết thúc khác nhau; config overrides; source bundle và snapshot cũ.
-- Một lượt ảnh thật dùng checkpoint CPU 2 epochs có sẵn chạy base + một phase mới, đạt W256×60, test6.000 ảnh, accuracy29,3667%, dự đoán khớp joint.
-- Gọi tiếp seed43 với checkpoint thiếu vào cùng output: root ghi failed, seed43, verification_passed=false; metric và URL cũ không bị gắn sang lượt mới. Report của attempt đã complete, JSON legacy và checkpoint cũ giữ nguyên bytes.
+- 37 tests đầy đủ trên máy, gồm test seed 42 complete → seed 43 thiếu checkpoint; sai seed checkpoint; lỗi config/JSON/download; lỗi giữa training; W&B finish; Ctrl+C; hai attempt ghi metadata theo thứ tự kết thúc khác nhau; config overrides; source bundle và snapshot cũ.
+- Một lượt ảnh thật dùng checkpoint CPU 2 epochs có sẵn chạy base + một phase mới, đạt W256×60, test 6.000 ảnh, accuracy 29,3667%, dự đoán khớp joint.
+- Gọi tiếp seed 43 với checkpoint thiếu vào cùng output: root ghi failed, seed 43, verification_passed=false; metric và URL cũ không bị gắn sang lượt mới. Report của attempt đã complete, JSON legacy và checkpoint cũ giữ nguyên bytes.
 
 Các test của phần đóng gói cần nbformat từ requirements-dev. Trong source bundle Kaggle không kèm notebook 02, test bất biến của snapshot 02 được skip có lý do; các test runtime của attempt vẫn chạy. Notebook mới chưa tự được gọi là một run Kaggle đã hoàn tất.
 

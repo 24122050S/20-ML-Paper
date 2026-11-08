@@ -171,7 +171,7 @@ Chỉ tái sử dụng checkpoint khi cấu hình base, class order, normalizati
 
 ### 9.8. Base streaming và mode benchmark
 
-Từ04/11/2026, `initialize_batches(batches, n_features, n_classes, gamma=...)` nhận iterator `(H,y)` của base, tích lũy Gram/cross theo batch và trả cùng `(R,W)`. Gamma cộng đúng một lần; Cholesky giải cùng objective ridge. API này không trả `class_ids`; mapping vẫn thuộc pipeline.
+Từ 04/11/2026, `initialize_batches(batches, n_features, n_classes, gamma=...)` nhận iterator `(H,y)` của base, tích lũy Gram/cross theo batch và trả cùng `(R,W)`. Gamma cộng đúng một lần; Cholesky giải cùng objective ridge. API này không trả `class_ids`; mapping vẫn thuộc pipeline.
 
 `StreamingHead` quản lý feature expansion/R/W cho đường benchmark. Mặc định `H=ReLU(F @ FE)`; khi `feature_expansion=false`, H chính là F64 từ backbone, không projection/ReLU bổ sung. Không giữ train history hoặc gọi joint oracle trong đường này. Field sai số so joint=null, `joint_reference_status="not_run"`. Smoke/test vẫn giữ oracle riêng.
 
