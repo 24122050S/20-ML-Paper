@@ -10,10 +10,14 @@ from .analytic import initialize, incremental_update, joint_ridge
 
 
 def make_synthetic_phases(config):
-    """Nhận config số chiều/số mẫu/seed; trả các tuple H_train,y_train,H_test,y_test.
+    """Sinh bộ dữ liệu tổng hợp theo nhiều phase với ma trận mở rộng đặc trưng cố định.
 
-    Feature expansion được sinh một lần. Thứ tự sinh giữ như VERIFY-01 để có
-    một bài toán tham chiếu tương ứng, dù cách tính hữu hạn có thể khác đôi chút.
+    Tham số:
+        config: Dict cấu hình gồm ``seed``, ``d_input``, ``d_feature``, ``n_phases``,
+            ``classes_per_phase``, ``n_train_per_class``, ``n_test_per_class`` và ``minibatch_size``.
+
+    Trả về:
+        Danh sách các tuple ``(H_train, y_train, H_test, y_test)`` cho từng phase.
     """
     for key in ("d_input", "d_feature", "n_phases", "classes_per_phase", "n_train_per_class", "n_test_per_class", "minibatch_size"):
         if isinstance(config[key], bool) or not isinstance(config[key], int) or config[key] < 1:
@@ -38,10 +42,13 @@ def make_synthetic_phases(config):
 
 
 def run_verification(config):
-    """Chạy kiểm chứng theo config; trả report chưa log W&B, hoặc raise khi sai.
+    """Chạy kiểm chứng tương đương số học giữa joint ridge, cập nhật theo phase và minibatch.
 
-    Joint tính từ toàn bộ dữ liệu đã thấy; hai nhánh incremental chỉ nhận phase
-    hoặc minibatch hiện tại. Mọi kiểm tra phải đạt trước khi trả report thành công.
+    Tham số:
+        config: Dict cấu hình bài toán kiểm chứng gồm kích thước chiều, gamma và ngưỡng sai số ``rtol``/``atol``.
+
+    Trả về:
+        Dict báo cáo kết quả kiểm chứng từng phase (chưa log W&B); raise nếu sai lệch vượt ngưỡng.
     """
     config = dict(config)
     phases = make_synthetic_phases(config)

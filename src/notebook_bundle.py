@@ -9,7 +9,17 @@ import zipfile
 
 
 def build(output=None):
-    """Gói module/config/test thành notebook04; trả Path, chặn ghi đè02/03 đã công bố."""
+    """Đóng gói toàn bộ source/configs/tests/requirements vào notebook 04 và ghi ra đĩa.
+
+    Chặn việc ghi đè lên các snapshot notebook 02 và 03 đã công bố.
+
+    Tham số:
+        output: Đường dẫn file ``.ipynb`` đích (tùy chọn); mặc định tạo
+            ``notebooks/04_resume_benchmark_profile.ipynb``.
+
+    Trả về:
+        Đối tượng ``Path`` trỏ tới file notebook vừa được tạo.
+    """
     import nbformat as nb
     root=Path(__file__).resolve().parents[1]
     destination=Path(output) if output is not None else root/'notebooks/04_resume_benchmark_profile.ipynb'

@@ -19,12 +19,26 @@ from filelock import FileLock
 
 
 def _now():
-    """Trả timestamp UTC rõ múi giờ để nhận diện lượt chạy."""
+    """Tạo dấu thời gian UTC chuẩn ISO-8601 để nhận diện và sắp xếp lượt chạy.
+
+    Tham số:
+        Không nhận tham số.
+
+    Trả về:
+        Chuỗi thời gian UTC có thông tin múi giờ.
+    """
     return datetime.now(timezone.utc).isoformat()
 
 
 def _read_json(path):
-    """Đọc metadata nếu hợp lệ; trả None cho file thiếu hoặc JSON hỏng."""
+    """Đọc file JSON dạng dict một cách an toàn, bỏ qua file thiếu hoặc bị hỏng.
+
+    Tham số:
+        path: Đường dẫn file JSON cần đọc.
+
+    Trả về:
+        Dict đã giải mã nếu hợp lệ, ngược lại trả ``None``.
+    """
     try:
         value = Path(path).read_text(encoding="utf-8-sig")
         result = json.loads(value)
@@ -34,7 +48,15 @@ def _read_json(path):
 
 
 def _atomic_json(path, payload):
-    """Ghi payload UTF-8/LF qua file tạm cùng thư mục rồi replace atomic."""
+    """Ghi dict ra file JSON theo chuẩn UTF-8/LF qua file tạm cùng thư mục rồi replace atomic.
+
+    Tham số:
+        path: Đường dẫn file JSON đích.
+        payload: Đối tượng có thể tuần tự hóa thành JSON (không chứa NaN/Inf).
+
+    Trả về:
+        None.
+    """
     path = Path(path)
     text = json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -62,6 +84,15 @@ class RunAttempt:
     """
 
     def __init__(self, output_root, *, seed=None):
+        """Khởi tạo ngữ cảnh quản lý thư mục attempt riêng, attempt ID và khóa file.
+
+        Tham số:
+            output_root: Thư mục gốc chứa ``latest.json``, ``results.json`` và ``attempts/``.
+            seed: Seed yêu cầu tùy chọn để ghi vào metadata nhận diện lượt chạy.
+
+        Trả về:
+            None.
+        """
         self.root = Path(output_root).resolve()
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         self.id = f"{timestamp}-{uuid4().hex[:12]}"
@@ -74,16 +105,39 @@ class RunAttempt:
         self.finished = False
 
     def _identity(self):
+        """Tạo dict thông tin nhận diện cố định của attempt hiện tại.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            Dict gồm ``attempt_id``, ``artifacts_dir``, ``output_dir``, ``requested_seed`` và ``started_at_utc``.
+        """
         return {"attempt_id": self.id, "artifacts_dir": self.relative_dir,
                 "output_dir": str(self.directory), "requested_seed": self.seed,
                 "started_at_utc": self.started_at}
 
     def _current(self):
+        """Kiểm tra attempt này có còn là lượt mới nhất trong ``latest.json`` hay không.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            ``True`` nếu ``latest.json`` trỏ đúng vào ``self.id``, ngược lại ``False``.
+        """
         latest = _read_json(self.root / "latest.json")
         return latest is not None and latest.get("attempt_id") == self.id
 
     def _archive_legacy(self):
-        """Giữ nguyên JSON kiểu cũ trước khi thay summary; không dời checkpoint cũ."""
+        """Lưu giữ các file JSON kiểu cũ vào thư mục archive trước khi cập nhật root summary.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            None.
+        """
         names = ("results.json", "progress.json", "config.json", "protocol.json", "data_audit.json")
         if (self.root / "latest.json").exists() or not any((self.root / n).is_file() for n in names):
             return
@@ -99,6 +153,14 @@ class RunAttempt:
                                          if (self.root / n).is_file()]})
 
     def __enter__(self):
+        """Khởi tạo thư mục attempt, đánh dấu trạng thái ``running`` và làm mới summary root.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            Chính đối tượng ``RunAttempt``.
+        """
         self.root.mkdir(parents=True, exist_ok=True)
         self.directory.mkdir(parents=True, exist_ok=False)
         with self.lock:
@@ -115,12 +177,28 @@ class RunAttempt:
         return self
 
     def _pending_report(self):
+        """Tạo cấu trúc báo cáo tạm thời khi lượt chạy đang ở trạng thái ``running``.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            Dict báo cáo placeholder với ``verification_passed=False`` và ``status="running"``.
+        """
         return {**self._identity(), "status": "running", "verification_passed": False,
                 "results": [], "wandb_status": "not_started", "wandb_run_id": None,
                 "wandb_run_url": None}
 
     def progress(self, stage, **details):
-        """Ghi stage của lượt này; cập nhật root chỉ khi nó còn là lượt mới nhất."""
+        """Cập nhật giai đoạn đang thực thi của attempt hiện tại và đồng bộ root nếu vẫn mới nhất.
+
+        Tham số:
+            stage: Tên giai đoạn hiện tại (ví dụ ``"base_training"``, ``"tracking"``).
+            **details: Các trường metadata bổ sung cần lưu vào ``progress.json``.
+
+        Trả về:
+            None.
+        """
         if self.finished:
             raise RuntimeError("Attempt đã kết thúc")
         self.record = {**self._identity(), "status": "running", "stage": stage,
@@ -134,7 +212,14 @@ class RunAttempt:
                 _atomic_json(self.root / "latest.json", self.record)
 
     def complete(self, report):
-        """Lưu report đã log/kiểm tra xong, trả report có attempt ID và status complete."""
+        """Đánh dấu attempt hoàn tất hợp lệ và ghi báo cáo cuối cùng ra thư mục attempt và root.
+
+        Tham số:
+            report: Dict báo cáo đã có ``verification_passed=True``.
+
+        Trả về:
+            Dict báo cáo hoàn chỉnh đã gắn thông tin nhận diện attempt và ``status="complete"``.
+        """
         if self.finished or not report.get("verification_passed"):
             raise ValueError("Chỉ complete một attempt đang chạy với kiểm chứng đã đạt")
         result = {**copy.deepcopy(report), **self._identity(), "status": "complete"}
@@ -142,7 +227,14 @@ class RunAttempt:
         return result
 
     def fail(self, error):
-        """Đánh dấu failed, giữ phần chẩn đoán của chính attempt này nếu đã có."""
+        """Đánh dấu attempt thất bại an toàn mà không ghi đè dữ liệu chi tiết bằng message nhạy cảm.
+
+        Tham số:
+            error: Ngoại lệ phát sinh khiến lượt chạy dừng lại.
+
+        Trả về:
+            None.
+        """
         result = _read_json(self.directory / "results.json")
         if result is None or result.get("attempt_id") != self.id:
             result = self._pending_report()
@@ -156,6 +248,16 @@ class RunAttempt:
         self._finish(result, status="failed", checks_passed=False)
 
     def _finish(self, result, *, status, checks_passed):
+        """Ghi nhận trạng thái kết thúc (``complete`` hoặc ``failed``) vào thư mục attempt và root.
+
+        Tham số:
+            result: Dict báo cáo kết quả cuối cùng của attempt.
+            status: Chuỗi trạng thái kết thúc (``"complete"`` hoặc ``"failed"``).
+            checks_passed: Giá trị bool cho biết các kiểm tra có đạt hay không.
+
+        Trả về:
+            None.
+        """
         self.record = {**self._identity(), "status": status, "stage": status,
                        "checks_passed": checks_passed, "updated_at_utc": _now(),
                        "results_path": f"{self.relative_dir}/results.json"}
@@ -171,6 +273,16 @@ class RunAttempt:
         self.finished = True
 
     def __exit__(self, error_type, error, traceback):
+        """Xử lý thoát context manager: ghi ``failed`` nếu có lỗi hoặc chưa gọi ``complete()``.
+
+        Tham số:
+            error_type: Lớp ngoại lệ nếu khối ``with`` phát sinh lỗi.
+            error: Thể hiện ngoại lệ phát sinh (hoặc ``None``).
+            traceback: Đối tượng traceback tương ứng (hoặc ``None``).
+
+        Trả về:
+            ``False`` để không nuốt ngoại lệ gốc.
+        """
         if error is not None:
             try:
                 self.fail(error)

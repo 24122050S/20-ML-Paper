@@ -11,6 +11,7 @@
 ## Hiện trạng
 
 - [Báo cáo tổng hợp thực nghiệm giữa kỳ, 07/11/2026](reports/BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md): R1/R2/R3 đã đủ kết quả; đã có [đối chiếu tác giả](reports/AUTHOR_CODE_COMPARISON_20261107.md); còn hoàn thiện PPTX. Gồm protocol, số liệu, giải thích thay đổi, giới hạn và bảng notebook–version–W&B.
+- [Báo cáo cập nhật chuẩn repo và sơ đồ tự vẽ, 11/11/2026](reports/CAP_NHAT_REPO_VA_SO_DO_20261111.md): đồng bộ PR #22, bổ sung 2 sơ đồ tự vẽ trong `reports/figures/`, bảng ánh xạ thực nghiệm thống nhất, giải thích thư viện ngoài standard stack và docstring 3 phần cho toàn bộ `src/`.
 - Đã có module analytic hỗ trợ nhãn toàn cục và minibatch; notebook/CLI dùng cùng source.
 - Đã có test độc lập cho phương pháp và thứ tự log W&B/xuất JSON.
 - VERIFY-01 là mốc lịch sử trên dữ liệu tổng hợp. VERIFY-02 kiểm tra thêm minibatch.
@@ -62,6 +63,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── r2_runner.py, r3_runner.py, r3_worker.py   # Chạy R2/R3
 │   ├── aggregate_r1.py, aggregate_r2.py, aggregate_r3.py   # Tổng hợp mean ± SD từ JSON
 │   ├── plot_r1.py, plot_r2.py, plot_r3.py   # Vẽ hình trong reports/figures/
+│   ├── plot_acil_diagrams.py             # Tự vẽ sơ đồ pipeline ACIL và bài toán/tiền nhiệm
 │   ├── compare_author_acil.py, diagnose_author_base_precision.py   # Chạy đối chiếu code tác giả
 │   ├── aggregate_author_comparison.py, plot_author_comparison.py, track_author_comparison.py
 │   ├── reconcile_r3_tracking.py
@@ -80,11 +82,12 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   └── SUA_LOI_*.md, THAY_DOI_*.md, BUOC_TIEP_THEO_SANG.md   # Nhật ký thay đổi
 ├── reports/
 │   ├── BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md   # Báo cáo tổng hợp R1/R2/R3 và đối chiếu tác giả
+│   ├── CAP_NHAT_REPO_VA_SO_DO_20261111.md        # Báo cáo cập nhật sơ đồ tự vẽ, mapping README và docstring src/
 │   ├── R1_*.md, R2_*.md, R3_*.md, AUTHOR_CODE_COMPARISON_*.md, REVIEW_*.md   # Báo cáo từng bộ
 │   ├── r1_*_summary.json, r2_*_summary.json, r3_*_summary.json   # Số liệu tổng hợp
 │   ├── *_results.json, *_ready.json, *_progress.json   # JSON gốc từng lượt chạy
 │   ├── *-provenance.json         # Manifest: source, version Kaggle, W&B, SHA-256
-│   ├── figures/                  # Hình R1/R2/R3 và đối chiếu tác giả
+│   ├── figures/                  # Hình R1/R2/R3, đối chiếu tác giả và sơ đồ tự vẽ (pipeline, bài toán/tiền nhiệm)
 │   ├── archive/                  # JSON gốc trước khi đồng bộ tracking và các lượt lỗi được giữ lại
 │   └── README.md                 # Danh mục bằng chứng
 ├── requirements-verification.txt # Chỉ NumPy, cho module analytic
@@ -159,7 +162,46 @@ Mỗi lần gọi pipeline tạo một attempt riêng. Root `latest.json`, `prog
 
 `filelock` bảo vệ metadata root khi nhiều lượt cùng ghi; JSON trạng thái được ghi qua file tạm rồi replace. Đây là hạ tầng lưu kết quả, không tham gia công thức analytic. [Tài liệu filelock](https://py-filelock.readthedocs.io/en/latest/).
 
+## Sơ đồ phương pháp và bài toán (tự vẽ)
+
+Hai sơ đồ minh họa phục vụ slide đọc hiểu giữa kỳ được tự dựng bằng Matplotlib qua [`scripts/plot_acil_diagrams.py`](scripts/plot_acil_diagrams.py) (cài môi trường vẽ `requirements-plots.txt` rồi chạy `python scripts/plot_acil_diagrams.py`; không cắt dán hình từ PDF bài báo):
+
+- **Sơ đồ pipeline end-to-end của ACIL:** [`reports/figures/acil_pipeline_end_to_end.png`](reports/figures/acil_pipeline_end_to_end.png) — trình bày đầy đủ 3 giai đoạn từ Base BP Training (`ResNet-32` + `FC50`, 160 epochs) $\rightarrow$ Freeze backbone & Random Feature Expansion $W_{\mathrm{fe}}$ $\rightarrow$ Analytic Ridge Initialization (`R_0`, `W_0`) $\rightarrow$ Incremental Woodbury/Residual Updates (`R_k`, `W_k`, không giữ mẫu cũ) $\rightarrow$ Suy luận hợp nhất (`argmax` trên toàn bộ lớp đã thấy).
+- **Minh họa bài toán CIL và đối chiếu tiền nhiệm:** [`reports/figures/acil_problem_and_predecessors.png`](reports/figures/acil_problem_and_predecessors.png) — tóm tắt bối cảnh học tăng dần lớp, 3 ràng buộc cốt lõi (*no raw old data*, *stability–plasticity*, *argmax competition*) và đối chiếu cấu trúc (*core idea*, *stored state*, *remaining limitation*, *practical consequence*) giữa hướng Regularization (LwF/EWC), Exemplar Replay (iCaRL/PODNet/AANets) và ACIL.
+
+![ACIL End-to-End Pipeline (tự vẽ)](reports/figures/acil_pipeline_end_to_end.png)
+
+![CIL Problem & Predecessor Approaches vs ACIL (tự vẽ)](reports/figures/acil_problem_and_predecessors.png)
+
 ## Bằng chứng thí nghiệm
+
+### Bảng ánh xạ toàn bộ thực nghiệm (Experiment Mapping)
+
+Bảng tổng hợp dưới đây ánh xạ từng lượt thí nghiệm tới notebook/script tạo ra kết quả, link W&B công khai và 1 dòng tóm tắt kết quả/ý nghĩa của lượt chạy:
+
+| Thí nghiệm | Notebook / Script tạo kết quả | W&B run | Kết quả chính (1 dòng) |
+|---|---|---|---|
+| `VERIFY-01` | [`notebooks/01_verify_analytic_update.ipynb`](notebooks/01_verify_analytic_update.ipynb) | [7aeaupq7](https://wandb.ai/hsangg-2006/acil-reproduction/runs/7aeaupq7) Finished | Khớp nghiệm joint ridge trên dữ liệu tổng hợp theo phase (max abs W error `~1.84e-14`). |
+| `VERIFY-02` | [`notebooks/01_verify_analytic_update.ipynb`](notebooks/01_verify_analytic_update.ipynb) / [`src/verify_analytic.py`](src/verify_analytic.py) | [wi4wau2d](https://wandb.ai/hsangg-2006/acil-reproduction/runs/wi4wau2d) Finished | Đạt 11/11 tests; cập nhật minibatch khớp joint trong `rtol=1e-8` (max rel W `~3.43e-13`), 0 argmax khác. |
+| `CIFAR-SMOKE-01` | [`src/cifar_smoke.py`](src/cifar_smoke.py) (local CPU) | Tắt tracking (offline) | Kiểm tra end-to-end 2 epochs/d256 (50+10 lớp) trên CPU local trước khi chạy GPU Kaggle. |
+| `CIFAR-KAGGLE-01` | [`notebooks/02_cifar100_smoke.ipynb`](notebooks/02_cifar100_smoke.ipynb) | [o2r63pj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o2r63pj2) Finished | Smoke GPU 2 epochs/d256 (50→60 lớp): base 32,58%, 60 lớp 29,70%, khớp joint oracle. |
+| `CIFAR-KAGGLE-02` | [`notebooks/03_cifar100_safe_attempts.ipynb`](notebooks/03_cifar100_safe_attempts.ipynb) | [blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) Finished | Smoke GPU đủ 5 phase (50→100 lớp, W 256×100, 10.000 ảnh test), final 22,05%, khớp joint 6/6 mốc. |
+| `PROFILE-KAGGLE-01` | [`notebooks/04_resume_benchmark_profile.ipynb`](notebooks/04_resume_benchmark_profile.ipynb) (V1) | [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4) Finished | Đo tài nguyên d8000 trên subset Kaggle T4 (cửa sổ profile 34,07s; peak RSS ~3,20 GB) trước benchmark dài. |
+| `BP5-KAGGLE-01` | [`notebooks/04_resume_benchmark_profile.ipynb`](notebooks/04_resume_benchmark_profile.ipynb) (V3) / [`notebooks/05_profile_base_ready.ipynb`](notebooks/05_profile_base_ready.ipynb) | [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f) Finished | Xác nhận 5 epochs BP thật (76,11s), checkpoint v2 và CUDA resume proof đạt (53/54 tests, 1 snapshot skip). |
+| `R1 / seed 42` | [`notebooks/06_benchmark_seed42_ready.ipynb`](notebooks/06_benchmark_seed42_ready.ipynb) | [zt1014ei](https://wandb.ai/hsangg-2006/acil-reproduction/runs/zt1014ei) Finished | Benchmark chính seed 42 (160 epochs, d8000, K5): Ā `65,1646%`, final `55,87%`, F_base `8,32 pp`. |
+| `R1 / seed 43` | [`notebooks/07_benchmark_seed43_ready.ipynb`](notebooks/07_benchmark_seed43_ready.ipynb) | [v51m2dan](https://wandb.ai/hsangg-2006/acil-reproduction/runs/v51m2dan) Finished | Benchmark chính seed 43 (160 epochs, d8000, K5): Ā `65,7062%`, final `56,77%`, F_base `8,92 pp`. |
+| `R1 / seed 44` | [`notebooks/08_benchmark_seed44_ready.ipynb`](notebooks/08_benchmark_seed44_ready.ipynb) | [vqcs1ql4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/vqcs1ql4) Finished | Benchmark chính seed 44 (160 epochs, d8000, K5): Ā `64,4880%`, final `55,75%`, F_base `7,68 pp`. |
+| `R2 / seed 42 (3 ca mới)` | [`notebooks/09_r2_ablation_seed42.ipynb`](notebooks/09_r2_ablation_seed42.ipynb) | [xdrm0d27](https://wandb.ai/hsangg-2006/acil-reproduction/runs/xdrm0d27) · [qcgdklxh](https://wandb.ai/hsangg-2006/acil-reproduction/runs/qcgdklxh) · [3yp99ewh](https://wandb.ai/hsangg-2006/acil-reproduction/runs/3yp99ewh) | Ablation seed 42: No-FE/γ=0.1 (`53,3970%`), FE8000/γ=0.01 (`65,1606%`), FE8000/γ=0.001 (`65,1576%`). |
+| `R2 / seed 43 (3 ca mới)` | [`notebooks/10_r2_ablation_seed43.ipynb`](notebooks/10_r2_ablation_seed43.ipynb) | [7wgme4so](https://wandb.ai/hsangg-2006/acil-reproduction/runs/7wgme4so) · [xfleip26](https://wandb.ai/hsangg-2006/acil-reproduction/runs/xfleip26) · [aler6nj2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/aler6nj2) | Ablation seed 43: No-FE/γ=0.1 (`53,4313%`), FE8000/γ=0.01 (`65,7034%`), FE8000/γ=0.001 (`65,7034%`). |
+| `R2 / seed 44 (3 ca mới)` | [`notebooks/11_r2_ablation_seed44.ipynb`](notebooks/11_r2_ablation_seed44.ipynb) | [81aci8h1](https://wandb.ai/hsangg-2006/acil-reproduction/runs/81aci8h1) · [dub202jk](https://wandb.ai/hsangg-2006/acil-reproduction/runs/dub202jk) · [l9c50ezb](https://wandb.ai/hsangg-2006/acil-reproduction/runs/l9c50ezb) | Ablation seed 44: No-FE/γ=0.1 (`52,9357%`), FE8000/γ=0.01 (`64,4880%`), FE8000/γ=0.001 (`64,4880%`). |
+| `R3 / batch 32 (3 repeats)` | [`notebooks/12_r3_batch_analysis.ipynb`](notebooks/12_r3_batch_analysis.ipynb) / [`scripts/r3_runner.py`](scripts/r3_runner.py) | [luf7uv40](https://wandb.ai/hsangg-2006/acil-reproduction/runs/luf7uv40) · [yqxph1bb](https://wandb.ai/hsangg-2006/acil-reproduction/runs/yqxph1bb) · [59vlfxzv](https://wandb.ai/hsangg-2006/acil-reproduction/runs/59vlfxzv) | Batch 32 (d1024, seed 42): tổng analytic `17,3334 ± 0,0784 s`, peak RSS `151,35 MiB`, 18/18 mốc khớp joint. |
+| `R3 / batch 128 (3 repeats)` | [`notebooks/12_r3_batch_analysis.ipynb`](notebooks/12_r3_batch_analysis.ipynb) / [`scripts/r3_runner.py`](scripts/r3_runner.py) | [o54hbdfp](https://wandb.ai/hsangg-2006/acil-reproduction/runs/o54hbdfp) · [4481bnn1](https://wandb.ai/hsangg-2006/acil-reproduction/runs/4481bnn1) · [3gv0moj7](https://wandb.ai/hsangg-2006/acil-reproduction/runs/3gv0moj7) | Batch 128 (d1024, seed 42): tổng analytic `6,9247 ± 0,1098 s`, peak RSS `146,10 MiB` (thấp nhất), 18/18 mốc khớp joint. |
+| `R3 / batch 512 (3 repeats)` | [`notebooks/12_r3_batch_analysis.ipynb`](notebooks/12_r3_batch_analysis.ipynb) / [`scripts/r3_runner.py`](scripts/r3_runner.py) | [lnk0grbq](https://wandb.ai/hsangg-2006/acil-reproduction/runs/lnk0grbq) · [5ehmjvh3](https://wandb.ai/hsangg-2006/acil-reproduction/runs/5ehmjvh3) · [xesh2kjl](https://wandb.ai/hsangg-2006/acil-reproduction/runs/xesh2kjl) | Batch 512 (d1024, seed 42): tổng analytic `4,9975 ± 0,1123 s` (nhanh nhất), peak RSS `164,55 MiB`, 18/18 mốc khớp joint. |
+| `Author C1 controlled` | [`scripts/compare_author_acil.py`](scripts/compare_author_acil.py) | [0tlcy6id](https://wandb.ai/hsangg-2006/acil-reproduction/runs/0tlcy6id) Finished (`equivalence=false`) | Đối chiếu code tác giả cùng FE/order R3: prediction khớp 6/6, 2 phần tử score ở phase 3–4 vượt `allclose`. |
+| `Author C2 native FE/main` | [`scripts/compare_author_acil.py`](scripts/compare_author_acil.py) | [8muywodv](https://wandb.ai/hsangg-2006/acil-reproduction/runs/8muywodv) Finished | Chạy `main.main` tác giả với native FE/shuffle trên cache cố định: R/W/score/prediction khớp 6/6. |
+| `Author C1R posthoc` | [`scripts/diagnose_author_base_precision.py`](scripts/diagnose_author_base_precision.py) | [yeb0jqfb](https://wandb.ai/hsangg-2006/acil-reproduction/runs/yeb0jqfb) Finished | Nạp base state nhóm rồi cập nhật tác giả 5 phase: khớp 5/5 (max score error `6,65e-13`), định vị drift về bước base. |
+
+### Chi tiết các lượt đối chiếu và provenance lịch sử
 
 | ID              | Source snapshot                                                                                    | Kết quả                                                                 | Kaggle version                                                                                                           | W&B                                                                     |
 | --------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
@@ -225,8 +267,21 @@ Các lệnh trên kiểm subset CPU và tài nguyên; JSON giữ trạng thái t
 
 **Thư viện và nền tảng**
 
-- Tính toán: NumPy 2.1.3, SciPy 1.17.0, PyTorch 2.11.0. Dữ liệu: huggingface_hub 1.10.1, pyarrow 23.0.1, Pillow 11.1.0. Hình: matplotlib 3.9.2. Phiên bản khóa trong các file `requirements-*.txt`.
-- Tracking: Weights & Biases (wandb 0.28.1). Môi trường chạy: Kaggle Notebooks (GPU T4). Lưu source: GitHub.
+- Tính toán chuẩn (`standard stack`): NumPy 2.1.3, SciPy 1.17.0, PyTorch 2.11.0 (và scikit-learn 1.5.2 trong môi trường đối chiếu code tác giả). Phiên bản khóa trong các file `requirements-*.txt`.
+- Nền tảng: Weights & Biases (`wandb` 0.28.1), Kaggle Notebooks (GPU T4), Hugging Face Datasets và GitHub.
+
+**Giải thích các thư viện ngoài standard stack (`numpy`, `scipy`, `scikit-learn`, `torch`)**
+
+| Thư viện | File cấu hình | Lý do sử dụng ngoài standard scientific stack |
+|---|---|---|
+| `wandb` (0.28.1) | `requirements-tracking.txt` | Bắt buộc theo quy định môn học để theo dõi công khai toàn bộ run, cấu hình, metric và đồ thị. |
+| `huggingface_hub` (1.10.1), `pyarrow` (23.0.1), `Pillow` (11.1.0) | `requirements-cifar.txt` | Phục vụ tải tự động CIFAR-100 từ Hugging Face (`uoft-cs/cifar100`), đọc file Parquet theo revision pin và giải mã byte ảnh PNG sang mảng RGB uint8. |
+| `filelock` (4.2.6) | `requirements-cifar.txt` | Khóa tệp an toàn khi cập nhật `latest.json`/`results.json` ở thư mục root giữa các attempt, tránh race condition. |
+| `psutil` (7.2.2) | `requirements-cifar.txt`, `requirements-author-comparison.txt` | Lấy mẫu bộ nhớ RSS của tiến trình CPU trong [`MemoryMonitor`](src/profile_analytic.py) cho profile d8000 và thí nghiệm R3. |
+| `threadpoolctl` (3.6.0) | `requirements-cifar.txt`, `requirements-author-comparison.txt` | Giới hạn nhất quán số luồng BLAS/OpenMP khi trích xuất đặc trưng và đo thời gian analytic R3 trên CPU. |
+| `matplotlib` (3.9.2) | `requirements-plots.txt` | Chỉ dùng để tự vẽ các biểu đồ kết quả R1/R2/R3, đối chiếu tác giả và 2 sơ đồ phương pháp/bài toán trong `reports/figures/`, tách khỏi môi trường train. |
+| `nbformat` (5.10.4), `nbclient` (0.11.0), `ipykernel` (7.2.0) | `requirements-dev.txt` | Chỉ dùng cục bộ để đóng gói, xác thực schema notebook (`tests/test_notebook_distribution.py`) và chạy kiểm thử notebook. |
+| `tqdm` (4.67.1), `PyYAML` (6.0.2), `torchvision` | `requirements-author-comparison.txt` | Chỉ cài trong venv tách biệt để chạy nguyên bản code đối chiếu của tác giả (`ZHUANGHP/Analytic-continual-learning`) mà không thay đổi `src/`. |
 
 **Công cụ AI**
 

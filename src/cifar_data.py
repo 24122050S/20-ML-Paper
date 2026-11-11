@@ -34,7 +34,14 @@ class CifarArrays:
 
 
 def sha256_file(path: Path) -> str:
-    """Đọc file theo từng khối và trả về SHA-256 để nhận diện dữ liệu/code."""
+    """Tính mã băm SHA-256 của một file bằng cách đọc theo từng khối 1 MiB.
+
+    Tham số:
+        path: Đường dẫn ``Path`` tới file cần băm.
+
+    Trả về:
+        Chuỗi hex SHA-256 gồm 64 ký tự.
+    """
     digest = hashlib.sha256()
     with path.open("rb") as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
@@ -43,10 +50,15 @@ def sha256_file(path: Path) -> str:
 
 
 def load_cifar100(data_dir: str | Path = "data") -> CifarArrays:
-    """Tải đúng revision HF, giải mã ảnh và trả về mảng có cache tự tạo.
+    """Tải CIFAR-100 từ Hugging Face đúng revision đã chốt, giải mã và cache dạng NPY.
 
-    Tham số data_dir là thư mục cache. Lần đầu giải mã toàn bộ PNG từ Parquet;
-    lần sau đọc NPY bằng memory map. Không cần giải nén hay sắp xếp tay.
+    Lần đầu tải Parquet và giải mã toàn bộ ảnh PNG; các lần sau đọc NPY qua memory map.
+
+    Tham số:
+        data_dir: Đường dẫn thư mục gốc chứa cache tải về và dữ liệu đã chuẩn bị.
+
+    Trả về:
+        Đối tượng ``CifarArrays`` chứa mảng train/test, tên lớp và metadata nguồn kèm SHA-256.
     """
     data_dir = Path(data_dir)
     prepared = data_dir / "prepared" / DATASET_REVISION
@@ -110,11 +122,17 @@ def load_cifar100(data_dir: str | Path = "data") -> CifarArrays:
 
 
 def make_protocol(seed: int = 42, n_incremental_phases: int = 5) -> dict:
-    """Trả về thứ tự 100 lớp, ánh xạ toàn cục và các nhóm lớp rời nhau.
+    """Sinh giao thức chia 100 lớp CIFAR-100 thành 50 lớp base và K phase tăng dần rời nhau.
 
-    Base gồm 50 lớp đầu trong permutation; 50 lớp còn lại chia đều K phase.
-    ID mới là vị trí trong permutation, nên lớp base là 0..49 và phase đầu
-    là 50..59 khi K=5. Không đánh số lại nhãn tại mỗi phase.
+    Base gồm 50 lớp đầu trong permutation; 50 lớp còn lại chia đều cho K phase.
+    ID toàn cục là vị trí trong permutation nên không đặt lại nhãn từ 0 ở từng phase.
+
+    Tham số:
+        seed: Hạt giống ngẫu nhiên để sinh hoán vị ``class_order`` của 100 lớp.
+        n_incremental_phases: Số phase tăng dần K (phải dương và là ước của 50).
+
+    Trả về:
+        Dict chứa ``class_order``, ánh xạ ``original_to_global`` và danh sách lớp từng phase.
     """
     if n_incremental_phases < 1 or 50 % n_incremental_phases:
         raise ValueError("K phải dương và chia hết 50")
@@ -133,7 +151,15 @@ def make_protocol(seed: int = 42, n_incremental_phases: int = 5) -> dict:
 
 
 def audit_data(arrays: CifarArrays, protocol: dict) -> dict:
-    """Kiểm tra toàn bộ ảnh/nhãn, đếm từng phase và trả về bằng chứng dạng dict."""
+    """Kiểm tra toàn vẹn dữ liệu CIFAR-100, tính rời nhau các phase và tính mean/std chỉ từ base train.
+
+    Tham số:
+        arrays: Đối tượng ``CifarArrays`` chứa dữ liệu ảnh và nhãn gốc.
+        protocol: Dict giao thức chia lớp được tạo bởi ``make_protocol``.
+
+    Trả về:
+        Dict bằng chứng kiểm tra gồm số mẫu từng phase, thống kê chuẩn hóa base-only và thông tin nguồn.
+    """
     mapping = np.asarray(protocol["original_to_global"])
     order = np.asarray(protocol["class_order"])
     if not np.array_equal(np.sort(order), np.arange(100)):
@@ -193,6 +219,20 @@ class CifarSubset(Dataset):
     """
 
     def __init__(self, images, labels, indices, mapping, mean, std, augment=False):
+        """Khởi tạo tập con CIFAR-100 gắn ánh xạ nhãn toàn cục và thống kê chuẩn hóa.
+
+        Tham số:
+            images: Mảng ảnh NHWC uint8.
+            labels: Mảng nhãn fine gốc.
+            indices: Mảng chỉ số mẫu thuộc tập con cần lấy.
+            mapping: Bảng ánh xạ từ nhãn gốc sang nhãn toàn cục.
+            mean: Bộ 3 giá trị trung bình kênh RGB để chuẩn hóa.
+            std: Bộ 3 giá trị độ lệch chuẩn kênh RGB để chuẩn hóa.
+            augment: Bật padding/random crop/flip ngang nếu True (chỉ dùng lúc train base).
+
+        Trả về:
+            None.
+        """
         self.images = images
         self.labels = labels
         self.indices = np.asarray(indices, dtype=np.int64)
@@ -202,11 +242,25 @@ class CifarSubset(Dataset):
         self.augment = augment
 
     def __len__(self):
-        """Trả về số mẫu trong subset."""
+        """Trả về tổng số mẫu trong tập con.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            Số nguyên là độ dài của ``self.indices``.
+        """
         return len(self.indices)
 
     def __getitem__(self, index):
-        """Trả về (ảnh float32 CHW, nhãn toàn cục) cho một mẫu đã chọn."""
+        """Đọc, tùy chọn augment, chuẩn hóa một ảnh và ánh xạ nhãn sang ID toàn cục.
+
+        Tham số:
+            index: Vị trí mẫu trong phạm vi ``0 .. len(self) - 1``.
+
+        Trả về:
+            Tuple ``(image_tensor, global_label)`` với ảnh float32 dạng CHW và nhãn nguyên.
+        """
         original_index = int(self.indices[index])
         # tensor() tạo bản sao, tránh ghi lên memory map chỉ đọc của ảnh gốc.
         image = torch.tensor(self.images[original_index], dtype=torch.float32).permute(2, 0, 1) / 255.0

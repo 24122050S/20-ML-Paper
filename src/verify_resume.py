@@ -19,7 +19,15 @@ from .run_attempt import RunAttempt
 
 
 def assert_state_equal(left, right):
-    """So đệ quy tensor/primitive của checkpoint; không dùng tolerance cho CPU."""
+    """So sánh đệ quy hai cấu trúc state checkpoint (tensor/dict/list/primitive) chính xác tuyệt đối.
+
+    Tham số:
+        left: Đối tượng state thứ nhất (thường từ quá trình chạy liên tục).
+        right: Đối tượng state thứ hai (thường từ quá trình dừng rồi resume).
+
+    Trả về:
+        None. Phát sinh ``AssertionError`` nếu bất kỳ thành phần nào khác nhau.
+    """
     if isinstance(left, torch.Tensor):
         torch.testing.assert_close(left, right, rtol=0, atol=0)
     elif isinstance(left, dict):
@@ -35,10 +43,14 @@ def assert_state_equal(left, right):
 
 
 def verify(*, data_dir, output_dir):
-    """Chạy CPU200 ảnh/epoch, lưu proof/hashes; không phải training benchmark.
+    """Kiểm chứng chạy liên tục 2 epochs so với chạy 1 epoch + resume 1 epoch trên CIFAR-100 subset CPU.
 
-    Dữ liệu dùng50 lớp base,4 ảnh/lớp theo index gốc, crop/flip bật.
-    Unit test bổ sung sample order trực tiếp và biến thể CUDA nếu khả dụng.
+    Tham số:
+        data_dir: Thư mục cache dữ liệu CIFAR-100.
+        output_dir: Thư mục gốc ghi artifact và kết quả JSON của attempt kiểm chứng.
+
+    Trả về:
+        Dict báo cáo kết quả kiểm chứng resume sau khi ghi thành công.
     """
     root = Path(__file__).resolve().parents[1]
     with RunAttempt(output_dir) as attempt:
@@ -55,6 +67,14 @@ def verify(*, data_dir, output_dir):
                    'dataset_revision': arrays.source['revision']}
 
         def setup():
+            """Khởi tạo lại ResNet-32 và DataLoader subset với cùng seed để so sánh chạy liên tục vs resume.
+
+            Tham số:
+                Không nhận tham số; dùng ``arrays``, ``indices``, ``mapping`` và ``norm`` trong scope.
+
+            Trả về:
+                Tuple ``(model, loader)`` ở trạng thái khởi đầu giống hệt nhau.
+            """
             seed_everything(42, 4)
             model = ResNet32()
             dataset = CifarSubset(arrays.train_images, arrays.train_labels, indices, mapping,
@@ -106,7 +126,14 @@ def verify(*, data_dir, output_dir):
 
 
 def main():
-    """CLI kiểm resume CIFAR thật, mặc định offline/CPU/subset để chạy nhanh."""
+    """Điểm vào CLI chạy kiểm chứng cơ chế resume trên subset CIFAR-100 CPU.
+
+    Tham số:
+        Không nhận tham số hàm; đọc ``--data-dir`` và ``--output-dir`` từ dòng lệnh.
+
+    Trả về:
+        None.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data-dir', type=Path, default=Path('data'))
     parser.add_argument('--output-dir', type=Path, default=Path('reports/local/resume_cpu_verification'))

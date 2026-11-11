@@ -29,14 +29,39 @@ from .run_attempt import RunAttempt
 class MemoryMonitor:
     """Lấy mẫu RSS process theo khoảng20ms; ghi peak trong đúng cửa sổ profile."""
     def __init__(self, device, interval=0.02):
+        """Khởi tạo bộ đo peak RSS CPU và peak VRAM trong một ngữ cảnh thực thi.
+
+        Tham số:
+            device: Thiết bị PyTorch đang chạy (``cpu`` hoặc ``cuda``).
+            interval: Chu kỳ lấy mẫu RSS theo giây (mặc định 0.02s).
+
+        Trả về:
+            None.
+        """
         self.device=torch.device(device)
         self.interval=interval
         self.process=psutil.Process(os.getpid())
         self.stopped=threading.Event()
     def _sample(self):
+        """Lặp định kỳ theo ``interval`` để cập nhật đỉnh RSS của tiến trình cho tới khi dừng.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            None.
+        """
         while not self.stopped.wait(self.interval):
             self.peak=max(self.peak,self.process.memory_info().rss)
     def __enter__(self):
+        """Ghi mức RSS nền, reset bộ đếm peak CUDA (nếu có) và khởi chạy thread lấy mẫu.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            Chính đối tượng ``MemoryMonitor``.
+        """
         self.baseline=self.peak=self.process.memory_info().rss
         if self.device.type=='cuda':
             torch.cuda.synchronize(self.device)
@@ -45,6 +70,14 @@ class MemoryMonitor:
         self.thread.start()
         return self
     def __exit__(self,*args):
+        """Dừng thread lấy mẫu, đồng bộ thiết bị và lưu kết quả đo bộ nhớ vào ``self.result``.
+
+        Tham số:
+            *args: Thông tin ngoại lệ chuẩn của Python context manager (nếu có).
+
+        Trả về:
+            None.
+        """
         if self.device.type=='cuda':torch.cuda.synchronize(self.device)
         self.peak=max(self.peak,self.process.memory_info().rss)
         self.stopped.set();self.thread.join()
@@ -54,7 +87,20 @@ class MemoryMonitor:
 
 
 def balanced_loader(arrays, protocol, norm, classes, split, per_class, config):
-    """Chọn số ảnh cố định mỗi lớp theo index gốc; trả loader không augment/shuffle."""
+    """Tạo DataLoader cân bằng số ảnh mỗi lớp theo thứ tự chỉ số gốc, không augment/shuffle.
+
+    Tham số:
+        arrays: Đối tượng ``CifarArrays`` chứa dữ liệu ảnh và nhãn gốc.
+        protocol: Dict giao thức chia lớp gồm ánh xạ ``original_to_global``.
+        norm: Dict thống kê ``mean``/``std`` tính từ base train.
+        classes: Tập hợp ID lớp toàn cục cần lấy mẫu.
+        split: Chuỗi ``"train"`` hoặc ``"test"``.
+        per_class: Số ảnh trích đều cho mỗi lớp trong ``classes``.
+        config: Dict cấu hình chứa ``analytic_batch_size`` và ``seed``.
+
+    Trả về:
+        ``DataLoader`` không shuffle, dùng cho bước đo tài nguyên subset.
+    """
     labels=arrays.train_labels if split=='train' else arrays.test_labels
     images=arrays.train_images if split=='train' else arrays.test_images
     mapped=np.asarray(protocol['original_to_global'])[labels]
@@ -68,10 +114,25 @@ def balanced_loader(arrays, protocol, norm, classes, split, per_class, config):
 def profile(checkpoint_path, *, data_dir, output_dir, dimension=8000, threads=4,
             device='cpu', base_per_class=20, incremental_per_class=4, test_per_class=6,
             log_wandb=False, prepare_tracking=None):
-    """Profile d8000 bằng subset thật; trả report tài nguyên, không phải benchmark accuracy.
+    """Đo thời gian từng stage và peak RSS/VRAM cho analytic dimension lớn trên subset CIFAR thật.
 
-    Base1000 ảnh, mới200 ảnh phủ50 lớp mới, test600 ảnh là mặc định. Ghi rõ
-    scope, số mẫu, thời gian từng stage và RSS; không lưu ma trận R lớn ra NPZ.
+    Không train lại backbone và không lưu ma trận R lớn ra NPZ; chỉ phục vụ dự trù tài nguyên.
+
+    Tham số:
+        checkpoint_path: Đường dẫn file ``base_checkpoint.pt`` đã huấn luyện xong.
+        data_dir: Thư mục cache dữ liệu CIFAR-100.
+        output_dir: Thư mục gốc ghi artifact và kết quả profile.
+        dimension: Số chiều mở rộng đặc trưng d cần đo (mặc định 8000).
+        threads: Số luồng CPU/BLAS giới hạn trong vùng đo (mặc định 4).
+        device: Thiết bị chạy CNN feature extraction (``'cpu'``, ``'cuda'`` hoặc ``'auto'``).
+        base_per_class: Số ảnh/lớp của tập base trong subset profile.
+        incremental_per_class: Số ảnh/lớp của tập incremental trong subset profile.
+        test_per_class: Số ảnh/lớp của tập test trong subset profile.
+        log_wandb: Bật ghi tracking lên W&B nếu True.
+        prepare_tracking: Callback thiết lập đăng nhập W&B tùy chọn.
+
+    Trả về:
+        Dict báo cáo kết quả profile kèm ``timings``, ``memory`` và trạng thái kiểm tra.
     """
     with RunAttempt(output_dir) as attempt:
         attempt.progress('profile_checkpoint_load')
@@ -117,6 +178,14 @@ def profile(checkpoint_path, *, data_dir, output_dir, dimension=8000, threads=4,
                 features.append((np.concatenate([x for x,y in chunks]),np.concatenate([y for x,y in chunks])))
             timings['feature_extraction_seconds']=time.perf_counter()-feature_started
             def batches(pair):
+                """Chia cặp mảng đặc trưng/nhãn subset thành các minibatch 128 mẫu để profile.
+
+                Tham số:
+                    pair: Tuple ``(raw_features, labels)`` của một tập subset.
+
+                Trả về:
+                    Generator sinh từng cặp ``(raw_batch, labels_batch)``.
+                """
                 raw,labels=pair
                 for i in range(0,len(raw),128):yield raw[i:i+128],labels[i:i+128]
             head=StreamingHead(config)
@@ -163,7 +232,15 @@ def profile(checkpoint_path, *, data_dir, output_dir, dimension=8000, threads=4,
 
 
 def main():
-    """CLI profile offline; nhận checkpoint base đã hoàn tất và thư mục dữ liệu/output."""
+    """Điểm vào CLI chạy profile analytic ngoại tuyến trên subset CIFAR-100.
+
+    Tham số:
+        Không nhận tham số hàm; đọc ``--checkpoint``, ``--data-dir``, ``--output-dir``,
+        ``--dimension``, ``--threads`` và ``--device`` từ dòng lệnh.
+
+    Trả về:
+        None.
+    """
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--checkpoint',type=Path,required=True)
     parser.add_argument('--data-dir',type=Path,default=Path('data'))

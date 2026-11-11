@@ -1,6 +1,6 @@
 # Bằng chứng đã công bố
 
-[Báo cáo tổng hợp thực nghiệm giữa kỳ — 07/11/2026](BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md) đối chiếu toàn bộ R1/R2/R3, các bước kiểm chứng và những việc còn thiếu theo yêu cầu môn. Đây là điểm bắt đầu đọc kết quả hiện tại; các báo cáo bên dưới giữ lịch sử từng lượt.
+[Báo cáo tổng hợp thực nghiệm giữa kỳ — 07/11/2026](BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md) đối chiếu toàn bộ R1/R2/R3, các bước kiểm chứng và những việc còn thiếu theo yêu cầu môn. Xem thêm [báo cáo cập nhật chuẩn repo & 2 sơ đồ tự vẽ — 11/11/2026](CAP_NHAT_REPO_VA_SO_DO_20261111.md) (docstring 3 phần cho `src/`, bảng mapping README, giải thích thư viện ngoài standard stack, `acil_pipeline_end_to_end.png` và `acil_problem_and_predecessors.png`). Đây là điểm bắt đầu đọc kết quả hiện tại; các báo cáo bên dưới giữ lịch sử từng lượt.
 
 **Cập nhật 07/11/2026:** R1 đủ 3 seeds; R2 đủ 4 hàng/3 seeds,9 analytic runs mới và 3 baseline R1 tái dùng, tracking Finished/công khai. [Báo cáo R1](R1_CIFAR100_K5_3SEEDS_20261106.md) · [Báo cáo R2](R2_CIFAR100_K5_20261107.md) · [Manifest R2](R2-C100-K5-provenance.json). R3 cũng đã đủ 9 phép đo/54 so sánh joint ([báo cáo](R3_CIFAR100_K5_BATCH_20261107.md)); đã có [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md); còn sản phẩm PPTX/poster. Các mốc cũ bên dưới là lịch sử bằng chứng.
 

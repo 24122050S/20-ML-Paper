@@ -10,10 +10,15 @@ import subprocess
 
 
 def collect_provenance(root):
-    """Nhận root repo; trả SHA-256 source/config, Git commit và trạng thái dirty.
+    """Thu thập thông tin truy nguyên mã nguồn và trạng thái Git của repository.
 
-    Không ghi giá trị biến môi trường, credential hoặc thông tin tài khoản bí mật.
-    Commit có thể null nếu chạy từ source không có Git; source hashes vẫn có.
+    Không đọc hoặc lưu giá trị biến môi trường, credential hay thông tin bí mật.
+
+    Tham số:
+        root: Đường dẫn thư mục gốc repository.
+
+    Trả về:
+        Dict chứa URL repository, ``git_commit``, ``source_dirty`` và ``source_sha256``.
     """
     root = Path(root).resolve()
     files = [*sorted((root / "src").glob("*.py")), root / "configs/verify_analytic_update.json"]
@@ -29,10 +34,14 @@ def collect_provenance(root):
 
 
 def save_json(report, output_path):
-    """Ghi JSON UTF-8/LF trên mọi hệ điều hành để checksum khớp Git blob.
+    """Ghi dict báo cáo ra JSON theo chuẩn UTF-8 và newline LF trên mọi hệ điều hành.
 
-    Giữ một newline cuối file, không BOM; không để Windows tự đổi LF thành CRLF.
-    Tự tạo thư mục cha và trả Path.
+    Tham số:
+        report: Dict dữ liệu hợp lệ (không chứa NaN/Inf) cần lưu.
+        output_path: Đường dẫn file JSON đích (tự tạo thư mục cha nếu chưa có).
+
+    Trả về:
+        Đối tượng ``Path`` của file JSON vừa ghi.
     """
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -42,12 +51,21 @@ def save_json(report, output_path):
 
 
 def log_and_save_report(report, output_path, *, log_wandb=False, entity=None, project=None, wandb_client=None, tags=None):
-    """Log run khi được bật rồi xuất JSON với ID/URL lấy từ chính SDK.
+    """Ghi nhận tracking lên W&B (nếu bật) rồi lưu báo cáo JSON với ID/URL thật từ SDK.
 
-    report chứa config, environment và các result rows đã kiểm tra. output_path
-    là file đích; entity/project là đích W&B. wandb_client tùy chọn phục vụ test.
-    Trả bản sao report đã lưu. Nếu init/log/finish lỗi, ghi tracking failed với
-    URL null rồi raise; không ghi thành công trước khi context kết thúc.
+    Nếu init/log/finish gặp lỗi, hàm vẫn ghi trạng thái ``failed`` với URL null rồi raise.
+
+    Tham số:
+        report: Dict báo cáo chứa ``config``, ``environment`` và ``results``.
+        output_path: Đường dẫn file JSON đích.
+        log_wandb: Cờ bật/tắt việc gửi log lên W&B (mặc định False).
+        entity: Tên entity W&B khi bật tracking.
+        project: Tên project W&B khi bật tracking.
+        wandb_client: Client W&B tùy chọn (dùng thay thế khi test giả lập SDK).
+        tags: Danh sách nhãn gắn cho W&B run.
+
+    Trả về:
+        Bản sao dict báo cáo đã cập nhật trạng thái tracking và được lưu ra đĩa.
     """
     result = copy.deepcopy(report)
     result.update(wandb_status="not_logged", wandb_run_id=None, wandb_run_url=None)

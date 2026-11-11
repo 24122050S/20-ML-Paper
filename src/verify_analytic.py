@@ -9,7 +9,15 @@ from .verification import run_verification
 
 
 def main():
-    """Đọc config/đích output; trả mã 0 sau khi kiểm tra và ghi report thành công."""
+    """Điểm vào CLI chạy kiểm chứng số học ``VERIFY-02`` và xuất báo cáo JSON.
+
+    Tham số:
+        Không nhận tham số hàm; đọc ``--config``, ``--output``, ``--wandb``,
+        ``--entity`` và ``--project`` từ dòng lệnh.
+
+    Trả về:
+        Mã thoát nguyên 0 khi kiểm chứng và lưu báo cáo thành công.
+    """
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=root / "configs/verify_analytic_update.json")

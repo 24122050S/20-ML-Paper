@@ -21,7 +21,17 @@ class EpochLimitReached(RuntimeError):
 
 
 def atomic_torch_save(payload, path):
-    """Ghi checkpoint qua file tạm cùng thư mục; chỉ thay bản cũ sau flush/fsync."""
+    """Ghi checkpoint PyTorch an toàn qua file tạm cùng thư mục rồi replace atomic.
+
+    Chỉ thay thế file cũ sau khi đã flush và fsync thành công lên đĩa.
+
+    Tham số:
+        payload: Dict hoặc đối tượng PyTorch hợp lệ cần tuần tự hóa.
+        path: Đường dẫn file checkpoint đích.
+
+    Trả về:
+        None.
+    """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
@@ -39,7 +49,14 @@ def atomic_torch_save(payload, path):
 
 
 def _runtime(device):
-    """Nhận device; trả dấu môi trường cần trùng để resume deterministic."""
+    """Thu thập dấu vân tay môi trường và hash các file nguồn huấn luyện để kiểm tra resume.
+
+    Tham số:
+        device: Thiết bị PyTorch mục tiêu (``cpu``, ``cuda`` hoặc ``torch.device``).
+
+    Trả về:
+        Dict thông tin phiên bản thư viện, thiết bị, cờ deterministic và ``training_source_sha256``.
+    """
     device = torch.device(device)
     root = Path(__file__).resolve().parent
     return {"python": platform.python_version(), "numpy": np.__version__,
@@ -56,7 +73,16 @@ def _runtime(device):
 
 
 def capture_rng(device):
-    """Đóng gói RNG thành tensor/primitive, đọc được bằng torch.load weights_only=True."""
+    """Đóng gói toàn bộ trạng thái bộ sinh số ngẫu nhiên Python, NumPy và PyTorch CPU/CUDA.
+
+    Dữ liệu đóng gói chỉ dùng tensor và kiểu nguyên thủy để đọc được qua ``weights_only=True``.
+
+    Tham số:
+        device: Thiết bị PyTorch hiện đang chạy.
+
+    Trả về:
+        Dict lưu trạng thái RNG của Python, NumPy, Torch CPU và Torch CUDA (nếu có).
+    """
     state = np.random.get_state()
     return {"python": random.getstate(),
             "numpy": {"algorithm": state[0], "keys": torch.tensor(state[1].astype(np.int64)),
@@ -66,7 +92,15 @@ def capture_rng(device):
 
 
 def restore_rng(state, device):
-    """Khôi phục RNG sau khi dựng model/optimizer/loader để bỏ qua RNG đã tiêu lúc khởi tạo."""
+    """Khôi phục trạng thái RNG đã lưu sau khi khởi tạo model, optimizer và DataLoader.
+
+    Tham số:
+        state: Dict trạng thái RNG được tạo bởi ``capture_rng``.
+        device: Thiết bị PyTorch hiện tại cần khôi phục RNG.
+
+    Trả về:
+        None.
+    """
     random.setstate(state["python"])
     numpy_state = state["numpy"]
     np.random.set_state((numpy_state["algorithm"], numpy_state["keys"].numpy().astype(np.uint32),
@@ -77,7 +111,22 @@ def restore_rng(state, device):
 
 
 def _validate_resume(checkpoint, model, loader, config, context, device):
-    """Chặn checkpoint thiếu state, đổi target/protocol/preprocessing/runtime trước restore."""
+    """Kiểm tra chặt chẽ tính tương thích của checkpoint v2 trước khi khôi phục huấn luyện.
+
+    Chặn checkpoint thiếu state, khác cấu hình, khác protocol/normalization/runtime
+    hoặc đã hoàn tất toàn bộ target epochs.
+
+    Tham số:
+        checkpoint: Dict checkpoint đã đọc từ đĩa.
+        model: Mô hình ``nn.Module`` hiện tại.
+        loader: ``DataLoader`` huấn luyện base.
+        config: Dict cấu hình lượt chạy hiện tại.
+        context: Dict chứa ``class_order``, ``normalization`` và ``dataset_revision``.
+        device: Thiết bị PyTorch hiện tại.
+
+    Trả về:
+        None. Phát sinh ``ValueError`` nếu checkpoint không hợp lệ để resume.
+    """
     if checkpoint.get("checkpoint_format_version") != 2:
         raise ValueError("Resume cần checkpoint v2 có optimizer/scheduler/RNG; checkpoint cũ chỉ dùng reuse")
     required = ("model_state_dict", "optimizer_state_dict", "scheduler_state_dict", "rng_state",
@@ -116,11 +165,24 @@ def _validate_resume(checkpoint, model, loader, config, context, device):
 
 def train_base(model, loader, config, device, output, *, progress=None,
                checkpoint_context=None, resume_checkpoint=None, stop_after_epoch=None):
-    """Train tới target epochs; trả history/change và ghi v2 sau từng epoch hoàn tất.
+    """Huấn luyện backbone giai đoạn base theo số epoch mục tiêu, ghi checkpoint v2 sau từng epoch.
 
-    context chứa class_order, normalization, dataset_revision. Resume nhận path
-    checkpoint đang dở; stop_after_epoch phục vụ kiểm tra chạy ngắt có chủ đích.
-    Exception giữa epoch giữ checkpoint epoch trước, không lưu batch chưa hoàn tất.
+    Nếu gặp lỗi giữa epoch, checkpoint của epoch hoàn tất trước đó vẫn được giữ nguyên.
+
+    Tham số:
+        model: Mô hình backbone ResNet-32 cần huấn luyện trên các lớp base.
+        loader: ``DataLoader`` tập train base có gắn ``generator`` và ``num_workers=0``.
+        config: Dict cấu hình hyperparameters (``epochs``, ``learning_rate``, ``momentum``, ...).
+        device: Thiết bị PyTorch thực thi (CPU hoặc CUDA).
+        output: Thư mục ghi file ``base_checkpoint.pt``.
+        progress: Callback tùy chọn báo tiến độ theo epoch/batch.
+        checkpoint_context: Dict metadata gắn với checkpoint (``class_order``, ``normalization``, ``dataset_revision``).
+        resume_checkpoint: Đường dẫn tới checkpoint v2 đang dở để tiếp tục (tùy chọn).
+        stop_after_epoch: Mốc epoch dừng có chủ đích (tùy chọn) để kiểm thử cơ chế resume.
+
+    Trả về:
+        Tuple ``(history, change)`` gồm danh sách dict lịch sử từng epoch và chuẩn L2
+        độ thay đổi trọng số lớp conv đầu.
     """
     if checkpoint_context is None or loader.generator is None or loader.num_workers != 0:
         raise ValueError("Cần checkpoint context, DataLoader generator và num_workers=0 để resume")

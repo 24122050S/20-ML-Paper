@@ -12,6 +12,15 @@ class StreamingHead:
     """Nhận config, giữ FE/R/W và bộ đếm; đầu vào của mỗi phương thức là iterator F64/y."""
 
     def __init__(self, config):
+        """Khởi tạo đầu analytic streaming kèm ma trận mở rộng đặc trưng cố định (nếu bật).
+
+        Tham số:
+            config: Dict cấu hình gồm ``seed``, ``gamma``, ``expansion_dim`` và
+                ``feature_expansion`` (mặc định True).
+
+        Trả về:
+            None.
+        """
         self.expansion_enabled = config.get("feature_expansion", True)
         self.dimension = config["expansion_dim"] if self.expansion_enabled else 64
         self.expansion = (np.random.default_rng(config["seed"] + 1000).normal(size=(64, self.dimension))
@@ -22,7 +31,16 @@ class StreamingHead:
         self.maximum_feature_batch_rows = 0
 
     def transform(self, raw):
-        """Nhận F(n,64), trả H float64; no-FE dùng F trực tiếp, không random projection64."""
+        """Biến đổi đặc trưng CNN 64 chiều sang không gian analytic float64.
+
+        Khi ``feature_expansion=False``, giữ nguyên F64 trực tiếp (không random projection).
+
+        Tham số:
+            raw: Mảng đặc trưng 2D hữu hạn kích thước ``(n, 64)``.
+
+        Trả về:
+            Mảng float64 kích thước ``(n, d)`` đã qua ``ReLU(F @ W_fe)`` hoặc ``F``.
+        """
         raw = np.asarray(raw, dtype=np.float64)
         if raw.ndim != 2 or raw.shape[1] != 64 or not np.isfinite(raw).all():
             raise ValueError("F phải hữu hạn và có shape(n,64)")
@@ -30,14 +48,30 @@ class StreamingHead:
         return np.maximum(raw @ self.expansion, 0.0) if self.expansion_enabled else raw
 
     def fit_base(self, batches, n_classes=50):
-        """Đọc base đúng một lượt, tích lũy Gram/cross rồi khởi tạo R/W; trả số mẫu."""
+        """Đọc tập base đúng một lượt, tích lũy Gram/cross và khởi tạo trạng thái (R, W).
+
+        Tham số:
+            batches: Iterator sinh các cặp ``(F_batch, labels_batch)`` của phase base.
+            n_classes: Số lớp của phase base (mặc định 50).
+
+        Trả về:
+            Số lượng mẫu base đã xử lý (int).
+        """
         transformed = ((self.transform(raw), labels) for raw, labels in batches)
         self.r, self.w = initialize_batches(transformed, self.dimension, n_classes,
                                              self.gamma, timings=self.timings)
         return self.timings["base_samples"]
 
     def update_phase(self, batches, n_classes):
-        """Đọc duy nhất mẫu phase hiện tại, trả (số mẫu,số batch); không lưu H/y."""
+        """Cập nhật (R, W) tăng dần trên duy nhất dữ liệu của phase hiện tại, không lưu H/y.
+
+        Tham số:
+            batches: Iterator sinh các cặp ``(F_batch, labels_batch)`` của phase hiện tại.
+            n_classes: Tổng số lớp đã thấy tính đến hết phase hiện tại.
+
+        Trả về:
+            Tuple ``(count, batch_count)`` gồm số mẫu và số minibatch đã xử lý.
+        """
         if self.r is None:
             raise ValueError("Cần fit_base trước incremental")
         count = batch_count = 0
@@ -53,7 +87,18 @@ class StreamingHead:
         return count, batch_count
 
     def evaluate(self, batches, n_classes, new_classes, *, expected_per_class=None):
-        """Chấm từng batch trên toàn bộ cột seen; trả accuracy/base/new và số ảnh."""
+        """Đánh giá theo batch trên toàn bộ các lớp đã thấy bằng phép argmax không task ID.
+
+        Tham số:
+            batches: Iterator sinh các cặp ``(F_batch, labels_batch)`` của tập test đã thấy.
+            n_classes: Tổng số lớp đã thấy hiện tại.
+            new_classes: Tập hợp nhãn toàn cục thuộc riêng phase mới hiện tại.
+            expected_per_class: Số ảnh test kỳ vọng trên mỗi lớp (tùy chọn để kiểm tra đủ).
+
+        Trả về:
+            Dict chứa ``test_samples_all_seen``, ``accuracy_pct``, ``base_accuracy_pct``
+            và ``new_class_accuracy_pct``.
+        """
         if self.w is None or self.w.shape != (self.dimension, n_classes):
             raise ValueError("W không khớp số lớp cần đánh giá")
         counts = np.zeros(n_classes, dtype=np.int64)
@@ -82,12 +127,30 @@ class StreamingHead:
                 "new_class_accuracy_pct": None if n_classes == 50 else 100*new_correct/new_total}
 
     def state_bytes(self):
-        """Trả bytes R/W/FE thực có; không phải peak RSS hoặc bộ nhớ CNN."""
+        """Tính tổng kích thước bộ nhớ (bytes) của các mảng trạng thái analytic R, W và W_fe.
+
+        Tham số:
+            Không nhận tham số ngoài ``self``.
+
+        Trả về:
+            Tổng số bytes của R, W và ma trận expansion đang lưu (không gồm RSS hay CNN).
+        """
         return sum(a.nbytes for a in (self.r, self.w, self.expansion) if a is not None)
 
 
 def run_streaming_phases(config, protocol, train_batches, test_batches, *, progress):
-    """Nhận factories theo phase, trả head và rows; factories không được trả lịch sử train."""
+    """Thực thi tuần tự base phase và các incremental phase ở chế độ streaming benchmark.
+
+    Tham số:
+        config: Dict cấu hình benchmark gồm số phase, chiều mở rộng và gamma.
+        protocol: Dict giao thức chia lớp chứa ``phase_global_classes``.
+        train_batches: Hàm nhận ``phase`` và trả về iterator batch train của đúng phase đó.
+        test_batches: Hàm nhận ``n_classes`` và trả về iterator batch test của mọi lớp đã thấy.
+        progress: Callback báo tiến độ theo từng stage/phase.
+
+    Trả về:
+        Tuple ``(head, rows)`` gồm đối tượng ``StreamingHead`` sau cùng và danh sách dict kết quả.
+    """
     head = StreamingHead(config)
     rows = []
     for phase in range(config["run_incremental_phases"] + 1):

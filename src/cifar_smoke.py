@@ -34,7 +34,14 @@ from .metrics import summarize
 
 
 def fingerprint(model):
-    """Băm cả trọng số và buffer BatchNorm để kiểm tra backbone thật sự cố định."""
+    """Tính mã băm SHA-256 toàn bộ trọng số và buffer BatchNorm để xác minh backbone cố định.
+
+    Tham số:
+        model: Mô hình ``nn.Module`` cần lấy dấu vân tay trạng thái.
+
+    Trả về:
+        Chuỗi hex SHA-256 của toàn bộ tensor trong ``state_dict()``.
+    """
     digest = hashlib.sha256()
     for name, value in model.state_dict().items():
         digest.update(name.encode())
@@ -43,7 +50,17 @@ def fingerprint(model):
 
 
 def seed_everything(seed, threads):
-    """Cố định RNG và thuật toán; không bảo đảm bitwise giống giữa CPU và GPU."""
+    """Cố định hạt giống RNG, số luồng tính toán và các cờ deterministic cho PyTorch/NumPy.
+
+    Không bảo đảm giống nhau từng bit giữa CPU và GPU.
+
+    Tham số:
+        seed: Hạt giống ngẫu nhiên nguyên cho Python, NumPy và PyTorch.
+        threads: Số luồng CPU cho PyTorch (``torch.set_num_threads``).
+
+    Trả về:
+        None.
+    """
     #Cố định seed của random, numpy, torch; cố định số luồng; bật deterministic algorithms.
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     random.seed(seed)
@@ -58,7 +75,23 @@ def seed_everything(seed, threads):
 
 
 def make_loader(arrays, protocol, normalization, classes, split, config, augment=False, *, batch_size=None):
-    """Chọn ID toàn cục, cùng mapping train/test; chỉ augment khi huấn luyện base."""
+    """Tạo DataLoader CIFAR-100 cho tập lớp chỉ định, dùng chung mapping nhãn toàn cục.
+
+    Chỉ bật augmentation và shuffle khi huấn luyện giai đoạn base.
+
+    Tham số:
+        arrays: Đối tượng ``CifarArrays`` chứa dữ liệu ảnh/nhãn.
+        protocol: Dict giao thức chia lớp gồm ánh xạ ``original_to_global``.
+        normalization: Dict chứa ``mean`` và ``std`` tính từ tập base train.
+        classes: Tập hợp ID lớp toàn cục cần lọc vào loader.
+        split: Chuỗi ``"train"`` hoặc ``"test"``.
+        config: Dict cấu hình chứa ``batch_size``, ``eval_batch_size`` và ``seed``.
+        augment: Bật data augmentation và shuffle nếu True (mặc định False).
+        batch_size: Kích thước batch ghi đè tùy chọn.
+
+    Trả về:
+        Đối tượng ``torch.utils.data.DataLoader`` với ``num_workers=0``.
+    """
     #Lọc mẫu ID toàn cục, nên train và test thử dụng cùng mapping
     #augment = True chỉ bật khi huấn luyện base; batch_size khác nhau cho train/test.
     if split not in ("train", "test"):
@@ -76,7 +109,18 @@ def make_loader(arrays, protocol, normalization, classes, split, config, augment
 
 
 def validate_checkpoint(checkpoint, config, protocol, normalization, dataset_revision):
-    """Không dùng checkpoint của class order, preprocessing hoặc cấu hình base khác."""
+    """Kiểm tra checkpoint base hoàn chỉnh có khớp cấu hình, class order và normalization không.
+
+    Tham số:
+        checkpoint: Dict checkpoint đã nạp từ đĩa.
+        config: Dict cấu hình lượt chạy hiện tại.
+        protocol: Dict giao thức chứa ``class_order``.
+        normalization: Dict thống kê ``mean``/``std`` của lượt chạy hiện tại.
+        dataset_revision: Mã revision Hugging Face của tập dữ liệu đang dùng.
+
+    Trả về:
+        None. Phát sinh ``ValueError`` nếu checkpoint chưa hoàn tất hoặc sai ngữ cảnh.
+    """
     if checkpoint.get("checkpoint_format_version") == 2 and checkpoint.get("training_complete") is not True:
         raise ValueError("Checkpoint base chưa hoàn tất; dùng resume thay vì reuse")
     if checkpoint.get("checkpoint_format_version") == 2 and checkpoint.get("loader_signature", {}).get("dataset_size") != 25000:
@@ -99,7 +143,19 @@ def validate_checkpoint(checkpoint, config, protocol, normalization, dataset_rev
 
 @torch.inference_mode()
 def extract_features(model, loader, device, name):
-    """Trả F (n,64) float64 và y toàn cục; từ chối backbone còn train/unfrozen."""
+    """Trích xuất toàn bộ đặc trưng 64 chiều (float64) và nhãn từ backbone đã đóng băng.
+
+    Từ chối chạy nếu bất kỳ module nào còn ở trạng thái train hoặc chưa khóa gradient.
+
+    Tham số:
+        model: Backbone ResNet-32 đã chuyển ``eval()`` và ``requires_grad=False``.
+        loader: ``DataLoader`` cung cấp ảnh và nhãn toàn cục.
+        device: Thiết bị PyTorch thực thi forward pass.
+        name: Tên nhãn hiển thị trong log tiến trình trích xuất.
+
+    Trả về:
+        Tuple ``(features, labels)`` gồm mảng float64 ``(n, 64)`` và mảng nhãn int64 ``(n,)``.
+    """
     if any(module.training for module in model.modules()) or any(p.requires_grad for p in model.parameters()):
         raise ValueError("Phải freeze backbone và eval tất cả module")
     features, labels = [], []
@@ -115,7 +171,18 @@ def extract_features(model, loader, device, name):
 
 
 def iter_feature_batches(model, loader, device, name, *, timings=None):
-    """Yield F64/y từng batch, không vstack; từ chối backbone chưa freeze/eval."""
+    """Sinh tuần tự từng batch đặc trưng float64 (64 chiều) và nhãn mà không gom bộ nhớ lịch sử.
+
+    Tham số:
+        model: Backbone ResNet-32 đã khóa gradient và đặt ``eval()``.
+        loader: ``DataLoader`` đầu vào cho phase hoặc tập test cần trích xuất.
+        device: Thiết bị PyTorch thực thi forward pass.
+        name: Tên nhãn phục vụ in log tiến độ.
+        timings: Dict tùy chọn để cộng dồn ``feature_extraction_seconds``.
+
+    Trả về:
+        Generator sinh từng cặp ``(raw_features_float64, labels_numpy)``.
+    """
     if any(module.training for module in model.modules()) or any(p.requires_grad for p in model.parameters()):
         raise ValueError("Phải freeze backbone và eval tất cả module")
     for step, (images, labels) in enumerate(loader, 1):
@@ -132,7 +199,14 @@ def iter_feature_batches(model, loader, device, name, *, timings=None):
 
 
 def validate_config(config):
-    """Chặn cấu hình rỗng hoặc ngoài phạm vi smoke test trước khi tốn thời gian train."""
+    """Kiểm tra tính hợp lệ của cấu hình pipeline trước khi chạy training tốn tài nguyên.
+
+    Tham số:
+        config: Dict cấu hình thí nghiệm (smoke hoặc benchmark).
+
+    Trả về:
+        None. Phát sinh ``ValueError`` nếu có tham số âm, sai kiểu hoặc ngoài phạm vi hỗ trợ.
+    """
     for key in ("epochs", "batch_size", "eval_batch_size", "analytic_batch_size", "torch_threads", "expansion_dim"):
         if isinstance(config[key], bool) or not isinstance(config[key], int) or config[key] <= 0:
             raise ValueError(f"{key} phải là số nguyên dương")
@@ -157,13 +231,27 @@ def validate_config(config):
 def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
         entity="hsangg-2006", project="acil-reproduction", config_path=None,
         config_overrides=None, prepare_tracking=None, resume_checkpoint=None, stop_after_epoch=None):
-    """Chạy một attempt riêng; trả report complete hoặc ghi failed rồi raise.
+    """Thực thi một lượt pipeline ACIL hoàn chỉnh trong thư mục attempt độc lập.
 
-    output_dir là root chứa latest/progress/results summary và attempts/<id>/.
-    reuse_checkpoint là đường dẫn tường minh của checkpoint đã hoàn thành.
-    config=None đọc config_path bên trong attempt; config_overrides ghi các
-    tùy chọn CLI/notebook. prepare_tracking là callback đăng nhập, chỉ gọi khi
-    bật W&B và được bảo vệ bởi cùng trạng thái attempt.
+    Ghi nhận trạng thái ``running``, ``complete`` hoặc ``failed`` qua ``RunAttempt``
+    và đồng bộ tracking W&B khi được bật.
+
+    Tham số:
+        config: Dict cấu hình trực tiếp hoặc ``None`` nếu đọc từ ``config_path``.
+        data_dir: Thư mục lưu dữ liệu CIFAR-100 tải từ Hugging Face.
+        output_dir: Thư mục gốc lưu metadata và ``attempts/<attempt_id>/``.
+        reuse_checkpoint: Đường dẫn checkpoint base đã hoàn tất để tái sử dụng (tùy chọn).
+        log_wandb: Bật ghi log lên W&B nếu True.
+        entity: Tên entity W&B.
+        project: Tên project W&B.
+        config_path: Đường dẫn file JSON cấu hình khi ``config`` là ``None``.
+        config_overrides: Dict ghi đè một số khóa cấu hình từ CLI/notebook.
+        prepare_tracking: Callback thiết lập đăng nhập W&B trước khi chạy (tùy chọn).
+        resume_checkpoint: Đường dẫn checkpoint v2 đang dở để tiếp tục BP (tùy chọn).
+        stop_after_epoch: Mốc epoch dừng sớm có chủ đích để kiểm thử resume (tùy chọn).
+
+    Trả về:
+        Dict báo cáo kết quả hoàn chỉnh kèm ``attempt_id`` và trạng thái tracking.
     """
     seed = config.get("seed") if isinstance(config, dict) else None
     with RunAttempt(output_dir, seed=seed) as attempt:
@@ -198,7 +286,21 @@ def run(config, *, data_dir, output_dir, reuse_checkpoint=None, log_wandb=False,
 
 def _compute_report(config, *, data_dir, output, reuse_checkpoint, config_path, progress,
                     resume_checkpoint=None, stop_after_epoch=None):
-    """Tính numeric report vào output của attempt; progress nhận stage và metadata."""
+    """Thực hiện huấn luyện/tái sử dụng backbone, cập nhật analytic và tổng hợp báo cáo số liệu.
+
+    Tham số:
+        config: Dict cấu hình đã hợp nhất.
+        data_dir: Thư mục cache dữ liệu CIFAR-100.
+        output: Thư mục riêng của attempt hiện tại để lưu checkpoint, state và metadata.
+        reuse_checkpoint: Đường dẫn checkpoint base hoàn tất để tái sử dụng (tùy chọn).
+        config_path: Đường dẫn file config gốc để tính hash truy nguyên (tùy chọn).
+        progress: Callback cập nhật giai đoạn đang chạy của attempt.
+        resume_checkpoint: Đường dẫn checkpoint v2 cần tiếp tục huấn luyện (tùy chọn).
+        stop_after_epoch: Mốc epoch dừng sớm có chủ đích (tùy chọn).
+
+    Trả về:
+        Dict báo cáo đầy đủ gồm cấu hình, provenance, checks, metrics và kết quả từng phase.
+    """
     progress("validating")
     validate_config(config)
     save_json(config, output / "config.json")
@@ -272,11 +374,27 @@ def _compute_report(config, *, data_dir, output, reuse_checkpoint, config_path, 
         stage_timings = {"feature_extraction_seconds": 0.0}
         if mode == "benchmark":
             def train_batches(phase):
+                """Tạo iterator sinh các batch đặc trưng train cho một phase cụ thể.
+
+                Tham số:
+                    phase: Chỉ số nguyên của phase hiện tại (0 cho base, 1..K cho incremental).
+
+                Trả về:
+                    Generator trả về các cặp ``(F64_batch, labels_batch)``.
+                """
                 size = config.get("base_statistics_batch_size", 1024) if phase == 0 else config["analytic_batch_size"]
                 loader = make_loader(arrays, protocol, normalization, protocol["phase_global_classes"][phase],
                                      "train", config, batch_size=size)
                 return iter_feature_batches(model, loader, device, f"train phase {phase}", timings=stage_timings)
             def test_batches(n_classes):
+                """Tạo iterator sinh các batch đặc trưng test phủ toàn bộ các lớp đã thấy.
+
+                Tham số:
+                    n_classes: Tổng số lớp đã thấy tính đến hết phase hiện tại.
+
+                Trả về:
+                    Generator trả về các cặp ``(F64_batch, labels_batch)``.
+                """
                 loader = make_loader(arrays, protocol, normalization, range(n_classes), "test", config)
                 return iter_feature_batches(model, loader, device, f"test seen {n_classes}", timings=stage_timings)
             analytic_start = time.perf_counter()
@@ -385,7 +503,15 @@ def _compute_report(config, *, data_dir, output, reuse_checkpoint, config_path, 
 
 
 def main():
-    """CLI từ gốc repo; checkpoint reuse là tùy chọn, mặc định huấn luyện base mới."""
+    """Điểm vào CLI chạy pipeline CIFAR-100 smoke hoặc benchmark từ thư mục gốc repository.
+
+    Tham số:
+        Không nhận tham số hàm; đọc các cờ ``--config``, ``--data-dir``, ``--output-dir``,
+        ``--reuse-checkpoint``, ``--resume-checkpoint``, ``--mode``, ``--wandb``... từ CLI.
+
+    Trả về:
+        None.
+    """
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=root / "configs/cifar100_smoke.json")

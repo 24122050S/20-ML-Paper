@@ -4,7 +4,19 @@ import numpy as np
 
 
 def summarize(rows, config):
-    """Nhận rows và config, trả summary; chuỗi chưa đủ K có A-bar đầy đủ=null."""
+    """Tổng hợp metric đánh giá ACIL theo chuẩn v1.0 từ kết quả từng phase.
+
+    Tính accuracy trung bình tăng dần (gồm phase base), final accuracy và
+    base forgetting; đặt ``average_incremental_accuracy_pct=None`` nếu chưa đủ K phase.
+
+    Tham số:
+        rows: Danh sách dict kết quả theo thứ tự phase ``0..requested``.
+        config: Dict cấu hình thí nghiệm chứa ``seed``, ``incremental_phases``,
+            ``run_incremental_phases`` và ``mode``.
+
+    Trả về:
+        Dict chứa bộ metric chuẩn hóa ``ACIL-metrics-v1.0``.
+    """
     if not rows or [r["phase"] for r in rows] != list(range(len(rows))):
         raise ValueError("Cần các phase liên tiếp bắt đầu từ base0")
     k = config["incremental_phases"]

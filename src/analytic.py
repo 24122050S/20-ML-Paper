@@ -11,7 +11,15 @@ import numpy as np
 
 
 def _data(h, labels):
-    """Kiểm tra H (n,d), nhãn toàn cục (n,); trả mảng float64/int64 hợp lệ."""
+    """Kiểm tra ma trận đặc trưng H và nhãn toàn cục, chuyển về dtype chuẩn.
+
+    Tham số:
+        h: Mảng đặc trưng đầu vào dạng (n, d), hữu hạn và không rỗng.
+        labels: Vector nhãn lớp nguyên không âm có độ dài n.
+
+    Trả về:
+        Tuple (h_float64, labels_int64) đã được kiểm tra tính hợp lệ.
+    """
     # Kiểm tra đầu vào có sạch hay không.
     # H là ma trận hữu hạn, 2d, không rỗng
     # Nhãn là vector số nguyên, đúng n phần tử, không âm
@@ -27,7 +35,16 @@ def _data(h, labels):
 
 
 def _classes(labels, n_classes=None, minimum=0):
-    """Trả số cột classifier, không thu hẹp lớp cũ và không bỏ sót nhãn mới."""
+    """Xác định số cột classifier hợp lệ, không thu hẹp lớp cũ và không sót nhãn mới.
+
+    Tham số:
+        labels: Vector nhãn toàn cục kiểu nguyên (n,).
+        n_classes: Số cột lớp mong muốn (tùy chọn); nếu None sẽ tự suy từ nhãn lớn nhất.
+        minimum: Số cột tối thiểu phải giữ lại từ trạng thái cũ.
+
+    Trả về:
+        Số nguyên dương biểu diễn tổng số cột của ma trận trọng số W.
+    """
     #Tính số cột
     # Số cột phải lớn hơn bằng max(Nhãn) + 1, và không nhỏ hơn số cột cũ (minimum).
     required = max(minimum, int(labels.max()) + 1)
@@ -41,7 +58,14 @@ def _classes(labels, n_classes=None, minimum=0):
 
 
 def _gamma(gamma):
-    """Trả gamma hữu hạn, lớn hơn 0; gamma=0 cần phương pháp giải riêng."""
+    """Kiểm tra và chuẩn hóa hệ số regularization dương hữu hạn.
+
+    Tham số:
+        gamma: Giá trị hệ số regularization cho bài toán ridge.
+
+    Trả về:
+        Giá trị float dương và hữu hạn của gamma.
+    """
     # Kiểm tra gamma > 0 và hữu hạn.
     gamma = float(gamma)
     if not np.isfinite(gamma) or gamma <= 0:
@@ -50,19 +74,33 @@ def _gamma(gamma):
 
 
 def _targets(labels, n_classes):
-    #tạo one-hote cho từng nhãn n*c
-    """Tạo one-hot (n,C) theo ID toàn cục; batch có thể chỉ chứa một số lớp."""
+    """Tạo ma trận nhãn one-hot theo ID lớp toàn cục.
+
+    Tham số:
+        labels: Vector nhãn nguyên toàn cục có kích thước (n,).
+        n_classes: Tổng số lớp C (số cột của ma trận đích).
+
+    Trả về:
+        Mảng float64 kích thước (n, C) chứa mã hóa one-hot.
+    """
     y = np.zeros((len(labels), n_classes), dtype=np.float64)
     y[np.arange(len(labels)), labels] = 1.0
     return y
 
 
 def joint_ridge(h, labels, n_classes=None, gamma=1.0):
-    """Giải nghiệm joint độc lập từ toàn bộ dữ liệu được cung cấp.
+    """Giải nghiệm joint ridge độc lập từ toàn bộ dữ liệu để làm chuẩn đối chiếu.
 
-    Tham số: H (n,d), labels nguyên toàn cục (n,), số lớp C tùy chọn và gamma>0.
-    Trả về W (d,C) từ hệ (H.T H + gamma I) W = H.T Y.
-    Các lớp chưa có mẫu có cột target bằng 0 nếu C được chỉ định trước.
+    Các lớp chưa có mẫu sẽ có cột target bằng 0 nếu ``n_classes`` được chỉ định trước.
+
+    Tham số:
+        h: Ma trận đặc trưng tổng hợp kích thước ``(n, d)``.
+        labels: Vector nhãn toàn cục kiểu nguyên kích thước ``(n,)``.
+        n_classes: Số cột lớp C tùy chọn; nếu None tự suy từ nhãn lớn nhất.
+        gamma: Hệ số regularization dương (mặc định 1.0).
+
+    Trả về:
+        Ma trận trọng số ``W`` kích thước ``(d, C)`` giải từ ``(H^T H + gamma I) W = H^T Y``.
     """
     # Giải W để khi học tât cả các batch -> So sánh
     # H ma trận đặc trưng
@@ -77,11 +115,16 @@ def joint_ridge(h, labels, n_classes=None, gamma=1.0):
 
 
 def initialize(h, labels, gamma=1.0, n_classes=None):
-    """Khởi tạo trạng thái từ base hoặc batch đầu tiên.
+    """Khởi tạo trạng thái analytic (R, W) từ tập base hoặc batch đầu tiên.
 
-    Nhận H (n,d), nhãn toàn cục (n,), gamma>0 và số lớp tùy chọn.
-    Trả (R,W), với R kích thước (d,d), W kích thước (d,C).
-    Gamma chỉ được cộng tại khởi tạo, không cộng lại ở mỗi minibatch.
+    Tham số:
+        h: Ma trận đặc trưng sau expansion có kích thước (n, d).
+        labels: Vector nhãn toàn cục kiểu nguyên có kích thước (n,).
+        gamma: Hệ số regularization dương (mặc định 1.0); chỉ cộng tại bước khởi tạo.
+        n_classes: Số cột lớp C tùy chọn; nếu None tự suy từ nhãn lớn nhất.
+
+    Trả về:
+        Tuple (r, w) gồm nghịch đảo Gram có điều chuẩn R (d, d) và trọng số W (d, C).
     """
     # thiết lập ma trận nghịch đảo ban đầu
     # đóng vai trò là nơi duy nhất tạo hệ só gamma vào hệ thống
@@ -95,11 +138,17 @@ def initialize(h, labels, gamma=1.0, n_classes=None):
 
 
 def initialize_batches(batches, n_features, n_classes, gamma=1.0, *, timings=None):
-    """Tích lũy base Gram/cross theo batch, trả R/W mà không giữ lịch sử H.
+    """Tích lũy thống kê Gram/cross theo batch cho base phase và giải (R, W) bằng Cholesky.
 
-    batches là iterator (H,y) chỉ đọc một lượt. Cholesky giải cùng objective
-    ridge với initialize; gamma được cộng đúng một lần. timings là dict nhận
-    giây tích lũy và giải hệ, nếu được cung cấp. Cần SciPy của requirements-cifar.
+    Tham số:
+        batches: Iterator trả về các cặp (H, y) của tập base, chỉ duyệt một lượt.
+        n_features: Số chiều đặc trưng d của H.
+        n_classes: Tổng số lớp C của tập base.
+        gamma: Hệ số regularization dương (mặc định 1.0), cộng đúng một lần vào đường chéo.
+        timings: Dict tùy chọn để ghi thời gian tích lũy, giải hệ và tổng số mẫu base.
+
+    Trả về:
+        Tuple (r, w) gồm ma trận R (d, d) và trọng số W (d, C), không giữ lại lịch sử H.
     """
     from scipy.linalg import cho_factor, cho_solve
     import time
@@ -137,14 +186,20 @@ def initialize_batches(batches, n_features, n_classes, gamma=1.0, *, timings=Non
 
 
 def incremental_update(r_old, w_old, h, labels, n_classes=None):
-    """Cập nhật bằng H/nhãn hiện tại, hỗ trợ lớp mới hoặc lớp lặp trong minibatch.
+    """Cập nhật trạng thái analytic theo batch hiện tại bằng Woodbury và phần dư.
 
-    Tham số: R cũ (d,d), W cũ (d,C_old), H (n,d), ID toàn cục (n,).
-    n_classes tùy chọn cho phép mở trước số cột của toàn phase; nếu bỏ qua,
-    số cột tăng theo nhãn lớn nhất đã xuất hiện. Nhãn không được đặt lại từ 0.
+    Hỗ trợ cả lớp mới lẫn lớp xuất hiện lại trong minibatch mà không làm thay đổi
+    các mảng trạng thái đầu vào hay lưu trữ dữ liệu train của các phase cũ.
 
-    Trả (R_new,W_new). Không sửa các mảng đầu vào, không giữ dữ liệu train cũ.
-    Backbone/feature expansion và gamma của trạng thái phải giữ nguyên.
+    Tham số:
+        r_old: Ma trận nghịch đảo Gram từ bước trước có kích thước (d, d).
+        w_old: Ma trận trọng số từ bước trước có kích thước (d, C_old).
+        h: Ma trận đặc trưng của batch hiện tại kích thước (n, d).
+        labels: Vector nhãn toàn cục kích thước (n,); không được đặt lại từ 0.
+        n_classes: Tổng số lớp C sau cập nhật (tùy chọn) để mở trước cột cho cả phase.
+
+    Trả về:
+        Tuple (r_new, w_new) với R_new kích thước (d, d) và W_new kích thước (d, C).
     """
     h, labels = _data(h, labels)
     r_old = np.asarray(r_old, dtype=np.float64)
