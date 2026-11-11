@@ -10,6 +10,7 @@
 
 ## Hiện trạng
 
+- [Tài liệu Reading the Paper — ACIL (NeurIPS 2022), 11/11/2026](docs/READING_THE_PAPER_ACIL.md): đầy đủ ví dụ thực tế tự đặt, phân tích 3 nhóm phương pháp tiền nhiệm (LwF, iCaRL, PODNet/AANets), phân loại đóng góp & tính mới, phân tích phương pháp 5 lớp (ký hiệu, pipeline, What/Why/How, chứng minh & điều kiện giới hạn Định lý 3.1 / Absolute Memorization / Privacy, độ phức tạp thời gian–không gian đối chiếu tiền nhiệm) và danh mục trích dẫn chuẩn IEEE cho Slide Deck giữa kỳ.
 - [Báo cáo tổng hợp thực nghiệm giữa kỳ, 07/11/2026](reports/BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md): R1/R2/R3 đã đủ kết quả; đã có [đối chiếu tác giả](reports/AUTHOR_CODE_COMPARISON_20261107.md); còn hoàn thiện PPTX. Gồm protocol, số liệu, giải thích thay đổi, giới hạn và bảng notebook–version–W&B.
 - [Báo cáo cập nhật chuẩn repo và sơ đồ tự vẽ, 11/11/2026](reports/CAP_NHAT_REPO_VA_SO_DO_20261111.md): đồng bộ PR #22, bổ sung 2 sơ đồ tự vẽ trong `reports/figures/`, bảng ánh xạ thực nghiệm thống nhất, giải thích thư viện ngoài standard stack và docstring 3 phần cho toàn bộ `src/`.
 - Đã có module analytic hỗ trợ nhãn toàn cục và minibatch; notebook/CLI dùng cùng source.
@@ -73,6 +74,7 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── cifar100_smoke.json
 │   └── cifar100_benchmark_k5.json          # Cấu hình R1
 ├── docs/
+│   ├── READING_THE_PAPER_ACIL.md # Nội dung đọc hiểu học thuật đầy đủ (Reading the Paper)
 │   ├── protocol_chot.md          # Protocol benchmark v1.0
 │   ├── metrics.md                # Định nghĩa metric v1.0
 │   ├── Dac_ta_ACIL.md            # Đặc tả module analytic
