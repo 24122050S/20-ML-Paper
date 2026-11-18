@@ -33,7 +33,7 @@ Phase mới xử lý 40 minibatch. R giữ 256×256; checkpoint load lại có s
 
 Kết quả: [JSON nguyên bản](../reports/cifar100_smoke_results.json), [manifest](../reports/CIFAR-SMOKE-01-provenance.json). Checkpoint/state ở `reports/local/cifar100_smoke/`, không đưa file lớn lên GitHub. Hai accuracy giống lượt chạy legacy trước đây không có nghĩa tái sử dụng kết quả: JSON mới có checkpoint_origin, môi trường, checksum source và sai lệch số học của module chuẩn.
 
-## Giới hạn và việc người học làm tiếp
+## Giới hạn và các bước tiếp theo
 
 Đây là smoke test 2 epochs, expansion 256, một phase mới, không phải benchmark paper. Nhánh joint giữ feature train cũ chỉ để đối chiếu; không được dùng việc giữ này để mô tả bộ nhớ của một thuật toán triển khai thật.
 

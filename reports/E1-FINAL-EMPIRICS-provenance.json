@@ -1,0 +1,397 @@
+{
+  "id": "E1-FINAL-EMPIRICS",
+  "published_date": "2026-11-18",
+  "status": "complete",
+  "experiment_family": "ACIL-Final-Empirics-E1",
+  "issue_tested": "P1 — Frozen Phase-0 Base Representation Sufficiency & Superclass Shift",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "ddof": 1,
+  "control_reference": {
+    "r1_summary": "reports/r1_cifar100_k5_summary.json",
+    "r1_summary_sha256": "c7cd16b0a27b3cc248c24f109b5f3d30942846e14f36a7fba472ff6ee45eec34"
+  },
+  "kaggle_kernels": [
+    {
+      "num": 13,
+      "kernel": "hsangg206/13-e1a-base-ratio-seed42",
+      "version_number": 1,
+      "script_version_id": 370801804,
+      "output_url": "https://www.kaggle.com/code/hsangg206/13-e1a-base-ratio-seed42/output?scriptVersionId=370801804",
+      "notebook": "notebooks/13_e1a_base_ratio_seed42.ipynb",
+      "notebook_sha256": "77f31bf39dbbdee77727d906f4119298e58e65b2ea2d3311976dc85f936e0b3b"
+    },
+    {
+      "num": 14,
+      "kernel": "hsangg206/14-e1a-base-ratio-seed43",
+      "version_number": 1,
+      "script_version_id": 370801839,
+      "output_url": "https://www.kaggle.com/code/hsangg206/14-e1a-base-ratio-seed43/output?scriptVersionId=370801839",
+      "notebook": "notebooks/14_e1a_base_ratio_seed43.ipynb",
+      "notebook_sha256": "94acecc1703ec5f303b4fc600ee3e6ba2595e3a39afeddd749241b6a0369d156"
+    },
+    {
+      "num": 15,
+      "kernel": "hsangg206/15-e1a-base-ratio-seed44",
+      "version_number": 1,
+      "script_version_id": 370817341,
+      "output_url": "https://www.kaggle.com/code/hsangg206/15-e1a-base-ratio-seed44/output?scriptVersionId=370817341",
+      "notebook": "notebooks/15_e1a_base_ratio_seed44.ipynb",
+      "notebook_sha256": "b0a1a6733c609b07a2b5b6b436dc94f3633aaac6fc0d7129ee05cad3831e8e92"
+    },
+    {
+      "num": 16,
+      "kernel": "hsangg206/16-e1b-superclass-shift-seed42",
+      "version_number": 1,
+      "script_version_id": 370817350,
+      "output_url": "https://www.kaggle.com/code/hsangg206/16-e1b-superclass-shift-seed42/output?scriptVersionId=370817350",
+      "notebook": "notebooks/16_e1b_superclass_shift_seed42.ipynb",
+      "notebook_sha256": "96bfc2eaa4ff4b2cb27310ff30d578e7bb0b1be45eae8b8d0cb74077e87b581c"
+    },
+    {
+      "num": 17,
+      "kernel": "hsangg206/17-e1b-superclass-shift-seed43",
+      "version_number": 1,
+      "script_version_id": 370827515,
+      "output_url": "https://www.kaggle.com/code/hsangg206/17-e1b-superclass-shift-seed43/output?scriptVersionId=370827515",
+      "notebook": "notebooks/17_e1b_superclass_shift_seed43.ipynb",
+      "notebook_sha256": "88c700179b95a3278e2cb9c7a56938c89b702ceaf8211d090cd61eb00045ef04"
+    },
+    {
+      "num": 18,
+      "kernel": "hsangg206/18-e1b-superclass-shift-seed44",
+      "version_number": 1,
+      "script_version_id": 370833058,
+      "output_url": "https://www.kaggle.com/code/hsangg206/18-e1b-superclass-shift-seed44/output?scriptVersionId=370833058",
+      "notebook": "notebooks/18_e1b_superclass_shift_seed44.ipynb",
+      "notebook_sha256": "ec630115c504987cdc23971931b69c0c3f70f803eb9815db6f760c5164350871"
+    }
+  ],
+  "artifacts": {
+    "e1a_c0_10_seed42_results.json": {
+      "sha256": "da8418fba6a796d861cf944ae6a63e47bf331050a97a58d0b2dd19e64019d46b"
+    },
+    "e1a_c0_10_seed43_results.json": {
+      "sha256": "3ec60ee53c872f28945848108a9fa902e3e789a957a8d4a09699d63dfaf0da00"
+    },
+    "e1a_c0_10_seed44_results.json": {
+      "sha256": "8e34a53157a29fe325ea19cbf8c35a3ed2072175a44bd2d38b268612c2458adf"
+    },
+    "e1a_c0_20_seed42_results.json": {
+      "sha256": "a62f20b2ecec61ae1a21a7bcb1aab4687894bfba34a97811a1fe5ff47eaa6b56"
+    },
+    "e1a_c0_20_seed43_results.json": {
+      "sha256": "9fdb43d943b6b30a93ccb4127233ef9b49074380924d2d57f4666e3c9db4d7ff"
+    },
+    "e1a_c0_20_seed44_results.json": {
+      "sha256": "f6acaf488f32743b36c53807e6dd5728bedd05c41fe00fafd33cfc650fb30c11"
+    },
+    "e1a_c0_30_seed42_results.json": {
+      "sha256": "59077815a975522fb6f1eeb9ac6efa24d4c39dc2d4a01a539ba5d8f97559e967"
+    },
+    "e1a_c0_30_seed43_results.json": {
+      "sha256": "260eadf0fa43f18175669fc3d9d6e0c69408914a278cda17a59f1b4ce9640ec0"
+    },
+    "e1a_c0_30_seed44_results.json": {
+      "sha256": "addfeff90c1f35e50491b6124f891ee5ead3f6d58b06c0750b2229c22516de03"
+    },
+    "e1b_superclass_disjoint_seed42_results.json": {
+      "sha256": "df918316079271adc9dbc538feb8e5dda32c2f473f3d66f4f1be8328b0b1bfab"
+    },
+    "e1b_superclass_disjoint_seed43_results.json": {
+      "sha256": "2e30e1a256fa1666405ffb80f77fe79e6741c4c3c7489f988663b429968ceae4"
+    },
+    "e1b_superclass_disjoint_seed44_results.json": {
+      "sha256": "0adee58975294b8e37833d261abaea17bc87a4a2e170b0a7be30dd32ee954030"
+    },
+    "e1_base_assumption_summary.json": {
+      "sha256": "d48a729749f3e46611cb484a2755d8341ab7a35353cc282ae69973b0c763bfee"
+    },
+    "figures/e1_base_representation_bottleneck.png": {
+      "sha256": "be590b49e08ac32a36c11b8a32e7c1d1ec3cb673ce04db5e3f0eab5c109a2aa7"
+    },
+    "E1_BASE_ASSUMPTION_20261118.md": {
+      "sha256": "fb8ac0b97dfac22b1f92755375c16ef7a9263c95da91e9a59269fcc73b2da720"
+    }
+  },
+  "scripts": {
+    "scripts/e1_base_assumption_runner.py": "099e4ac027ad67aee279ce1a8a1b1e1369fc9c0a6d6e215d5580ceb56716aa64",
+    "scripts/build_e1_notebooks.py": "aa95a1fdc7260cae67bfd482f8c200f1162033c5ad292c10f62c2b90e40b4c92",
+    "scripts/plot_final_empirics.py": "00c27915b0806e0df19f5ef23005103bd1995e468585317a23b49bc6119a05d1"
+  },
+  "public_tracking_verification": {
+    "status": "complete",
+    "n_runs": 12,
+    "method": "fresh requests.Session(trust_env=False); zero Authorization/Cookie",
+    "runs": [
+      {
+        "branch": "E1a",
+        "seed": 42,
+        "base_classes": 10,
+        "kaggle_script_version_id": 370801804,
+        "raw_kaggle_results_sha256": "12919bb1e7d726d7984b4fe758b1d67afa81dd8e568155c0d0a804ed0c083f69",
+        "run_id": "c1c00gop",
+        "display_name": "E1a-uniform-c0_10-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/c1c00gop",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_10",
+          "final-empirics",
+          "seed42",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:52.950291+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 42,
+        "base_classes": 20,
+        "kaggle_script_version_id": 370801804,
+        "raw_kaggle_results_sha256": "57b505ed6b6562dbdfd86930732b91e68ee8f6b9ef823e2c8a07502fc6ec7ec6",
+        "run_id": "1sxua0j4",
+        "display_name": "E1a-uniform-c0_20-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/1sxua0j4",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_20",
+          "final-empirics",
+          "seed42",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:53.626685+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 42,
+        "base_classes": 30,
+        "kaggle_script_version_id": 370801804,
+        "raw_kaggle_results_sha256": "a42183a063b1e7bc04fa507f95a05180b8b75e7ff1adb7f53739628527f84de1",
+        "run_id": "teevqsnt",
+        "display_name": "E1a-uniform-c0_30-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/teevqsnt",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_30",
+          "final-empirics",
+          "seed42",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:54.226562+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 43,
+        "base_classes": 10,
+        "kaggle_script_version_id": 370801839,
+        "raw_kaggle_results_sha256": "a19de0382be7b3802f0321c772c3c7cc67a1779fb9e88e80591aef5e50416316",
+        "run_id": "4mwubtt2",
+        "display_name": "E1a-uniform-c0_10-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/4mwubtt2",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_10",
+          "final-empirics",
+          "seed43",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:54.837735+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 43,
+        "base_classes": 20,
+        "kaggle_script_version_id": 370801839,
+        "raw_kaggle_results_sha256": "b7eb62029df950ecb5d23cafc285c410d871daf9e94cfcdcdbd2e31ad41553a2",
+        "run_id": "t65feqkw",
+        "display_name": "E1a-uniform-c0_20-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/t65feqkw",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_20",
+          "final-empirics",
+          "seed43",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:55.507585+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 43,
+        "base_classes": 30,
+        "kaggle_script_version_id": 370801839,
+        "raw_kaggle_results_sha256": "7af298a7a043d8b3afe59aece4dea236c8be77f9cf4476675e3ed8752fc93891",
+        "run_id": "ysgblws2",
+        "display_name": "E1a-uniform-c0_30-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/ysgblws2",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_30",
+          "final-empirics",
+          "seed43",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:56.120620+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 44,
+        "base_classes": 10,
+        "kaggle_script_version_id": 370817341,
+        "raw_kaggle_results_sha256": "b19b6261c03575b7688020a49b9dd7bde36403ef713a81e7e6e1beaa640a99ce",
+        "run_id": "pbct2s6d",
+        "display_name": "E1a-uniform-c0_10-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/pbct2s6d",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_10",
+          "final-empirics",
+          "seed44",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:56.821475+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 44,
+        "base_classes": 20,
+        "kaggle_script_version_id": 370817341,
+        "raw_kaggle_results_sha256": "f57049c5338103b6170162bbeafa201ed4674658d43cdcf9ae25960d63345c4d",
+        "run_id": "q3t7kvyb",
+        "display_name": "E1a-uniform-c0_20-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/q3t7kvyb",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_20",
+          "final-empirics",
+          "seed44",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:57.471655+00:00"
+      },
+      {
+        "branch": "E1a",
+        "seed": 44,
+        "base_classes": 30,
+        "kaggle_script_version_id": 370817341,
+        "raw_kaggle_results_sha256": "cad024ee24b690b9cd2e0cbf5e55d5b93f563033ce289641444c7e6818c21cd5",
+        "run_id": "lpps6veq",
+        "display_name": "E1a-uniform-c0_30-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/lpps6veq",
+        "state": "finished",
+        "tags": [
+          "E1a-base-ratio",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_30",
+          "final-empirics",
+          "seed44",
+          "uniform"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:58.125369+00:00"
+      },
+      {
+        "branch": "E1b",
+        "seed": 42,
+        "base_classes": 50,
+        "kaggle_script_version_id": 370817350,
+        "raw_kaggle_results_sha256": "2da4b5e85a779c210168937faba8789ddab9a72d945cbb919af401b523488e67",
+        "run_id": "db4wwmvz",
+        "display_name": "E1b-superclass_disjoint-c0_50-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/db4wwmvz",
+        "state": "finished",
+        "tags": [
+          "E1b-superclass-shift",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_50",
+          "final-empirics",
+          "seed42",
+          "superclass_disjoint"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:58.828895+00:00"
+      },
+      {
+        "branch": "E1b",
+        "seed": 43,
+        "base_classes": 50,
+        "kaggle_script_version_id": 370827515,
+        "raw_kaggle_results_sha256": "2682a39b769d7d607d9153780d77228529e4c5d7aea0f047cc1f21ffa59369bc",
+        "run_id": "2cy9asyu",
+        "display_name": "E1b-superclass_disjoint-c0_50-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/2cy9asyu",
+        "state": "finished",
+        "tags": [
+          "E1b-superclass-shift",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_50",
+          "final-empirics",
+          "seed43",
+          "superclass_disjoint"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:08:59.480736+00:00"
+      },
+      {
+        "branch": "E1b",
+        "seed": 44,
+        "base_classes": 50,
+        "kaggle_script_version_id": 370833058,
+        "raw_kaggle_results_sha256": "86f6fe314658546f4a0f0240b239063431bbf74dcb3e2a217b6e7c3ce793496b",
+        "run_id": "e9wono5t",
+        "display_name": "E1b-superclass_disjoint-c0_50-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/e9wono5t",
+        "state": "finished",
+        "tags": [
+          "E1b-superclass-shift",
+          "P1-base-assumption",
+          "P1-base-shift",
+          "c0_50",
+          "final-empirics",
+          "seed44",
+          "superclass_disjoint"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T01:09:00.197788+00:00"
+      }
+    ]
+  },
+  "created_at_utc": "2026-11-18T01:23:20.604295+00:00"
+}

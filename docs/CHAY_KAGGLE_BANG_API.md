@@ -1,14 +1,14 @@
 # Chạy qua Kaggle API và đồng bộ W&B
 
-Ngày 05/11/2026, công cụ điều khiển tab không đọc/click được Kaggle. Sang đã cấu hình đăng nhập Kaggle tại máy; trợ lý dùng API để chạy BP5. Không cần import lại notebook 05.
+Ngày 05/11/2026, sử dụng trực tiếp Kaggle CLI/API từ thông tin đăng nhập đã cấu hình tại máy cá nhân để chạy lượt BP5 thay vì thao tác qua giao diện trình duyệt; không cần import lại notebook 05 thủ công.
 
 ## Các phiên đã có
 
 | Version của kernel 04 | Công việc | Bằng chứng |
 |---|---|---|
-|1 /365647614 |Profile analytic d8000 |[Output](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365647614), W&B gey0yop4 finished |
-|2 |BP5 lỗi khi đọc secret W&B (HTTP400), chưa train |Output failed, không dùng làm số liệu đạt |
-|3 /365703432 |BP5 hoàn tất, CUDA resume passed |[Output](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365703432), [manifest](../reports/BP5-KAGGLE-01-provenance.json) |
+| 1 / 365647614 | Profile analytic d8000 | [Output](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365647614), W&B gey0yop4 finished |
+| 2 | BP5 lỗi khi đọc secret W&B (HTTP 400), chưa train | Output failed, không dùng làm số liệu đạt |
+| 3 / 365703432 | BP5 hoàn tất, CUDA resume passed | [Output](https://www.kaggle.com/code/hsangg206/04-resume-benchmark-profile/output?scriptVersionId=365703432), [manifest](../reports/BP5-KAGGLE-01-provenance.json) |
 
 Slug 04 được giữ để lưu lịch sử version. Source Version 3 là variant API của notebook 05, không phải chạy lại analytic Version 1. Source đã lưu tại `notebooks/archive/05_profile_base_api_v3.ipynb`.
 
@@ -28,9 +28,9 @@ File đăng nhập Kaggle và W&B nằm ngoài repository. Không truyền key t
 
 ## R1 đã hoàn tất 3 seeds
 
-[Notebook 06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình R1 seed 42,160 epochs/d8000/K5, yêu cầu CUDA test đạt và dùng checkpoint v2 đúng target/runtime. `CHECKPOINT=None`, `RESUME_CHECKPOINT=None` cho base mới; checkpoint 5 epochs bị từ chối cho target 160.
+[Notebook 06](../notebooks/06_benchmark_seed42_ready.ipynb) đã cấu hình R1 seed 42, 160 epochs/d8000/K5, yêu cầu CUDA test đạt và dùng checkpoint v2 đúng target/runtime. `CHECKPOINT=None`, `RESUME_CHECKPOINT=None` cho base mới; checkpoint 5 epochs bị từ chối cho target 160.
 
-R1 hiện đã hoàn tất 3 kernels 06/07/08, tương ứng 42/43/44, mỗi lượt timeout 7200s,160 epochs/d8000/K5 và fresh base. [Báo cáo tổng hợp](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json) ghi Ā 65,1196 ± 0,6104%, final 56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (n=3, ddof=1), với version/source/checkpoint/W&B riêng trong [manifest tổng hợp](../reports/R1-C100-K5-3SEEDS-provenance.json). Seed 43/44 chạy song song; cả 3 payload đã sync và được kiểm API công khai. Giữ Output/checkpoint cho R2/R3; R/W incremental chưa có resume giữa phase. Không cần chạy lại các seeds R1 đã nghiệm thu.
+R1 hiện đã hoàn tất 3 kernels 06/07/08, tương ứng 42/43/44, mỗi lượt timeout 7200s, 160 epochs/d8000/K5 và fresh base. [Báo cáo tổng hợp](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json) ghi Ā 65,1196 ± 0,6104%, final 56,1300 ± 0,5575%, F_base 8,3067 ± 0,6201 pp (n=3, ddof=1), với version/source/checkpoint/W&B riêng trong [manifest tổng hợp](../reports/R1-C100-K5-3SEEDS-provenance.json). Seed 43/44 chạy song song; cả 3 payload đã sync và được kiểm API công khai. Giữ Output/checkpoint cho R2/R3; R/W incremental chưa có resume giữa phase. Không cần chạy lại các seeds R1 đã nghiệm thu.
 
 ## R2 đã hoàn tất — 07/11/2026
 
@@ -44,8 +44,8 @@ Numeric JSON giữ nguyên bytes lúc capture offline. Đồng bộ đúng 3 pay
 
 ## R3 đã hoàn tất — 07/11/2026
 
-[Notebook 12](../notebooks/12_r3_batch_analysis.ipynb), [Kaggle v1 /366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048), [raw JSON](../reports/r3_cifar100_k5_results.json), [manifest](../reports/R3-KAGGLE-01-provenance.json).9 case =batch 32/128/512 × 3 timing repeats, cùng checkpoint seed 42/160 epochs, d1024/gamma0.1. Full 50.000 train/10.000 test;9 fresh CPU subprocesses sequential với 4 BLAS threads. GPU dùng trích F64 ngoài timer; oracle chạy riêng sau cả 9 worker.9 W&B Finished/công khai, đủ 54 history rows khớp JSON.
+[Notebook 12](../notebooks/12_r3_batch_analysis.ipynb), [Kaggle v1 / 366444048](https://www.kaggle.com/code/hsangg206/12-r3-batch-analysis/output?scriptVersionId=366444048), [raw JSON](../reports/r3_cifar100_k5_results.json), [manifest](../reports/R3-KAGGLE-01-provenance.json). 9 case = batch 32/128/512 × 3 timing repeats, cùng checkpoint seed 42/160 epochs, d1024/gamma0.1. Full 50.000 train/10.000 test; 9 fresh CPU subprocesses sequential với 4 BLAS threads. GPU dùng trích F64 ngoài timer; oracle chạy riêng sau cả 9 worker. 9 W&B Finished/công khai, đủ 54 history rows khớp JSON.
 
-Output listing của lượt này có 2 trang; API 2.2.5 pin version 1 và phân trang khi tải. Đã tải fixture, 60 NPZ, JSON/proofs/offline payloads để kiểm local; prepared CIFAR cache nằm lồng trong suite cũng được nhận, tất cả ma trận/ảnh đều không commit Git. Local kiểm source/context/checksum/mapping/norm và giải lại joint cho 54 so sánh. [Báo cáo](../reports/R3_CIFAR100_K5_BATCH_20261107.md) ghi rõ timer, RSS 5ms và đơn vị thống kê 1 seed/3timing repeats. Raw capture offline giữ nguyên, actual tracking chỉ bổ sung sau sync/xác minh.
+Output listing của lượt này có 2 trang; API 2.2.5 pin version 1 và phân trang khi tải. Đã tải fixture, 60 NPZ, JSON/proofs/offline payloads để kiểm local; prepared CIFAR cache nằm lồng trong suite cũng được nhận, tất cả ma trận/ảnh đều không commit Git. Local kiểm source/context/checksum/mapping/norm và giải lại joint cho 54 so sánh. [Báo cáo](../reports/R3_CIFAR100_K5_BATCH_20261107.md) ghi rõ timer, RSS 5ms và đơn vị thống kê 1 seed / 3 timing repeats. Raw capture offline giữ nguyên, actual tracking chỉ bổ sung sau sync/xác minh.
 
 Sau sync chạy `python scripts/reconcile_r3_tracking.py --suite <raw-r3_ready.json>`: summary được chốt từ report 6 phase đã kiểm, thêm alias tổng/max riêng và hash raw suite, tránh va tên với history từng phase. Chín run đã công bố đều qua reconciliation và API công khai; history/numeric bytes không đổi. Bốn tests hồi quy local cho helper tracking/JSON round-trip tách khỏi 5 driver tests đã chạy trên Kaggle.

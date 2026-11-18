@@ -1,0 +1,155 @@
+{
+  "id": "E2-FINAL-EMPIRICS",
+  "published_date": "2026-11-18",
+  "status": "complete",
+  "experiment_family": "ACIL-Final-Empirics-E2",
+  "issue_tested": "P2 — O(d^2) Real Byte Memory Budget & Woodbury Floating-Point Stability",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "ddof": 1,
+  "reused_r1_checkpoints": {
+    "42": "1f2a747347e26db933b11a9910ee780a8f8597187b40bc2191ad42108cea550d",
+    "43": "ad352c9a7ccd7162666a9fa89914fdf17c72a8faeb5bdab1c8d123061afd0f4f",
+    "44": "8e6c1eb6cd6d1f6df411af5201841d5e0591662a8ac6f94bd30962061330a63d"
+  },
+  "artifacts": {
+    "e2_seed42_results.json": {
+      "sha256": "3b4c69091dc9b54bb94baac2090c4cf9b326fd60a9095d420350b6e424559746"
+    },
+    "e2_seed43_results.json": {
+      "sha256": "324fe18c1be06bbbf952931c5dfd2dc37b2e58e1b06817f185a70e8417bc26ad"
+    },
+    "e2_seed44_results.json": {
+      "sha256": "c1efdb6895983814ad86e58a14cbf003c65ac19217f0543c3c3bd75e52bc459e"
+    },
+    "e2_memory_precision_summary.json": {
+      "sha256": "bfc0bdc4c0698d9322bdebd9adcc27562dd17713bf618965f84b25c03f01b7de"
+    },
+    "figures/e2_memory_and_woodbury_precision.png": {
+      "sha256": "02f97905a14034a62d9fff7abba54a10d9f6251c1889dce2008ae6e56cfed976"
+    },
+    "E2_MEMORY_PRECISION_20261118.md": {
+      "sha256": "4a72b92630ea30dd88db04365f674393ecaedfc670b7ec7105f93662a2621667"
+    }
+  },
+  "scripts": {
+    "scripts/e2_memory_precision_runner.py": "a6e4394eab61114e5b1beb5680f16739c861e25dddcb75ee17d177457c3d77ea",
+    "scripts/plot_final_empirics.py": "00c27915b0806e0df19f5ef23005103bd1995e468585317a23b49bc6119a05d1"
+  },
+  "public_tracking_verification": {
+    "status": "complete",
+    "n_runs": 6,
+    "method": "fresh requests.Session(trust_env=False); zero Authorization/Cookie",
+    "runs": [
+      {
+        "seed": 42,
+        "suite": "e2a_run",
+        "run_id": "givauiwx",
+        "display_name": "E2a-memory-scaling-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/givauiwx",
+        "state": "finished",
+        "tags": [
+          "E2a-memory-budget",
+          "FD2-block-diagonal",
+          "P2-memory-precision",
+          "P2-memory-scaling",
+          "final-empirics",
+          "seed42"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-17T23:14:53.948323+00:00"
+      },
+      {
+        "seed": 42,
+        "suite": "e2b_run",
+        "run_id": "bf8zhv34",
+        "display_name": "E2b-woodbury-precision-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/bf8zhv34",
+        "state": "finished",
+        "tags": [
+          "E2b-woodbury-precision",
+          "P2-memory-precision",
+          "P2-memory-scaling",
+          "final-empirics",
+          "seed42"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-17T23:14:54.588058+00:00"
+      },
+      {
+        "seed": 43,
+        "suite": "e2a_run",
+        "run_id": "e3z5fld4",
+        "display_name": "E2a-memory-scaling-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/e3z5fld4",
+        "state": "finished",
+        "tags": [
+          "E2a-memory-budget",
+          "FD2-block-diagonal",
+          "P2-memory-precision",
+          "P2-memory-scaling",
+          "final-empirics",
+          "seed43"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-17T23:14:55.286767+00:00"
+      },
+      {
+        "seed": 43,
+        "suite": "e2b_run",
+        "run_id": "luzl13ud",
+        "display_name": "E2b-woodbury-precision-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/luzl13ud",
+        "state": "finished",
+        "tags": [
+          "E2b-woodbury-precision",
+          "P2-memory-precision",
+          "P2-memory-scaling",
+          "final-empirics",
+          "seed43"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-17T23:14:55.892798+00:00"
+      },
+      {
+        "seed": 44,
+        "suite": "e2a_run",
+        "run_id": "x9uxqlxu",
+        "display_name": "E2a-memory-scaling-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/x9uxqlxu",
+        "state": "finished",
+        "tags": [
+          "E2a-memory-budget",
+          "FD2-block-diagonal",
+          "P2-memory-precision",
+          "P2-memory-scaling",
+          "final-empirics",
+          "seed44"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-17T23:14:56.606578+00:00"
+      },
+      {
+        "seed": 44,
+        "suite": "e2b_run",
+        "run_id": "dwmcy1ob",
+        "display_name": "E2b-woodbury-precision-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/dwmcy1ob",
+        "state": "finished",
+        "tags": [
+          "E2b-woodbury-precision",
+          "P2-memory-precision",
+          "P2-memory-scaling",
+          "final-empirics",
+          "seed44"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-17T23:14:57.275893+00:00"
+      }
+    ]
+  },
+  "created_at_utc": "2026-11-17T23:14:57.325890+00:00"
+}
