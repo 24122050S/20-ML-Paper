@@ -11,13 +11,13 @@
 ## Hiện trạng
 
 - [Tài liệu Reading the Paper — ACIL (NeurIPS 2022), 11/11/2026](docs/READING_THE_PAPER_ACIL.md): tổng hợp nội dung đọc hiểu lý thuyết gồm bài toán & ví dụ thực tế tự đặt, đối chiếu 3 hướng tiền nhiệm (LwF, iCaRL, PODNet/AANets), phân loại đóng góp & điểm mới, phân tích phương pháp 5 lớp (ký hiệu, pipeline, phân tích từng thành phần, chứng minh & điều kiện biên Định lý 3.1 / Absolute Memorization / Privacy, độ phức tạp thời gian–không gian) và danh sách trích dẫn IEEE cho slide giữa kỳ.
-- [Kịch bản 36 Slides Giữa kỳ (Main 32 + Appendix 4), 12/11/2026](docs/KICH_BAN_36_SLIDE_GIUA_KY.md) & **[Slide Deck Giữa kỳ hoàn chỉnh (`ACIL_Nhom3_GiuaKy.pptx`, 36 slides, 4,11 MB), 18/11/2026](slides/ACIL_Nhom3_GiuaKy.pptx)**: đầy đủ nội dung đọc hiểu và thực nghiệm tái lập `R1/R2/R3` + đối chiếu tác giả, kèm link W&B public, trích dẫn IEEE dưới chân từng slide và Speaker Notes trên đủ 36/36 slides.
-- [Khung Phản biện Lý thuyết & Thiết kế Thực nghiệm Cuối kỳ, 18/11/2026](docs/PHAN_BIEN_CUOI_KY_ACIL.md): phân tích 4 góc nhìn lý thuyết của ACIL, 3 điểm mạnh có bằng chứng (`R1/R2/R3`), 2 hạn chế lý thuyết (`P1` phụ thuộc tập Base đóng băng, `P2` bộ nhớ $\mathcal{O}(d^2)$ theo byte & độ nhạy số học MSE-Woodbury), thiết kế thực nghiệm kiểm chứng `E1`–`E2` và 2 hướng phát triển gắn 1–1 (`FD1`–`FD2`) cho Poster A2 cuối kỳ.
-- [Kế hoạch Thực nghiệm Cuối kỳ (Pre-registered Protocol v1.0), 18/11/2026](docs/KE_HOACH_EMPIRICS_CUOI_KY.md): khóa trước giả định kiểm tra, biến thay đổi/cố định, đối chứng, metric, dự đoán & tiêu chí bác bỏ cho `E1a/E1b` và `E2a/E2b/FD2`, đi kèm hai runner riêng [`scripts/e1_base_assumption_runner.py`](scripts/e1_base_assumption_runner.py), [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) và bộ kiểm thử đơn vị [`scripts/tests/test_final_empirics.py`](scripts/tests/test_final_empirics.py).
+- [Kịch bản 36 Slides Giữa kỳ (Main 32 + Appendix 4), 12/11/2026](docs/KICH_BAN_36_SLIDE_GIUA_KY.md) & **[Slide Deck Giữa kỳ hoàn chỉnh (`ACIL_Nhom3_GiuaKy.pptx`, 36 slides, 4,91 MiB / 5,15 MB), 18/11/2026](slides/ACIL_Nhom3_GiuaKy.pptx)**: đầy đủ nội dung đọc hiểu và thực nghiệm tái lập `R1/R2/R3` + đối chiếu tác giả, kèm link W&B public, trích dẫn IEEE dưới chân từng slide và Speaker Notes trên đủ 36/36 slides (`≤ 500` từ/slide).
+- [Khung Phản biện Lý thuyết & Thiết kế Thực nghiệm Cuối kỳ, 18/11/2026](docs/PHAN_BIEN_CUOI_KY_ACIL.md): phân tích 4 góc nhìn lý thuyết của ACIL, 3 điểm mạnh có bằng chứng (`S1/S2/S3` từ `R1/R2/R3`), 2 hạn chế lý thuyết chính cho Poster A2 (`P1` phụ thuộc tập Base đóng băng, `P2` bộ nhớ $\mathcal{O}(d^2)$ theo byte & độ nhạy số học Woodbury), thiết kế thực nghiệm kiểm chứng `E1`–`E2` và 2 hướng phát triển gắn 1–1 (`FD1`–`FD2`).
+- [Kế hoạch Thực nghiệm Cuối kỳ (Pre-registered Protocol v1.0), 18/11/2026](docs/KE_HOACH_EMPIRICS_CUOI_KY.md): khóa trước giả định kiểm tra, biến thay đổi/cố định, đối chứng, metric, dự đoán & tiêu chí bác bỏ cho `E1a/E1b` và `E2a/E2b/FD2`, đi kèm các runner riêng [`scripts/e1_base_assumption_runner.py`](scripts/e1_base_assumption_runner.py), [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) và bộ kiểm thử đơn vị [`scripts/tests/test_final_empirics.py`](scripts/tests/test_final_empirics.py).
 - **Thực nghiệm cuối kỳ `E2` hoàn tất ngày 18/11/2026 (kiểm chứng `P2`):** tái sử dụng 3 checkpoints ResNet-32 160 epochs của R1 (`seeds 42/43/44`, không train lại CNN), quét 11 mức chiều mở rộng $d \in \{64..8000\}$ kèm nguyên mẫu `FD2` và độ trôi số học Woodbury `float32` vs `float64`. Tại đúng trần ngân sách `6.144 MB` của 2.000 ảnh CIFAR-100 ($d = 798$ `fp64` / $d = 1160$ `fp32`), $A_{\mathrm{final}}$ giảm **$-5,19\text{ pp}$** (`56,13% → 50,94%`) / **$-3,95\text{ pp}$** (`52,18%`) và $\bar{A}$ giảm **$-2,95\text{ pp}$** / **$-2,30\text{ pp}$** so với chuẩn bài báo $d = 8000$ (`522,50 MB` = `85,04×` ngân sách kho mẫu); đồng thời hạ sang `float32` làm sai số tương đối trọng số Woodbury tăng hơn $4 \times 10^7$ lần và phát sinh mẫu đổi nhãn `argmax`. [Báo cáo E2](reports/E2_MEMORY_PRECISION_20261118.md) · [Summary](reports/e2_memory_precision_summary.json) · [Manifest](reports/E2-FINAL-EMPIRICS-provenance.json) · [Biểu đồ Poster](reports/figures/e2_memory_and_woodbury_precision.png) (6 W&B Finished/công khai).
 - **Thực nghiệm cuối kỳ `E1` hoàn tất ngày 18/11/2026 (kiểm chứng `P1`):** chạy 6 kernels Kaggle GPU T4 (`notebooks/13..18`, 12 lượt huấn luyện ResNet-32 160 epochs + tầng giải tích $d=8000, \gamma=0.1$ trên 3 seeds `42/43/44`). Ở `E1a`, thu hẹp lớp Base $c_0: 50 \to 30 \to 20 \to 10$ làm $A_{\mathrm{final}}$ 100 lớp sụt từ **`56,13 ± 0,56%`** xuống **`48,14%`**, **`41,79%`** và **`33,57 ± 0,53%`** (**`-22,56 pp`**) dù nghiệm đệ quy vẫn khớp Joint Ridge (`0` mẫu lệch). Ở `E1b`, giữ nguyên $c_0 = 50$ (`25.000` ảnh Base) nhưng tách rời miền ngữ nghĩa (`10` superclasses tự nhiên/sinh vật ở Base $\to$ `10` superclasses phương tiện/đồ vật & nhóm còn lại ở Incremental) làm $A_{\mathrm{inc}}$ 50 lớp mới giảm **`-8,21 pp`** (`43,93% → 35,71%`), nới rộng $\Delta_{\text{gap}} = B_5 - A_{\mathrm{inc}}$ thêm **`+9,85 pp`** lên **`34,26 ± 0,62 pp`**. [Báo cáo E1](reports/E1_BASE_ASSUMPTION_20261118.md) · [Summary](reports/e1_base_assumption_summary.json) · [Manifest](reports/E1-FINAL-EMPIRICS-provenance.json) · [Biểu đồ Poster](reports/figures/e1_base_representation_bottleneck.png) (12 W&B Finished/công khai).
-- [Báo cáo tổng hợp thực nghiệm giữa kỳ, 07/11/2026](reports/BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md): R1/R2/R3 đã đủ kết quả; đã có [đối chiếu tác giả](reports/AUTHOR_CODE_COMPARISON_20261107.md); còn hoàn thiện PPTX. Gồm protocol, số liệu, giải thích thay đổi, giới hạn và bảng notebook–version–W&B.
-- [Báo cáo cập nhật chuẩn repo và sơ đồ tự vẽ, 11/11/2026](reports/CAP_NHAT_REPO_VA_SO_DO_20261111.md): đồng bộ PR #22, bổ sung 2 sơ đồ tự vẽ trong `reports/figures/`, bảng ánh xạ thực nghiệm thống nhất, giải thích thư viện ngoài standard stack và docstring 3 phần cho toàn bộ `src/`.
+- **Thực nghiệm phụ cuối kỳ `E3` hoàn tất ngày 18/11/2026 (trình bày hạn chế thứ 3 `P3` trong README):** kiểm chứng trên cùng `d = 1024` và 3 checkpoints `R1` (`seeds 42/43/44`) để tách bạch **độ trôi số học `float32` (`E2b`)** khỏi **thiên lệch cấu trúc của hàm mục tiêu MSE One-Hot khi mất cân bằng lớp (`E3`)**. Khi số mẫu mỗi lớp tăng dần giảm từ $500$ xuống $100 \to 50 \to 10$ (so với $N_{\mathrm{base}} = 500$), dù nghiệm `float64` vẫn thỏa Định lý 3.1 tới $\le 7,74 \times 10^{-12}$ (`0` mẫu lệch Joint Ridge), chuẩn cột trọng số $\|w_{\mathrm{inc}}\|_2 / \|w_{\mathrm{base}}\|_2$ co từ `0,915` xuống **`0,103`** và khiến độ chính xác 50 lớp mới $A_{\mathrm{inc}}$ sụt từ `32,62%` xuống **`0,21%`** (`10×`) rồi **`0,00%`** (`50×`). Nguyên mẫu nghiệm đóng **Weighted RLS (`FD3`)** khôi phục **`+28,66 pp`** ở `10×` mà không lưu mẫu cũ hay tăng bộ nhớ $R_k$. [Báo cáo E3](reports/E3_MSE_IMBALANCE_20261118.md) · [Summary](reports/e3_mse_imbalance_summary.json) · [Manifest](reports/E3-FINAL-EMPIRICS-provenance.json) · [Biểu đồ `P3`](reports/figures/e3_mse_imbalance_vs_woodbury_drift.png) (3 W&B Finished/công khai).
+- [Báo cáo tổng hợp thực nghiệm giữa kỳ, 07/11/2026](reports/BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md) *(mốc giữa kỳ 07/11)* & [Báo cáo cập nhật chuẩn repo và sơ đồ tự vẽ, 11/11/2026](reports/CAP_NHAT_REPO_VA_SO_DO_20261111.md): đầy đủ `R1/R2/R3`, [đối chiếu tác giả](reports/AUTHOR_CODE_COMPARISON_20261107.md), 2 sơ đồ tự vẽ trong `reports/figures/`, docstring 3 phần cho toàn bộ `src/`. Slide deck `.pptx` và các bộ phản biện cuối kỳ (`E1/E2/E3`) đã hoàn tất bổ sung ngày 18/11/2026; phần việc còn lại duy nhất để hoàn tất đợt cuối kỳ là **dàn trang Poster A2 dọc** (và kiểm mở Public trên Kaggle cho 2 notebook sơ khởi lịch sử `01`–`02` nếu cần).
 - Đã có module analytic hỗ trợ nhãn toàn cục và minibatch; notebook/CLI dùng cùng source.
 - Đã có test độc lập cho phương pháp và thứ tự log W&B/xuất JSON.
 - VERIFY-01 là mốc lịch sử trên dữ liệu tổng hợp. VERIFY-02 kiểm tra thêm minibatch.
@@ -79,9 +79,10 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 │   ├── compare_author_acil.py, diagnose_author_base_precision.py   # Chạy đối chiếu code tác giả
 │   ├── aggregate_author_comparison.py, plot_author_comparison.py, track_author_comparison.py
 │   ├── e1_base_assumption_runner.py, e2_memory_precision_runner.py   # Runner thực nghiệm cuối kỳ E1 & E2 (tách riêng với R1-R3)
-│   ├── plot_final_empirics.py            # Tự vẽ biểu đồ thực nghiệm cuối kỳ E1 & E2 cho Poster A2
+│   ├── e3_mse_imbalance_runner.py   # Runner thực nghiệm phụ E3 (MSE mất cân bằng lớp & FD3 Weighted RLS)
+│   ├── plot_final_empirics.py, plot_e3_mse_imbalance.py   # Tự vẽ biểu đồ thực nghiệm cuối kỳ E1, E2 & E3
 │   ├── reconcile_r3_tracking.py
-│   └── tests/                    # Test cho scripts R3, đối chiếu tác giả và thực nghiệm cuối kỳ E1/E2
+│   └── tests/                    # Test cho scripts R3, đối chiếu tác giả và thực nghiệm cuối kỳ E1/E2/E3
 ├── configs/
 │   ├── verify_analytic_update.json
 │   ├── cifar100_smoke.json
@@ -103,9 +104,9 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 ├── reports/
 │   ├── BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md   # Báo cáo tổng hợp R1/R2/R3 và đối chiếu tác giả
 │   ├── CAP_NHAT_REPO_VA_SO_DO_20261111.md        # Báo cáo cập nhật sơ đồ tự vẽ, mapping README và docstring src/
-│   ├── E1_BASE_ASSUMPTION_20261118.md, E2_MEMORY_PRECISION_20261118.md   # Báo cáo thực nghiệm cuối kỳ E1 & E2
+│   ├── E1_BASE_ASSUMPTION_20261118.md, E2_MEMORY_PRECISION_20261118.md, E3_MSE_IMBALANCE_20261118.md   # Báo cáo thực nghiệm cuối kỳ E1, E2 & E3
 │   ├── R1_*.md, R2_*.md, R3_*.md, AUTHOR_CODE_COMPARISON_*.md, REVIEW_*.md   # Báo cáo từng bộ giữa kỳ
-│   ├── r1_*_summary.json, r2_*_summary.json, r3_*_summary.json, e1_*_summary.json, e2_*_summary.json   # Số liệu tổng hợp
+│   ├── r1_*_summary.json, r2_*_summary.json, r3_*_summary.json, e1_*_summary.json, e2_*_summary.json, e3_*_summary.json   # Số liệu tổng hợp
 │   ├── *_results.json, *_ready.json, *_progress.json   # JSON gốc từng lượt chạy
 │   ├── *-provenance.json         # Manifest: source, version Kaggle, W&B, SHA-256
 │   ├── figures/                  # Hình R1/R2/R3, đối chiếu tác giả, E1/E2 cuối kỳ và sơ đồ tự vẽ
@@ -126,13 +127,14 @@ Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. 
 
 | Đường dẫn | Nội dung |
 |---|---|
-| `src/` | Code nhóm tự viết: analytic head, dữ liệu, backbone, training, pipeline, metric |
-| `tests/`, `scripts/tests/` | Unit test cho phương pháp, pipeline, resume, metric, tracking và các script phân tích |
-| `notebooks/` | Notebook chạy trên Kaggle; từ notebook 02 trở đi, source được đóng gói sẵn trong notebook |
-| `scripts/` | Tạo notebook, chạy R2/R3, tổng hợp số liệu, vẽ hình, đối chiếu code tác giả |
+| `src/` | Code nhóm tự viết: analytic head, dữ liệu, backbone, training, pipeline, metric (đủ docstring 3 phần) |
+| `tests/`, `scripts/tests/` | Unit test cho phương pháp, pipeline, resume, metric, tracking, phân tích và thực nghiệm cuối kỳ `E1/E2/E3` |
+| `notebooks/` | Notebook chạy trên Kaggle (`01..12` giữa kỳ, `13..18` cuối kỳ E1); từ notebook 02 trở đi có source bundle |
+| `scripts/` | Tạo notebook, chạy R2/R3/E1/E2/E3, tổng hợp số liệu, vẽ hình tự dựng và đối chiếu code tác giả |
 | `configs/` | Cấu hình VERIFY-02, smoke và benchmark R1 |
-| `docs/` | Protocol, định nghĩa metric, đặc tả, hướng dẫn chạy và phân công |
-| `reports/` | Kết quả đã công bố, manifest và hình; `reports/local/` bị Git bỏ qua |
+| `slides/` | File `.pptx` slide deck giữa kỳ hoàn chỉnh (36 slides kèm IEEE footers và Speaker Notes) |
+| `docs/` | Nội dung đọc hiểu, kịch bản slide, khung phản biện cuối kỳ, kế hoạch khóa trước, protocol, metric, hướng dẫn chạy |
+| `reports/` | Kết quả đã công bố, manifest SHA-256 và hình vẽ; `reports/local/` bị Git bỏ qua |
 
 Từ thư mục gốc, Python 3.10 trở lên; môi trường local được kiểm tra bằng Python 3.12:
 
@@ -227,6 +229,7 @@ Bảng tổng hợp dưới đây ánh xạ từng lượt thí nghiệm tới n
 | `E1a / seed 43 (c0=10,20,30)` | [`notebooks/14_e1a_base_ratio_seed43.ipynb`](notebooks/14_e1a_base_ratio_seed43.ipynb) | [4mwubtt2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/4mwubtt2) · [t65feqkw](https://wandb.ai/hsangg-2006/acil-reproduction/runs/t65feqkw) · [ysgblws2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/ysgblws2) | Thu hẹp lớp Base seed 43 (160ep, d8000): `A_final` 100 lớp giảm `56,77% (R1) → 48,08% (c0=30) → 40,59% (c0=20) → 33,20% (c0=10)`. |
 | `E1a / seed 44 (c0=10,20,30)` | [`notebooks/15_e1a_base_ratio_seed44.ipynb`](notebooks/15_e1a_base_ratio_seed44.ipynb) | [pbct2s6d](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pbct2s6d) · [q3t7kvyb](https://wandb.ai/hsangg-2006/acil-reproduction/runs/q3t7kvyb) · [lpps6veq](https://wandb.ai/hsangg-2006/acil-reproduction/runs/lpps6veq) | Thu hẹp lớp Base seed 44 (160ep, d8000): `A_final` 100 lớp giảm `55,75% (R1) → 47,58% (c0=30) → 41,62% (c0=20) → 34,18% (c0=10)`. |
 | `E1b superclass_disjoint (3 seeds)` | [`notebooks/16_e1b_superclass_shift_seed42.ipynb`](notebooks/16_e1b_superclass_shift_seed42.ipynb) · [`17`](notebooks/17_e1b_superclass_shift_seed43.ipynb) · [`18`](notebooks/18_e1b_superclass_shift_seed44.ipynb) | [db4wwmvz](https://wandb.ai/hsangg-2006/acil-reproduction/runs/db4wwmvz) · [2cy9asyu](https://wandb.ai/hsangg-2006/acil-reproduction/runs/2cy9asyu) · [e9wono5t](https://wandb.ai/hsangg-2006/acil-reproduction/runs/e9wono5t) | Lệch miền ngữ nghĩa tại `c0=50` (Sinh vật/Tự nhiên → Đồ vật/Phương tiện): `A_inc` sụt `-8,21 pp` (`35,71 ± 0,40%`), `Δ_gap` tăng lên `34,26 ± 0,62 pp`. |
+| `E3 + FD3 MSE Imbalance (3 seeds, P3)` | [`scripts/e3_mse_imbalance_runner.py`](scripts/e3_mse_imbalance_runner.py) | [18y2c7pg](https://wandb.ai/hsangg-2006/acil-reproduction/runs/18y2c7pg) · [7uqw193s](https://wandb.ai/hsangg-2006/acil-reproduction/runs/7uqw193s) · [rfu8q4pv](https://wandb.ai/hsangg-2006/acil-reproduction/runs/rfu8q4pv) | Tại `d=1024` `float64` (khớp Joint `≤ 7,7e-12`), mất cân bằng lớp `10×/50×` làm `A_inc` sụp `32,62% → 0,21% → 0,00%`; `FD3-WRLS` khôi phục `+28,66 pp` ở `10×`. |
 
 ### Chi tiết các lượt đối chiếu và provenance lịch sử
 
@@ -252,9 +255,11 @@ VERIFY-02 giữ bài toán tổng hợp tương ứng, so sánh thêm cập nh�
 
 VERIFY-02 Version 9 đã Save & Run All thành công trên Kaggle CPU ngày 02/11/2026: 11 tests đạt; W qua ba phase là `(24,2)`, `(24,4)`, `(24,6)`; sai lệch tương đối W lớn nhất của minibatch so với joint là khoảng `3.43e-13`, không có nhãn dự đoán khác nhau. W&B xác nhận Finished. Notebook có output được Kaggle push ở [eddd50d](https://github.com/24122050S/20-ML-Paper/commit/eddd50d20a3d7f11bf6b24efd7d15916a1581bd2); commit này khác source commit `217684f` mà notebook đã fetch để tính toán. [Manifest đối chiếu](reports/VERIFY-02-provenance.json) ghi cả hai và SHA-256 của JSON.
 
-Notebook Kaggle được ghi nhận **Private** trong các lần đối chiếu version; cần kiểm quyền truy cập trước khi nộp. Source, notebook và JSON đã lưu trên GitHub; notebook 01 có output, còn bản 02 mang source bundle của Version 2. W&B project đã được ghi nhận Public.
+**Trạng thái quyền truy cập công khai (kiểm tra ẩn danh ngày 18/11/2026):**
+- **GitHub repo** ([`24122050S/20-ML-Paper`](https://github.com/24122050S/20-ML-Paper)) và **W&B project** ([`hsangg-2006/acil-reproduction`](https://wandb.ai/hsangg-2006/acil-reproduction), đủ **51/51** runs `Finished` không cần xác thực) đều **Public (`HTTP 200`)**.
+- **Kaggle Notebooks:** toàn bộ **15/15** notebook thực nghiệm chính từ **`03` đến `18`** (`CIFAR-KAGGLE-02`, `PROFILE-KAGGLE-01`, `BP5`, `R1 06–08`, `R2 09–11`, `R3 12`, `E1a 13–15`, `E1b 16–18`) đã ở chế độ **Public (`is_private=false`, truy cập ẩn danh `HTTP 200`)**. Riêng 2 notebook sơ khởi lịch sử **`01-verify-analytic-update6bf7e5ced7`** (`VERIFY-01/02`) và **`02-cifar-100-smoke`** (trước đổi tên là `notebook7e7946d4ee`, `CIFAR-KAGGLE-01`) hiện vẫn ở chế độ **Private (`HTTP 404`)** trên Kaggle; toàn bộ mã nguồn `.ipynb` và JSON kết quả của 2 lượt này đã được lưu đầy đủ kèm manifest SHA-256 trên GitHub và W&B Public.
 
-Trạng thái cập nhật **07/11/2026**: smoke 100 lớp đã có JSON và W&B finished; source/config của lượt mới khớp bundle 03. Suite hiện tại: **54 tests, 53 đạt và 1 skip CUDA** trên local CPU; bootstrap 04 từ bundle trong kernel mới đạt 52/54, skip CUDA và test snapshot 02/03 không phân phối trong bundle. [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base 160 epochs, d8000, gamma 0.1; R1/R2/R3 theo core scope. Resume CPU đã so model/optimizer/scheduler/RNG/history chính xác; streaming đủ 100 lớp khớp accuracy oracle CPU ở cả 6 mốc. [Bằng chứng mới](reports/RESUME-PROFILE-01-provenance.json) và [báo cáo thay đổi](reports/REVIEW_RESUME_PROFILE_20261104.md) ghi phạm vi từng phép kiểm. Analytic d8000 trên Kaggle T4 đã đạt qua [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4); BP5/CUDA cũng đã đạt: GPU bundle 54 tests, 53 passed / 1 historical-snapshot skip. [Review BP5](reports/REVIEW_BP5_KAGGLE_20261105.md) ghi checkpoint v2, RAM/GPU và ngân sách ~59 phút; chuẩn bị 2 giờ để còn hơn 30% dự phòng. [Notebook 06](notebooks/06_benchmark_seed42_ready.ipynb) đã chạy R1 seed 42 trên T4: 160 epochs, 6 đánh giá, Ā 65,1646%, final 55,87%, W 8000×100; [báo cáo](reports/R1_SEED42_KAGGLE_20261106.md). R1 hiện đã đủ 42/43/44: Ā 65,1196 ± 0,6104% (n=3, ddof=1), [summary](reports/r1_cifar100_k5_summary.json) / [báo cáo tổng hợp](reports/R1_CIFAR100_K5_3SEEDS_20261106.md); R2/R3 và [đối chiếu tác giả](reports/AUTHOR_CODE_COMPARISON_20261107.md) đã hoàn tất; hiện còn xuất file `.pptx` nộp giữa kỳ và làm phần cuối kỳ. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
+Mốc tổng hợp **07/11/2026 (lịch sử giữa kỳ)** & cập nhật **18/11/2026**: suite kiểm thử hiện tại đạt **54 tests trong `tests/`** (53 đạt, 1 skip CUDA trên CPU) và **24 tests trong `scripts/tests/`** (gồm R3, đối chiếu tác giả, `E1/E2` và `E3`). [Protocol benchmark v1.0](docs/protocol_chot.md) và [metrics v1.0](docs/metrics.md) đã chốt: CIFAR-100/K5, base 160 epochs, d8000, gamma 0.1; R1/R2/R3 theo core scope. Resume CPU đã so model/optimizer/scheduler/RNG/history chính xác; streaming đủ 100 lớp khớp accuracy oracle CPU ở cả 6 mốc. [Bằng chứng mới](reports/RESUME-PROFILE-01-provenance.json) và [báo cáo thay đổi](reports/REVIEW_RESUME_PROFILE_20261104.md) ghi phạm vi từng phép kiểm. Analytic d8000 trên Kaggle T4 đã đạt qua [gey0yop4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/gey0yop4); BP5/CUDA đạt qua [pv82dy1f](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pv82dy1f). R1 đủ 42/43/44: Ā 65,1196 ± 0,6104% (n=3, ddof=1), [summary](reports/r1_cifar100_k5_summary.json) / [báo cáo tổng hợp](reports/R1_CIFAR100_K5_3SEEDS_20261106.md); R2/R3, [đối chiếu tác giả](reports/AUTHOR_CODE_COMPARISON_20261107.md), [Slide Deck `.pptx` giữa kỳ](slides/ACIL_Nhom3_GiuaKy.pptx) và ba bộ thực nghiệm phản biện cuối kỳ (`E1`, `E2`, `E3`) đều đã hoàn tất. [Checksum CPU](docs/SUA_LOI_CHECKSUM_JSON.md) đã khớp Git blob; số liệu lịch sử giữ nguyên. [Review tổng quan](reports/REVIEW_TONG_QUAN_20261102.md) · [Danh mục bằng chứng](reports/README.md).
 
 Analytic của notebook 04 là Public Version 1 với source bundle khớp và W&B finished; cùng kernel này hiện có BP5 ở Version 3. Version-pinned output API đã đối chiếu raw bytes của analytic V1 /365647614 và BP5 V3 /365703432. BP5 cung cấp executed CUDA test proof trong JSON. [Review analytic Kaggle](reports/REVIEW_PROFILE_KAGGLE_20261104.md) và [review BP5](reports/REVIEW_BP5_KAGGLE_20261105.md) ghi phạm vi từng lượt.
 
@@ -302,18 +307,18 @@ Các lệnh trên kiểm subset CPU và tài nguyên; JSON giữ trạng thái t
 | Thư viện | File cấu hình | Lý do sử dụng ngoài standard scientific stack |
 |---|---|---|
 | `wandb` (0.28.1) | `requirements-tracking.txt` | Bắt buộc theo quy định môn học để theo dõi công khai toàn bộ run, cấu hình, metric và đồ thị. |
-| `huggingface_hub` (1.10.1), `pyarrow` (23.0.1), `Pillow` (11.1.0) | `requirements-cifar.txt` | Phục vụ tải tự động CIFAR-100 từ Hugging Face (`uoft-cs/cifar100`), đọc file Parquet theo revision pin và giải mã byte ảnh PNG sang mảng RGB uint8. |
+| `huggingface_hub` (1.10.1), `pyarrow` (23.0.1), `Pillow` (11.1.0) | `requirements-cifar.txt` | Phục vụ tải tự động CIFAR-100 từ Hugging Face (`uoft-cs/cifar100`), đọc file Parquet (bao gồm cột `coarse_label` trong `E1b`) theo revision pin và giải mã byte ảnh PNG sang mảng RGB uint8. |
 | `filelock` (4.2.6) | `requirements-cifar.txt` | Khóa tệp an toàn khi cập nhật `latest.json`/`results.json` ở thư mục root giữa các attempt, tránh race condition. |
-| `psutil` (7.2.2) | `requirements-cifar.txt`, `requirements-author-comparison.txt` | Lấy mẫu bộ nhớ RSS của tiến trình CPU trong [`MemoryMonitor`](src/profile_analytic.py) cho profile d8000 và thí nghiệm R3. |
-| `threadpoolctl` (3.6.0) | `requirements-cifar.txt`, `requirements-author-comparison.txt` | Giới hạn nhất quán số luồng BLAS/OpenMP khi trích xuất đặc trưng và đo thời gian analytic R3 trên CPU. |
-| `matplotlib` (3.9.2) | `requirements-plots.txt` | Chỉ dùng để tự vẽ các biểu đồ kết quả R1/R2/R3, đối chiếu tác giả và 2 sơ đồ phương pháp/bài toán trong `reports/figures/`, tách khỏi môi trường train. |
-| `nbformat` (5.10.4), `nbclient` (0.11.0), `ipykernel` (7.2.0) | `requirements-dev.txt` | Chỉ dùng cục bộ để đóng gói, xác thực schema notebook (`tests/test_notebook_distribution.py`) và chạy kiểm thử notebook. |
+| `psutil` (7.2.2) | `requirements-cifar.txt`, `requirements-author-comparison.txt` | Lấy mẫu bộ nhớ RSS của tiến trình CPU trong [`MemoryMonitor`](src/profile_analytic.py) cho profile d8000, thí nghiệm `R3` và cửa sổ đo bộ nhớ `E2a`/`FD2`. |
+| `threadpoolctl` (3.6.0) | `requirements-cifar.txt`, `requirements-author-comparison.txt` | Giới hạn nhất quán số luồng BLAS/OpenMP khi trích xuất đặc trưng và đo thời gian analytic `R3`, `E1`, `E2`, `E3` trên CPU. |
+| `matplotlib` (3.9.2) | `requirements-plots.txt` | Chỉ dùng để tự vẽ các biểu đồ kết quả `R1/R2/R3`, đối chiếu tác giả, 2 sơ đồ phương pháp/bài toán và 3 biểu đồ phản biện cuối kỳ (`E1/E2/E3`) trong `reports/figures/`, tách khỏi môi trường train. |
+| `nbformat` (5.10.4), `nbclient` (0.11.0), `ipykernel` (7.2.0) | `requirements-dev.txt` | Chỉ dùng cục bộ để đóng gói, xác thực schema notebook (`tests/test_notebook_distribution.py`, `scripts/build_e1_notebooks.py`) và chạy kiểm thử notebook. |
 | `tqdm` (4.67.1), `PyYAML` (6.0.2) | `requirements-author-comparison.txt` | Thư viện tiện ích tiến trình và đọc config YAML cho repo đối chiếu của tác giả (`ZHUANGHP/Analytic-continual-learning`). |
 | `torchvision` (0.20.1+cpu) | Hướng dẫn ở dòng đầu `requirements-author-comparison.txt` (pin tại [`reports/author_comparison_environment_freeze.txt`](reports/author_comparison_environment_freeze.txt)) | Cài riêng từ PyTorch CPU index trong `.venv-author` để chạy `main.py`/`DatasetWrapper` gốc của tác giả mà không ảnh hưởng môi trường `src/`. |
 
 **Công cụ AI**
 
-- Notebook/code khởi đầu và các sửa đổi được hỗ trợ bởi ChatGPT. Nhóm chịu trách nhiệm đọc, kiểm chứng và giải thích toàn bộ sản phẩm.
+- Các công cụ trợ lý AI (ChatGPT và trợ lý lập trình/soạn thảo) được sử dụng để hỗ trợ khởi tạo khung notebook, viết script tiện ích/vẽ hình, rà soát docstring và trình bày tài liệu. Nhóm chịu hoàn toàn trách nhiệm đối chiếu công thức từ bài báo gốc, chạy kiểm thử độc lập, xác minh toàn bộ số liệu/W&B/SHA-256 và giải thích mọi phần mã nguồn cũng như kết luận học thuật.
 
 [Phân công Sang/Vĩ/Phát](docs/PHAN_CONG_NHOM.md) · [Đặc tả analytic](docs/Dac_ta_ACIL.md) · [Báo cáo thay đổi](docs/THAY_DOI_VERIFY02.md)
 
@@ -348,7 +353,7 @@ n=3 seeds 42/43/44, sample SD với ddof=1. [Báo cáo và hình](reports/R2_CIF
 
 Các cấu hình dùng đúng checkpoint 160 cùng seed, cùng class order/normalization/HF revision; hai gamma mới giữ FE hash giống R1. Không train lại backbone. No-FE dùng trực tiếp F64. JSON numeric giữ nguyên trạng thái lúc capture offline; ready/manifest bổ sung actual run ID/URL sau khi sync và kiểm công khai. NPZ mới được load/kiểm đầy đủ trên Kaggle CPU, lưu tại Output đúng version; local chỉ tải JSON/proof/log, không tải NPZ lớn.
 
-Tái tạo bảng: `python scripts/aggregate_r2.py`. Tái tạo hình: cài `requirements-plots.txt` trong môi trường riêng rồi `python scripts/plot_r2.py`. Để chạy lại thực nghiệm, import notebook 09/10/11, bật Internet/GPU và gắn đúng R1 Input version 1 theo cell cấu hình; `CHECKPOINT=None` tìm checkpoint theo SHA đã pin và sẽ lỗi nếu không có, không tự train. W&B tạo offline trước, cần đồng bộ bằng `wandb sync` trên payload đúng lượt và xác minh xong mới công bố tracking. Giới hạn hai phiên batch GPU của tài khoản tại lúc chạy khiến seed 44 được gửi sau 42/43. R2 tái lập 4/5 hàng Table 2; gamma 0 ngoài scope v1.0. R3 và đối chiếu tác giả cũng đã có báo cáo hoàn tất; hiện còn xuất `.pptx` giữa kỳ và làm phần phản biện/poster cuối kỳ.
+Tái tạo bảng: `python scripts/aggregate_r2.py`. Tái tạo hình: cài `requirements-plots.txt` trong môi trường riêng rồi `python scripts/plot_r2.py`. Để chạy lại thực nghiệm, import notebook 09/10/11, bật Internet/GPU và gắn đúng R1 Input version 1 theo cell cấu hình; `CHECKPOINT=None` tìm checkpoint theo SHA đã pin và sẽ lỗi nếu không có, không tự train. W&B tạo offline trước, cần đồng bộ bằng `wandb sync` trên payload đúng lượt và xác minh xong mới công bố tracking. Giới hạn hai phiên batch GPU của tài khoản tại lúc chạy khiến seed 44 được gửi sau 42/43. R2 tái lập 4/5 hàng Table 2; gamma 0 ngoài scope v1.0.
 
 ## R3: phân tích batch size — hoàn tất 07/11/2026
 
@@ -376,7 +381,7 @@ n=3 timing repeats trên **một seed 42**, sample SD với ddof=1. Thời gian 
 
 Sau `wandb sync`, dùng `python scripts/reconcile_r3_tracking.py --suite <raw-r3_ready.json>` để chốt summary từ raw report và thêm alias `r3/learning_seconds_total`, `r3/max_abs_score_error_all_phases`, tránh nhầm giá trị phase cuối với tổng/max cả chuỗi. Helper chỉ nhận run đã Finished và ghi hash raw suite; các run công bố đã qua bước này và được kiểm API công khai. History/numeric JSON giữ nguyên.
 
-**Đã có đủ ba bộ thực nghiệm R1/R2/R3, đối chiếu code tác giả (C1/C2/C1R), nội dung đọc hiểu (`docs/READING_THE_PAPER_ACIL.md`) và kịch bản 36 slides (`docs/KICH_BAN_36_SLIDE_GIUA_KY.md`).** Công việc còn lại cho mốc giữa kỳ là xuất và kiểm định file `.pptx` nộp Moodle; phần phân tích phản biện & thực nghiệm bổ sung thuộc mốc poster cuối kỳ. Không đồng nhất hoàn tất thí nghiệm với hoàn tất toàn bộ yêu cầu môn.
+**Mốc giữa kỳ đã hoàn tất trọn vẹn** (ba bộ thực nghiệm `R1/R2/R3`, đối chiếu code tác giả `C1/C2/C1R`, tài liệu đọc hiểu [`docs/READING_THE_PAPER_ACIL.md`](docs/READING_THE_PAPER_ACIL.md), kịch bản 36 slides [`docs/KICH_BAN_36_SLIDE_GIUA_KY.md`](docs/KICH_BAN_36_SLIDE_GIUA_KY.md) và file [`slides/ACIL_Nhom3_GiuaKy.pptx`](slides/ACIL_Nhom3_GiuaKy.pptx)). Phần phân tích phản biện lý thuyết & thực nghiệm kiểm chứng cuối kỳ (`E1`, `E2`, `E3`) được trình bày bên dưới; hạng mục cuối cùng còn lại của đồ án là dàn trang **Poster A2 dọc** từ các số liệu và biểu đồ đã kiểm chứng.
 
 ## Đối chiếu source tác giả — thực thi 07/11/2026
 
@@ -390,16 +395,91 @@ Sau `wandb sync`, dùng `python scripts/reconcile_r3_tracking.py --suite <raw-r3
 
 Source tác giả pin `0afd6bf`, checkout riêng và không sửa core. Một seed 42/d1024, không có 3 seed SD; không dùng accuracy này thay R1 d8000. `status=failed` trong raw suite giữ gate C1 không đạt; 3 run Finished chỉ là tracking hoàn tất. Đã tái hiện lỗi nhãn khi bật class shuffle và định vị sai khác FP32 tại pooling; phần lớn score drift của cold-start được định vị vào state base qua diagnostic riêng. R1/R2/R3 và các JSON/manifests lịch sử giữ nguyên.
 
-## Thực nghiệm phản biện cuối kỳ `E1` & `E2` — hoàn tất 18/11/2026
+## Thực nghiệm phản biện cuối kỳ `E1` & `E2` (cho Poster A2) — hoàn tất 18/11/2026
 
-[Khung phản biện lý thuyết](docs/PHAN_BIEN_CUOI_KY_ACIL.md) · [Kế hoạch khóa trước khi chạy](docs/KE_HOACH_EMPIRICS_CUOI_KY.md) · [Báo cáo `E2`](reports/E2_MEMORY_PRECISION_20261118.md) · [Báo cáo `E1`](reports/E1_BASE_ASSUMPTION_20261118.md).
+[Khung phản biện lý thuyết](docs/PHAN_BIEN_CUOI_KY_ACIL.md) · [Kế hoạch khóa trước khi chạy](docs/KE_HOACH_EMPIRICS_CUOI_KY.md) · [Báo cáo `E1`](reports/E1_BASE_ASSUMPTION_20261118.md) · [Báo cáo `E2`](reports/E2_MEMORY_PRECISION_20261118.md) · [Manifest `E1`](reports/E1-FINAL-EMPIRICS-provenance.json) · [Manifest `E2`](reports/E2-FINAL-EMPIRICS-provenance.json).
 
-- **`E2` (kiểm chứng hạn chế `P2` — Ngân sách Byte $\mathcal{O}(d^2)$ & độ nhạy số học Woodbury, `n=3` seeds `42/43/44`):**
-  - Tái sử dụng nguyên vẹn 3 checkpoints ResNet-32 160 epochs của `R1` (không huấn luyện lại CNN), đối chiếu ngân sách `6.144 MB` của kho 2.000 ảnh gốc CIFAR-100: cấu hình chuẩn bài báo `d = 8000` chiếm `522,50 MB` (`85,04×` kho mẫu, đạt $\bar{A} = 65,12 \pm 0,61\%$, $A_{\mathrm{final}} = 56,13 \pm 0,56\%$), trong khi ép về đúng trần ngân sách byte tại **`d = 798` (`float64`, `6,141 MB`)** làm $\bar{A}$ giảm còn **`62,17 ± 0,47%` (`-2,95 pp`)**, $A_{\mathrm{final}}$ còn **`50,94 ± 0,43%` (`-5,19 pp`)** và $A_{\mathrm{inc}}$ 50 lớp mới giảm **`-13,64 pp`** (`43,93% → 30,29%`).
-  - Nguyên mẫu `FD2` (*Block-Diagonal RFAM*, `d=8000, B=16`, `42,50 MB`) đạt $\bar{A} = 61,70 \pm 0,52\%$, thấp hơn cấu hình ma trận dày đặc `d = 2048` (`36,24 MB`, $\bar{A} = 63,80 \pm 0,50\%$) do triệt tiêu các khối ngoài đường chéo làm mất khả năng khử cộng tuyến chéo giữa 8.000 đặc trưng ngẫu nhiên cùng sinh từ không gian 64 chiều.
-  - Ở `E2b` (`d = 1024`), chuyển từ `float64` sang `float32` làm sai số tương đối trọng số Woodbury tăng từ $\sim 8 \times 10^{-11}$ lên $1,5 \times 10^{-3}$ (`200` bước) và $4,0 \times 10^{-3}$ (`1.575` bước ở `K=25, b=16`), phát sinh mẫu đổi nhãn `argmax` ở mọi cấu hình khảo sát.
-- **`E1` (kiểm chứng hạn chế `P1` — Nghẽn biểu diễn từ tập lớp Base đóng băng, `n=3` seeds `42/43/44` trên 6 kernels Kaggle GPU T4):**
-  - `E1a` (*Base-Class Ratio Sweep*): giảm quy mô Phase 0 qua $c_0 \in \{50, 30, 20, 10\}$ làm $A_{\mathrm{final}}$ trên 100 lớp giảm đơn điệu **`56,13 ± 0,56%` → `48,14 ± 0,59%` → `41,79 ± 1,29%` → `33,57 ± 0,53%`** (**`-22,56 pp`**) dù nghiệm đệ quy ở mọi lượt đều khớp Joint Ridge (`0` mẫu lệch).
+- **`E1` (kiểm chứng hạn chế chính `P1` — Nghẽn biểu diễn từ tập lớp Base đóng băng, `n=3` seeds `42/43/44` trên 6 kernels Kaggle GPU T4 Public):**
+  - `E1a` (*Base-Class Ratio Sweep*): giảm quy mô Phase 0 qua $c_0 \in \{50, 30, 20, 10\}$ làm $A_{\mathrm{final}}$ trên 100 lớp giảm đơn điệu **`56,13 ± 0,56%` → `48,14 ± 0,59%` → `41,79 ± 1,29%` → `33,57 ± 0,53%`** (**`-22,56 pp`**) dù nghiệm đệ quy ở mọi lượt đều khớp Joint Ridge (`≤ 3,6e-14`, `0` mẫu lệch).
   - `E1b` (*Semantic Superclass Shift* tại cố định $c_0 = 50$, `25.000` ảnh Base): tách 10 coarse superclasses Tự nhiên/Sinh vật ở Phase 0 khỏi 10 superclasses Phương tiện/Đồ vật & nhóm còn lại ở Phases `1..5` làm $A_{\mathrm{inc}}$ 50 lớp mới giảm **`-8,21 pp`** (`43,93% → 35,71 ± 0,40%`), $A_{\mathrm{final}}$ giảm **`-3,29 pp`** (`52,84 ± 0,17%`) và khoảng lệch chuyển giao $\Delta_{\text{gap}} = B_5 - A_{\mathrm{inc}}$ mở rộng từ `24,41 pp` lên **`34,26 ± 0,62 pp`**.
 
-Tái tạo biểu đồ Poster cuối kỳ từ các JSON tổng hợp đã khóa SHA-256: `python scripts/plot_final_empirics.py --mode all` (xuất [`reports/figures/e1_base_representation_bottleneck.png`](reports/figures/e1_base_representation_bottleneck.png) và [`reports/figures/e2_memory_and_woodbury_precision.png`](reports/figures/e2_memory_and_woodbury_precision.png)). Chạy bộ kiểm thử đơn vị của hai nhánh cuối kỳ bằng `python -m unittest discover -s scripts/tests -p "test_final_empirics.py" -v`.
+| Run `E1` | Notebook nguồn | Cấu hình | Raw JSON | Kaggle version (Public) | W&B (Finished) |
+|---|---|---|---|---|---|
+| `E1a/42/c0_10` | [`13_e1a_base_ratio_seed42.ipynb`](notebooks/13_e1a_base_ratio_seed42.ipynb) | `uniform`, `c0=10`, `K=9`, `d=8000` | [JSON](reports/e1a_c0_10_seed42_results.json) | [v1 /370801804](https://www.kaggle.com/code/hsangg206/13-e1a-base-ratio-seed42/output?scriptVersionId=370801804) | [c1c00gop](https://wandb.ai/hsangg-2006/acil-reproduction/runs/c1c00gop) |
+| `E1a/42/c0_20` | [`13_e1a_base_ratio_seed42.ipynb`](notebooks/13_e1a_base_ratio_seed42.ipynb) | `uniform`, `c0=20`, `K=8`, `d=8000` | [JSON](reports/e1a_c0_20_seed42_results.json) | [v1 /370801804](https://www.kaggle.com/code/hsangg206/13-e1a-base-ratio-seed42/output?scriptVersionId=370801804) | [1sxua0j4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/1sxua0j4) |
+| `E1a/42/c0_30` | [`13_e1a_base_ratio_seed42.ipynb`](notebooks/13_e1a_base_ratio_seed42.ipynb) | `uniform`, `c0=30`, `K=7`, `d=8000` | [JSON](reports/e1a_c0_30_seed42_results.json) | [v1 /370801804](https://www.kaggle.com/code/hsangg206/13-e1a-base-ratio-seed42/output?scriptVersionId=370801804) | [teevqsnt](https://wandb.ai/hsangg-2006/acil-reproduction/runs/teevqsnt) |
+| `E1a/43/c0_10` | [`14_e1a_base_ratio_seed43.ipynb`](notebooks/14_e1a_base_ratio_seed43.ipynb) | `uniform`, `c0=10`, `K=9`, `d=8000` | [JSON](reports/e1a_c0_10_seed43_results.json) | [v1 /370801839](https://www.kaggle.com/code/hsangg206/14-e1a-base-ratio-seed43/output?scriptVersionId=370801839) | [4mwubtt2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/4mwubtt2) |
+| `E1a/43/c0_20` | [`14_e1a_base_ratio_seed43.ipynb`](notebooks/14_e1a_base_ratio_seed43.ipynb) | `uniform`, `c0=20`, `K=8`, `d=8000` | [JSON](reports/e1a_c0_20_seed43_results.json) | [v1 /370801839](https://www.kaggle.com/code/hsangg206/14-e1a-base-ratio-seed43/output?scriptVersionId=370801839) | [t65feqkw](https://wandb.ai/hsangg-2006/acil-reproduction/runs/t65feqkw) |
+| `E1a/43/c0_30` | [`14_e1a_base_ratio_seed43.ipynb`](notebooks/14_e1a_base_ratio_seed43.ipynb) | `uniform`, `c0=30`, `K=7`, `d=8000` | [JSON](reports/e1a_c0_30_seed43_results.json) | [v1 /370801839](https://www.kaggle.com/code/hsangg206/14-e1a-base-ratio-seed43/output?scriptVersionId=370801839) | [ysgblws2](https://wandb.ai/hsangg-2006/acil-reproduction/runs/ysgblws2) |
+| `E1a/44/c0_10` | [`15_e1a_base_ratio_seed44.ipynb`](notebooks/15_e1a_base_ratio_seed44.ipynb) | `uniform`, `c0=10`, `K=9`, `d=8000` | [JSON](reports/e1a_c0_10_seed44_results.json) | [v1 /370817341](https://www.kaggle.com/code/hsangg206/15-e1a-base-ratio-seed44/output?scriptVersionId=370817341) | [pbct2s6d](https://wandb.ai/hsangg-2006/acil-reproduction/runs/pbct2s6d) |
+| `E1a/44/c0_20` | [`15_e1a_base_ratio_seed44.ipynb`](notebooks/15_e1a_base_ratio_seed44.ipynb) | `uniform`, `c0=20`, `K=8`, `d=8000` | [JSON](reports/e1a_c0_20_seed44_results.json) | [v1 /370817341](https://www.kaggle.com/code/hsangg206/15-e1a-base-ratio-seed44/output?scriptVersionId=370817341) | [q3t7kvyb](https://wandb.ai/hsangg-2006/acil-reproduction/runs/q3t7kvyb) |
+| `E1a/44/c0_30` | [`15_e1a_base_ratio_seed44.ipynb`](notebooks/15_e1a_base_ratio_seed44.ipynb) | `uniform`, `c0=30`, `K=7`, `d=8000` | [JSON](reports/e1a_c0_30_seed44_results.json) | [v1 /370817341](https://www.kaggle.com/code/hsangg206/15-e1a-base-ratio-seed44/output?scriptVersionId=370817341) | [lpps6veq](https://wandb.ai/hsangg-2006/acil-reproduction/runs/lpps6veq) |
+| `E1b/42/disjoint` | [`16_e1b_superclass_shift_seed42.ipynb`](notebooks/16_e1b_superclass_shift_seed42.ipynb) | `superclass_disjoint`, `c0=50`, `K=5` | [JSON](reports/e1b_superclass_disjoint_seed42_results.json) | [v1 /370817350](https://www.kaggle.com/code/hsangg206/16-e1b-superclass-shift-seed42/output?scriptVersionId=370817350) | [db4wwmvz](https://wandb.ai/hsangg-2006/acil-reproduction/runs/db4wwmvz) |
+| `E1b/43/disjoint` | [`17_e1b_superclass_shift_seed43.ipynb`](notebooks/17_e1b_superclass_shift_seed43.ipynb) | `superclass_disjoint`, `c0=50`, `K=5` | [JSON](reports/e1b_superclass_disjoint_seed43_results.json) | [v1 /370827515](https://www.kaggle.com/code/hsangg206/17-e1b-superclass-shift-seed43/output?scriptVersionId=370827515) | [2cy9asyu](https://wandb.ai/hsangg-2006/acil-reproduction/runs/2cy9asyu) |
+| `E1b/44/disjoint` | [`18_e1b_superclass_shift_seed44.ipynb`](notebooks/18_e1b_superclass_shift_seed44.ipynb) | `superclass_disjoint`, `c0=50`, `K=5` | [JSON](reports/e1b_superclass_disjoint_seed44_results.json) | [v1 /370833058](https://www.kaggle.com/code/hsangg206/18-e1b-superclass-shift-seed44/output?scriptVersionId=370833058) | [e9wono5t](https://wandb.ai/hsangg-2006/acil-reproduction/runs/e9wono5t) |
+
+![Biểu đồ E1 — Nghẽn biểu diễn tập lớp Base đóng băng](reports/figures/e1_base_representation_bottleneck.png)
+
+- **`E2` (kiểm chứng hạn chế chính `P2` — Ngân sách Byte $\mathcal{O}(d^2)$ & độ nhạy số học Woodbury, `n=3` seeds `42/43/44`):**
+  - Tái sử dụng nguyên vẹn 3 checkpoints ResNet-32 160 epochs của `R1` (không huấn luyện lại CNN), đối chiếu ngân sách `6.144 MB` của kho 2.000 ảnh gốc CIFAR-100: cấu hình chuẩn bài báo `d = 8000` chiếm `522,50 MB` (`85,04×` kho mẫu, đạt $\bar{A} = 65,12 \pm 0,61\%$, $A_{\mathrm{final}} = 56,13 \pm 0,56\%$), trong khi ép về đúng trần ngân sách byte tại **`d = 798` (`float64`, `6,141 MB`)** làm $\bar{A}$ giảm còn **`62,17 ± 0,47%` (`-2,95 pp`)**, $A_{\mathrm{final}}$ còn **`50,94 ± 0,43%` (`-5,19 pp`)** và $A_{\mathrm{inc}}$ 50 lớp mới giảm **`-13,64 pp`** (`43,93% → 30,29%`).
+  - Nguyên mẫu `FD2` (*Block-Diagonal RFAM*, `d=8000, B=16`, `42,50 MB`) đạt $\bar{A} = 61,70 \pm 0,52\%$, thấp hơn cấu hình ma trận dày đặc `d = 2048` (`36,24 MB`, $\bar{A} = 63,80 \pm 0,50\%$) do triệt tiêu các khối ngoài đường chéo làm mất khả năng khử cộng tuyến chéo giữa 8.000 đặc trưng ngẫu nhiên cùng sinh từ không gian 64 chiều.
+  - Ở `E2b` (`d = 1024`), chuyển từ `float64` sang `float32` làm sai số tương đối trọng số Woodbury tăng hơn $4 \times 10^7\times$ (từ $\sim 8 \times 10^{-11}$ lên $1,5 \times 10^{-3}$ ở `200` bước và $4,0 \times 10^{-3}$ ở `1.575` bước `[K=25, b=16]`), phát sinh `3..9` mẫu đổi nhãn `argmax`.
+
+| Run `E2` | Script nguồn | Phạm vi kiểm chứng | Raw JSON | W&B (Finished) |
+|---|---|---|---|---|
+| `E2a+FD2 / seed 42` | [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) | Quét 11 mức `d ∈ [64..8000]` + `FD2 (B=16, 80)` trên ckpt `R1/42` | [JSON](reports/e2_seed42_results.json) | [givauiwx](https://wandb.ai/hsangg-2006/acil-reproduction/runs/givauiwx) |
+| `E2a+FD2 / seed 43` | [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) | Quét 11 mức `d ∈ [64..8000]` + `FD2 (B=16, 80)` trên ckpt `R1/43` | [JSON](reports/e2_seed43_results.json) | [e3z5fld4](https://wandb.ai/hsangg-2006/acil-reproduction/runs/e3z5fld4) |
+| `E2a+FD2 / seed 44` | [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) | Quét 11 mức `d ∈ [64..8000]` + `FD2 (B=16, 80)` trên ckpt `R1/44` | [JSON](reports/e2_seed44_results.json) | [x9uxqlxu](https://wandb.ai/hsangg-2006/acil-reproduction/runs/x9uxqlxu) |
+| `E2b / seed 42` | [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) | Woodbury `fp32` vs `fp64` (`d=1024`, 4 mức `γ`, `200` & `1575` bước) | [JSON](reports/e2_seed42_results.json) | [bf8zhv34](https://wandb.ai/hsangg-2006/acil-reproduction/runs/bf8zhv34) |
+| `E2b / seed 43` | [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) | Woodbury `fp32` vs `fp64` (`d=1024`, 4 mức `γ`, `200` & `1575` bước) | [JSON](reports/e2_seed43_results.json) | [luzl13ud](https://wandb.ai/hsangg-2006/acil-reproduction/runs/luzl13ud) |
+| `E2b / seed 44` | [`scripts/e2_memory_precision_runner.py`](scripts/e2_memory_precision_runner.py) | Woodbury `fp32` vs `fp64` (`d=1024`, 4 mức `γ`, `200` & `1575` bước) | [JSON](reports/e2_seed44_results.json) | [dwmcy1ob](https://wandb.ai/hsangg-2006/acil-reproduction/runs/dwmcy1ob) |
+
+![Biểu đồ E2 — Đánh đổi Ngân sách Byte và Độ trôi số học Woodbury](reports/figures/e2_memory_and_woodbury_precision.png)
+
+Tái tạo biểu đồ Poster `E1/E2` từ JSON tổng hợp đã khóa SHA-256: `python scripts/plot_final_empirics.py --mode all`. Chạy bộ kiểm thử đơn vị của `E1/E2` bằng `python -m unittest discover -s scripts/tests -p "test_final_empirics.py" -v`.
+
+---
+
+## Hạn chế phụ thứ 3 (`P3` — Trình bày bổ sung trong README ngoài 2 hạn chế chính trên Poster A2)
+
+Theo quy định môn học, **Poster A2 cuối kỳ** chỉ trình bày 2 hạn chế lý thuyết mạnh nhất (`P1` và `P2`). Hạn chế lý thuyết thứ 3 (**`P3` — Thiên lệch mất cân bằng lớp của hàm mục tiêu MSE One-Hot, tách bạch với độ trôi số học `float32` Woodbury**) được kiểm chứng độc lập trên 3 seeds (`42/43/44`) tại [`reports/E3_MSE_IMBALANCE_20261118.md`](reports/E3_MSE_IMBALANCE_20261118.md) ([Summary](reports/e3_mse_imbalance_summary.json) · [Manifest SHA-256](reports/E3-FINAL-EMPIRICS-provenance.json)) và trình bày tóm tắt kèm bằng chứng ngay tại đây.
+
+### 1. Cơ chế lý thuyết & Đối chiếu tách bạch tại cùng chiều `d = 1024`
+
+Trong ACIL, hàm mục tiêu hồi quy Frobenius trên nhãn one-hot tách độc lập theo từng cột lớp $c$:
+
+$$
+w_c = R_k \left( \sum_{i:\, y_i = c} h_i \right), \qquad R_k = \left( \sum_{j=1}^{N_{0:k}} h_j h_j^T + \gamma I_d \right)^{-1}
+$$
+
+Do tổng vế phải tỷ lệ thuận với số mẫu huấn luyện $N_c$ của lớp $c$ trong khi $R_k$ và phạt $\gamma \|w_c\|_2^2$ tác động như nhau lên mọi cột, thiết lập chuẩn CIFAR-100 ($N_c = 500$ đồng đều ở cả 100 lớp) che khuất hoàn toàn điểm yếu này. Khi triển khai trên luồng tăng dần mất cân bằng (*long-tailed / few-shot incremental classes*, $N_{\mathrm{inc}} \ll N_{\mathrm{base}}$), chuẩn cột $\|w_c\|_2$ của các lớp mới bị co nhỏ có hệ thống khiến điểm dự đoán $h^T w_c$ thua áp đảo trước 50 lớp Base trong phép `argmax`.
+
+Tái sử dụng đúng 3 checkpoints `R1` (`seeds 42/43/44`) và cùng chiều mở rộng $d = 1024$ ($\gamma = 0.1$) để so sánh ngang bằng hai cơ chế:
+
+| Cơ chế kiểm chứng (cùng `d = 1024`, 3 seeds) | Khớp Định lý 3.1 (`max_rel_W` vs Joint `fp64`) | Tổng mẫu lệch `argmax` (trên `30.000` mẫu) | Ảnh hưởng lên độ chính xác | Kết luận tách bạch |
+|---|---:|---:|---|---|
+| **`E2b`: `float32` Woodbury (`200` bước, `N_inc=500`)** | Không (`1,49e-03`) | `3` | $\Delta A_{\mathrm{final}} = 0,00\text{ pp}$ | Phá tính khớp đại số chính xác, buộc trả chi phí RAM `float64`, nhưng chưa phá accuracy ở `d=1024`. |
+| **`E2b`: `float32` Woodbury (`1.575` bước, `γ=1e-3`)** | Không (`3,94e-03`) | `9` | $|\Delta A_{\mathrm{final}}| < 0,01\text{ pp}$ | Tích tụ sai số theo số bước cập nhật, tạo thêm mẫu đảo nhãn sát biên quyết định. |
+| **`E3`: `float64` MSE One-Hot (`10×`, `N_inc=50`)** | **Khớp máy (`6,50e-12`)** | **`0`** | **$A_{\mathrm{inc}}$ sụt `-32,41 pp`** (`32,62% → 0,21%`) | Dù Định lý 3.1 đúng tuyệt đối, hàm mục tiêu MSE làm sụp đổ khả năng nhận diện lớp mới (`‖w_inc‖/‖w_base‖ = 0,283`). |
+| **`FD3`: Weighted RLS (`ω_c = N_base/N_inc`, `10×`)** | **Khớp máy (`6,23e-12`)** | **`0`** | Khôi phục **`+28,66 pp`** $A_{\mathrm{inc}}$ (`→ 28,87%`) | Không lưu mẫu cũ, không tốn thêm byte cho $R_k$, giữ nguyên cập nhật một lượt và khôi phục 88% hiệu năng lớp mới. |
+
+### 2. Đường cong sụp đổ `E3` và khôi phục nghiệm đóng `FD3-WRLS` (`n = 3` seeds, `ddof = 1`)
+
+| Tỷ số mất cân bằng $\rho = N_{\mathrm{base}}/N_{\mathrm{inc}}$ | ACIL $A_{\mathrm{final}}$ (%) | **ACIL $A_{\mathrm{inc}}$ 50 lớp mới (%)** | Tỷ số $\|w_{\mathrm{inc}}\|_2 / \|w_{\mathrm{base}}\|_2$ | **FD3-WRLS $A_{\mathrm{final}}$ (%)** | **FD3-WRLS $A_{\mathrm{inc}}$ 50 lớp mới (%)** |
+|---|---:|---:|---:|---:|---:|
+| `1×` (`N_inc = 500`, cân bằng) | `51,90 ± 0,48` | **`32,62 ± 1,57`** | `0,915` | `51,90 ± 0,48` | `32,62 ± 1,57` |
+| `2×` (`N_inc = 250`) | `46,57 ± 0,57` | `17,87 ± 1,20` | `0,674` | `51,67 ± 0,37` | `32,29 ± 1,35` (`+14,42 pp`) |
+| `5×` (`N_inc = 100`) | `39,94 ± 0,55` | `3,31 ± 0,89` | `0,431` | `50,96 ± 0,37` | `31,05 ± 1,30` (`+27,74 pp`) |
+| `10×` (`N_inc = 50`) | `38,38 ± 0,13` | **`0,21 ± 0,10`** | **`0,283`** | **`49,96 ± 0,62`** | **`28,87 ± 1,69` (`+28,66 pp`)** |
+| `20×` (`N_inc = 25`) | `38,29 ± 0,12` | `0,01 ± 0,01` | `0,178` | `47,81 ± 0,64` | `24,70 ± 1,71` (`+24,69 pp`) |
+| `50×` (`N_inc = 10`) | `38,28 ± 0,05` | **`0,00 ± 0,00`** | **`0,103`** | **`44,16 ± 0,12`** | **`16,81 ± 0,40` (`+16,81 pp`)** |
+
+| Run `E3 + FD3` | Script nguồn | Cấu hình | Raw JSON | W&B (Finished, Public) |
+|---|---|---|---|---|
+| `E3+FD3 / seed 42` | [`scripts/e3_mse_imbalance_runner.py`](scripts/e3_mse_imbalance_runner.py) | `d=1024`, `γ=0.1`, `N_inc ∈ {500..10}`, `fp64` | [JSON](reports/e3_seed42_results.json) | [18y2c7pg](https://wandb.ai/hsangg-2006/acil-reproduction/runs/18y2c7pg) |
+| `E3+FD3 / seed 43` | [`scripts/e3_mse_imbalance_runner.py`](scripts/e3_mse_imbalance_runner.py) | `d=1024`, `γ=0.1`, `N_inc ∈ {500..10}`, `fp64` | [JSON](reports/e3_seed43_results.json) | [7uqw193s](https://wandb.ai/hsangg-2006/acil-reproduction/runs/7uqw193s) |
+| `E3+FD3 / seed 44` | [`scripts/e3_mse_imbalance_runner.py`](scripts/e3_mse_imbalance_runner.py) | `d=1024`, `γ=0.1`, `N_inc ∈ {500..10}`, `fp64` | [JSON](reports/e3_seed44_results.json) | [rfu8q4pv](https://wandb.ai/hsangg-2006/acil-reproduction/runs/rfu8q4pv) |
+
+![Biểu đồ E3 — Tách bạch MSE mất cân bằng lớp với độ trôi Woodbury float32](reports/figures/e3_mse_imbalance_vs_woodbury_drift.png)
+
+Tái tạo biểu đồ `E3`: `python scripts/plot_e3_mse_imbalance.py`. Chạy kiểm thử đơn vị cho `E3` và `FD3-WRLS`: `python -m unittest discover -s scripts/tests -p "test_e3_mse_imbalance.py" -v`.
