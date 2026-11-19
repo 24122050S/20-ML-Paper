@@ -1,0 +1,101 @@
+{
+  "id": "E3-FINAL-EMPIRICS",
+  "published_date": "2026-11-18",
+  "status": "complete",
+  "experiment_family": "ACIL-Final-Empirics-E3",
+  "issue_tested": "P3 — MSE One-Hot Class-Imbalance Collapse vs float32 Woodbury Drift (Auxiliary README Limitation)",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "ddof": 1,
+  "reused_r1_checkpoints": {
+    "42": "1f2a747347e26db933b11a9910ee780a8f8597187b40bc2191ad42108cea550d",
+    "43": "ad352c9a7ccd7162666a9fa89914fdf17c72a8faeb5bdab1c8d123061afd0f4f",
+    "44": "8e6c1eb6cd6d1f6df411af5201841d5e0591662a8ac6f94bd30962061330a63d"
+  },
+  "artifacts": {
+    "e3_seed42_results.json": {
+      "sha256": "8896ecf313759c8cd1db86bfe02079adeae0eb6b92134023885ee5ca3756f83c"
+    },
+    "e3_seed43_results.json": {
+      "sha256": "88fc3a716d7eff45ddc9eea8b1abfc150e38f2d7fe408a461e06d57c3ca4a7ec"
+    },
+    "e3_seed44_results.json": {
+      "sha256": "eeda3b438bbf0aaf725fce11ad70f75ffaa0c0bc523f93e6a72e700e81eac57e"
+    },
+    "e3_mse_imbalance_summary.json": {
+      "sha256": "b30d7ab15e67e823622c0cb59637f4cde20e834b5e456d325cbb0c8194677148"
+    },
+    "figures/e3_mse_imbalance_vs_woodbury_drift.png": {
+      "sha256": "3889e40b15c3ab6620ee2d09bc7396ef80c2c6e53bf5f44fda5be2ac07cee16e"
+    },
+    "E3_MSE_IMBALANCE_20261118.md": {
+      "sha256": "5f786c7fc5664bb01902631ae4d2d90d32edaf76d2ee81fb5cff6df30e139331"
+    }
+  },
+  "scripts": {
+    "scripts/e3_mse_imbalance_runner.py": "d01b770311c7a72369dc98a66356af228061cd4e734be3cc132b96e35f57cd9d",
+    "scripts/plot_e3_mse_imbalance.py": "ac91fb4f511a906ebe6e5112f233281ff4aa92d6b6564d43550458abbe95c778"
+  },
+  "public_tracking_verification": {
+    "status": "complete",
+    "n_runs": 3,
+    "method": "fresh requests.Session(trust_env=False); zero Authorization/Cookie",
+    "runs": [
+      {
+        "run_id": "18y2c7pg",
+        "display_name": "E3-mse-imbalance-seed42",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/18y2c7pg",
+        "state": "finished",
+        "tags": [
+          "E3-class-imbalance",
+          "FD3-weighted-rls",
+          "P3-mse-imbalance",
+          "final-empirics",
+          "seed42"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T16:45:35.324528+00:00",
+        "seed": 42,
+        "suite": "e3_suite"
+      },
+      {
+        "run_id": "7uqw193s",
+        "display_name": "E3-mse-imbalance-seed43",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/7uqw193s",
+        "state": "finished",
+        "tags": [
+          "E3-class-imbalance",
+          "FD3-weighted-rls",
+          "P3-mse-imbalance",
+          "final-empirics",
+          "seed43"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T16:45:35.969747+00:00",
+        "seed": 43,
+        "suite": "e3_suite"
+      },
+      {
+        "run_id": "rfu8q4pv",
+        "display_name": "E3-mse-imbalance-seed44",
+        "url": "https://wandb.ai/hsangg-2006/acil-reproduction/runs/rfu8q4pv",
+        "state": "finished",
+        "tags": [
+          "E3-class-imbalance",
+          "FD3-weighted-rls",
+          "P3-mse-imbalance",
+          "final-empirics",
+          "seed44"
+        ],
+        "no_authorization_or_cookie": true,
+        "checked_at_utc": "2026-11-18T16:45:37.267925+00:00",
+        "seed": 44,
+        "suite": "e3_suite"
+      }
+    ]
+  },
+  "created_at_utc": "2026-11-18T16:45:37.279990+00:00"
+}

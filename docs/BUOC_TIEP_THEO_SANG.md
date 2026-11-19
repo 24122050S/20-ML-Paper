@@ -12,7 +12,8 @@
 | Phản biện lý thuyết cuối kỳ (`Critical Analysis`) | Đã chốt khung 4 góc nhìn lý thuyết, 3 Strengths, cặp hạn chế `P1–P2`, giao thức `E1–E2` và `FD1–FD2` | [Khung phản biện cuối kỳ](PHAN_BIEN_CUOI_KY_ACIL.md), [Kế hoạch empirics](KE_HOACH_EMPIRICS_CUOI_KY.md) |
 | Thực nghiệm cuối kỳ `E2` (kiểm chứng `P2`) | 3 seeds 42/43/44 trên checkpoints R1; quét 11 mức `d` (trần iso-byte `d=798` fp64 / `d=1160` fp32) + `FD2` + Woodbury `fp32` vs `fp64`; 6 W&B Finished/public | [Báo cáo E2](../reports/E2_MEMORY_PRECISION_20261118.md), [summary E2](../reports/e2_memory_precision_summary.json), [hình E2](../reports/figures/e2_memory_and_woodbury_precision.png) |
 | Thực nghiệm cuối kỳ `E1` (kiểm chứng `P1`) | 6 notebooks Kaggle GPU T4 (`13..18`, 12 runs GPU 160 epochs trên 3 seeds): `E1a` (`c0 = 10, 20, 30` vs `50`) & `E1b` (`superclass_disjoint` `c0 = 50`); 12 W&B Finished/public | [Báo cáo E1](../reports/E1_BASE_ASSUMPTION_20261118.md), [summary E1](../reports/e1_base_assumption_summary.json), [hình E1](../reports/figures/e1_base_representation_bottleneck.png) |
-| File `.pptx` giữa kỳ & Poster A2 cuối kỳ | Còn xuất `.pptx` giữa kỳ và dàn trang Poster A2 dọc từ số liệu/biểu đồ đã hoàn tất | Hạn PPTX 21/11/2026, poster 05/12/2026, 23:59 |
+| Thực nghiệm phụ `E3` (hạn chế thứ 3 `P3` trong README) | 3 seeds 42/43/44 trên checkpoints R1 (`d=1024`), tách bạch độ trôi `fp32` (`E2b`) với sụp đổ MSE mất cân bằng lớp (`N_inc=500..10`) & khôi phục `FD3-WRLS`; 3 W&B Finished/public | [Báo cáo E3](../reports/E3_MSE_IMBALANCE_20261118.md), [summary E3](../reports/e3_mse_imbalance_summary.json), [hình E3](../reports/figures/e3_mse_imbalance_vs_woodbury_drift.png) |
+| Slide `.pptx` giữa kỳ & Poster A2 cuối kỳ | **Đã xong** [`slides/ACIL_Nhom3_GiuaKy.pptx`](../slides/ACIL_Nhom3_GiuaKy.pptx) (36 slides, `4,91 MiB`) và cập nhật `README.md` (Ưu tiên 4). **Còn lại:** dàn trang Poster A2 dọc cuối kỳ và mở Public trên Kaggle cho 2 notebook sơ khởi `01`–`02` (15/15 notebooks `03`–`18` đã Public) | Hạn PPTX 21/11/2026, poster 05/12/2026, 23:59 |
 
 ## R3 vừa hoàn tất
 
@@ -26,9 +27,9 @@ Mean ± sample SD của 3 lần đo, **không phải 3 seed**. Timer chỉ gồm
 
 ## Việc tiếp theo
 
-1. **Dựng file `.pptx` giữa kỳ từ kịch bản đã chuẩn bị:** sử dụng [kịch bản 36 slides](KICH_BAN_36_SLIDE_GIUA_KY.md), nhúng 7 hình tự vẽ giữa kỳ trong `reports/figures/`, đặt trích dẫn IEEE ở chân từng slide và chép phần ghi chú trình bày vào Speaker Notes.
-2. **Kiểm tra quyền Public & liên kết:** kiểm tra lại chế độ Public của các notebook Kaggle `01`–`18`, W&B runs và dung lượng file `.pptx` (`< 20 MB`).
-3. **Nghiệm thu PPTX trước 21/11, 23:59**, sau đó dàn trang Poster A2 dọc cuối kỳ (nhúng thêm [`e1_base_representation_bottleneck.png`](../reports/figures/e1_base_representation_bottleneck.png) và [`e2_memory_and_woodbury_precision.png`](../reports/figures/e2_memory_and_woodbury_precision.png)) trước 05/12, 23:59.
+1. **Mở quyền Public cho 2 notebook Kaggle lịch sử (tùy chọn để 100% link Kaggle mở được):** 15/15 notebooks chính `03`–`18` (`CIFAR-KAGGLE-02`, `PROFILE/BP5`, `R1`, `R2`, `R3`, `E1a`, `E1b`) đã ở chế độ Public (`HTTP 200`); riêng `01-verify-analytic-update6bf7e5ced7` và `02-cifar-100-smoke` hiện vẫn ở chế độ Private trên Kaggle (`Share → Public`).
+2. **Nộp gói giữa kỳ lên Moodle trước 21/11, 23:59:** upload [`slides/ACIL_Nhom3_GiuaKy.pptx`](../slides/ACIL_Nhom3_GiuaKy.pptx) (`4,91 MiB < 20 MB`) kèm link GitHub public `https://github.com/24122050S/20-ML-Paper`.
+3. **Dàn trang Poster A2 dọc cuối kỳ (`1 slide .pptx`, `420 × 594 mm`) trước 05/12, 23:59:** ghép trực tiếp 2 trục chính `P1/FD1` + [`e1_base_representation_bottleneck.png`](../reports/figures/e1_base_representation_bottleneck.png) và `P2/FD2` + [`e2_memory_and_woodbury_precision.png`](../reports/figures/e2_memory_and_woodbury_precision.png) (hạn chế thứ 3 `P3/E3` đã trình bày đầy đủ trong `README.md`).
 
 ## Tìm và tái tạo kết quả
 
