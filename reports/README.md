@@ -1,5 +1,18 @@
 # Bằng chứng đã công bố
 
+## Kiểm tra SHA-256 của tệp công bố
+
+Tại gốc repo, dùng Python 3.10 trở lên để đối chiếu byte trong checkout với SHA-256 ghi trong các manifest `reports/*-provenance.json`.
+
+```bash
+python scripts/verify_report_artifacts.py
+python scripts/verify_report_artifacts.py reports/R2-C100-K5-provenance.json
+```
+
+Lệnh trả mã thoát `1` nếu thiếu tệp, manifest lỗi hoặc SHA-256 không khớp. Phạm vi kiểm tra là các tệp trong bảng `artifacts` và JSON kết quả ghi theo cấu trúc manifest cũ. Việc xác nhận trạng thái W&B, Kaggle và checkpoint cần xem riêng trong manifest của từng lượt chạy.
+
+## Danh mục bằng chứng
+
 [Báo cáo tổng hợp thực nghiệm giữa kỳ — 07/11/2026](BAO_CAO_THUC_NGHIEM_GIUA_KY_20261107.md) đối chiếu toàn bộ R1/R2/R3, các bước kiểm chứng và những việc còn thiếu theo yêu cầu môn. Xem thêm [báo cáo cập nhật chuẩn repo & 2 sơ đồ tự vẽ — 11/11/2026](CAP_NHAT_REPO_VA_SO_DO_20261111.md) (docstring 3 phần cho `src/`, bảng mapping README, giải thích thư viện ngoài standard stack, `acil_pipeline_end_to_end.png` và `acil_problem_and_predecessors.png`). Đây là điểm bắt đầu đọc kết quả hiện tại; các báo cáo bên dưới giữ lịch sử từng lượt.
 
 **Cập nhật 18/11/2026:** Toàn bộ thực nghiệm giữa kỳ (`R1`, `R2`, `R3`, [đối chiếu tác giả](AUTHOR_CODE_COMPARISON_20261107.md)) và thực nghiệm phản biện cuối kỳ (`E1`, `E2`) đều đã hoàn tất với đầy đủ JSON, manifest SHA-256, W&B công khai và biểu đồ Poster ([Báo cáo E1](E1_BASE_ASSUMPTION_20261118.md) · [Manifest E1](E1-FINAL-EMPIRICS-provenance.json) · [Báo cáo E2](E2_MEMORY_PRECISION_20261118.md) · [Manifest E2](E2-FINAL-EMPIRICS-provenance.json)). R1 đủ 3 seeds; R2 đủ 4 hàng/3 seeds (9 analytic runs mới + 3 baseline R1 tái dùng, [Báo cáo R1](R1_CIFAR100_K5_3SEEDS_20261106.md) · [Báo cáo R2](R2_CIFAR100_K5_20261107.md) · [Manifest R2](R2-C100-K5-provenance.json)); R3 đủ 9 phép đo/54 so sánh joint ([báo cáo](R3_CIFAR100_K5_BATCH_20261107.md)); đã có nội dung `Reading the Paper` ([`docs/READING_THE_PAPER_ACIL.md`](../docs/READING_THE_PAPER_ACIL.md)), kịch bản 36 slides ([`docs/KICH_BAN_36_SLIDE_GIUA_KY.md`](../docs/KICH_BAN_36_SLIDE_GIUA_KY.md)) và khung phản biện cuối kỳ ([`docs/PHAN_BIEN_CUOI_KY_ACIL.md`](../docs/PHAN_BIEN_CUOI_KY_ACIL.md)). Các mốc bên dưới giữ nguyên lịch sử bằng chứng theo trình tự thời gian.
