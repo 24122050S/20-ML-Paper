@@ -1,12 +1,12 @@
 # ACIL — Reproduction and Analysis
 
-Đồ án Nhập môn Máy học: đọc, tự triển khai, tái lập và phản biện **ACIL**, NeurIPS 2022.
+Đồ án Nhập môn Máy học (**Nhóm 3**): đọc, tự triển khai, tái lập và phản biện **ACIL**, NeurIPS 2022.
 
-| Thành viên | Phụ trách chính                                                       |
-| ------------ | ------------------------------------------------------------------------ |
-| Sang         | Phương pháp, analytic head, kiểm chứng joint/phase/minibatch và R3 |
-| Vĩ          | Dataset, protocol, backbone, Kaggle và R1                               |
-| Phát        | Metrics, W&B, ablation R2, bằng chứng và tổng hợp kết quả         |
+| Thành viên | MSSV | Phụ trách chính |
+|---|---|---|
+| Nguyễn Hoàng Sang | `24122050` | Phương pháp, analytic head, kiểm chứng joint/phase/minibatch và R3 |
+| Trần Hoàng Minh Vĩ | `24122026` | Dataset, protocol, backbone, Kaggle và R1 |
+| Trần Đình Tấn Phát | `24122046` | Metrics, W&B, ablation R2, bằng chứng và tổng hợp kết quả |
 
 ## Hiện trạng
 
@@ -197,6 +197,8 @@ Hai sơ đồ minh họa phục vụ slide đọc hiểu giữa kỳ được t�
 ![CIL Problem & Predecessor Approaches vs ACIL (tự vẽ)](reports/figures/acil_problem_and_predecessors.png)
 
 ## Bằng chứng thí nghiệm
+
+**Phạm vi tái lập đã chọn (*Core scope* — chi tiết tại [`docs/protocol_chot.md`](docs/protocol_chot.md)):** Do ràng buộc hạn mức GPU Kaggle T4 không đủ để chạy lại toàn bộ các bộ ảnh quy mô lớn như ImageNet-Full (`1.000` lớp, `d = 15.000`) hay quét đủ mọi giá trị `K ∈ {5, 10, 25, 50}`, nhóm chọn **Core scope** tập trung kiểm định trọn vẹn hai thí nghiệm trọng tâm của bài báo trên CIFAR-100 (`R1`: benchmark chính `K = 5`, `d = 8000`, `160` epochs trên **3 seeds `42/43/44`**; `R2`: ablation `4/5` hàng Table 2 về tầng mở rộng FE và độ nhạy $\gamma$ trên **3 seeds**), bổ sung **phân tích tự thiết kế `R3`** (quét kích thước minibatch `b ∈ {32, 128, 512}` đo thời gian, RAM và kiểm chứng khớp Joint Oracle trên đủ `54/54` mốc phase) cùng **đối chiếu trực tiếp source code tác giả (`C1/C2/C1R`)**.
 
 ### Bảng ánh xạ toàn bộ thực nghiệm (Experiment Mapping)
 
@@ -484,4 +486,28 @@ Tái sử dụng đúng 3 checkpoints `R1` (`seeds 42/43/44`) và cùng chiều 
 
 ![Biểu đồ E3 — Tách bạch MSE mất cân bằng lớp với độ trôi Woodbury float32](reports/figures/e3_mse_imbalance_vs_woodbury_drift.png)
 
-Tái tạo biểu đồ `E3`: `python scripts/plot_e3_mse_imbalance.py`. Chạy kiểm thử đơn vị cho `E3` và `FD3-WRLS`: `python -m unittest discover -s scripts/tests -p "test_e3_mse_imbalance.py" -v`.
+### Cách chạy lại trọn bộ thực nghiệm cuối kỳ (`E1`, `E2`, `E3`), kiểm thử và vẽ biểu đồ
+
+Từ thư mục gốc `20-ML-Paper` sau khi cài môi trường CIFAR (`python -m pip install -r requirements-cifar.txt`):
+
+```bash
+# 1. Chạy toàn bộ unit tests của thực nghiệm cuối kỳ (E1, E2, E3 & FD2/FD3)
+python -m unittest discover -s scripts/tests -p "test_final_empirics.py" -v
+python -m unittest discover -s scripts/tests -p "test_e3_mse_imbalance.py" -v
+
+# 2. Chạy lại E1 (P1 — huấn luyện ResNet-32 trên GPU hoặc import notebooks/13..18 lên Kaggle T4)
+python scripts/e1_base_assumption_runner.py run --branch E1a --seed 42 --base-classes 10 --split-mode uniform --epochs 160 --expansion-dim 8000 --gamma 0.1 --verify-joint-oracle --output-dir reports/local/e1a_c0_10_s42 --wandb-mode disabled
+python scripts/e1_base_assumption_runner.py run --branch E1b --seed 42 --base-classes 50 --split-mode superclass_disjoint --epochs 160 --expansion-dim 8000 --gamma 0.1 --verify-joint-oracle --output-dir reports/local/e1b_s42 --wandb-mode disabled
+
+# 3. Chạy lại E2 (P2 — tái dùng checkpoint R1 seed 42/43/44 tải từ Kaggle Output v1, không train lại CNN)
+python scripts/e2_memory_precision_runner.py run --seed 42 --checkpoint <duong_dan_ckpt_R1_seed42.pt> --output-dir reports/local/e2_s42 --threads 4 --wandb-mode disabled
+
+# 4. Chạy lại E3 & FD3-WRLS (P3 — tái dùng fixture đặc trưng F64 đã trích từ bước E2)
+python scripts/e3_mse_imbalance_runner.py --seeds 42 43 44 --fixture-root reports/local/final_empirics_e2_20261118 --output-root reports/local/e3_rerun --wandb-mode disabled
+
+# 5. Tái tạo toàn bộ 3 biểu đồ cuối kỳ từ các tệp JSON tổng hợp đã khóa SHA-256 (môi trường requirements-plots.txt)
+python scripts/plot_final_empirics.py --mode all
+python scripts/plot_e3_mse_imbalance.py
+```
+
+*(Đổi `--wandb-mode disabled` thành `online` hoặc `offline` nếu muốn đẩy run mới lên W&B; toàn bộ kết quả cục bộ ghi trong `reports/local/` được `.gitignore` loại trừ để không ghi đè các báo cáo và manifest đã công bố.)*
