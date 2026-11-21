@@ -28,6 +28,17 @@
 - **Đã chạy code tác giả ngày 07/11/2026:** 2 lượt chính full CIFAR100/K5 trên cùng checkpoint 160 seed 42/d1024 và 1 diagnostic state base. [Báo cáo](reports/AUTHOR_CODE_COMPARISON_20261107.md), [raw JSON](reports/author_comparison_results.json), [manifest](reports/AUTHOR-COMPARE-01-provenance.json). C1 dự đoán khớp 6/6 mốc nhưng 2 phần tử score ngoài tolerance; C2 đạt 6/6; matched-base diagnostic đạt 5/5. Ba W&B Finished/public vẫn giữ flag C1=false. Chưa chạy recipe native 300 epochs/d8192.
 - Project W&B: [hsangg-2006/acil-reproduction](https://wandb.ai/hsangg-2006/acil-reproduction), đã xác nhận Public ngày 02/11/2026.
 
+## Kiểm tra file giữa kỳ
+
+Chạy từ gốc repo với Python 3.10 trở lên để kiểm tra số slide (20–40, kể cả phụ lục), dung lượng dưới 20 MB và speaker notes trên từng slide (tối đa 500 từ phân tách bởi khoảng trắng). Lệnh đọc trực tiếp file PPTX và trả mã thoát `1` nếu phát hiện lỗi.
+
+```bash
+python scripts/verify_midterm_deck.py
+python scripts/verify_midterm_deck.py path/to/deck.pptx
+```
+
+Xem trực tiếp deck để kiểm tra trích dẫn IEEE, hình tự vẽ và liên kết W&B theo yêu cầu của môn. [Yêu cầu slide giữa kỳ](https://hcmus-cs-ta.github.io/lab-book/intro-ml/project/statement/reading/)
+
 ## Cấu trúc và cách chạy
 
 Mở thư mục gốc **`20-ML-Paper`** làm thư mục dự án trong VS Code. Cấu trúc đang dùng:
