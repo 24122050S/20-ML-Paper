@@ -1,6 +1,6 @@
 # Protocol benchmark ACIL v1.0
 
-Chốt ngày **04/11/2026** theo yêu cầu của Sang. Người thực hiện hiện tại: **Sang**. Đây là quyết định về thiết kế thí nghiệm; bảng nghiệm thu ở mục 8 ghi phần code còn phải hoàn thành trước khi chạy dài. Mọi thay đổi sau mốc này phải ghi phiên bản/lý do trước khi chạy, không chọn cấu hình theo accuracy test.
+Chốt ngày **04/11/2026**. Đây là quyết định về thiết kế thí nghiệm; bảng nghiệm thu ở mục 8 ghi phần code còn phải hoàn thành trước khi chạy dài. Mọi thay đổi sau mốc này phải ghi phiên bản/lý do trước khi chạy, không chọn cấu hình theo accuracy test.
 
 ## 1. Phạm vi và câu hỏi
 
@@ -38,7 +38,7 @@ Bảng R1 phải đặt ACIL của nhóm cạnh ACIL của paper và có deviati
 
 | Thành phần | Giá trị chốt | Cơ sở |
 |---|---|---|
-| Dataset | CIFAR-100 fine labels, RGB 32×32; train 50000/test10000; mỗi lớp 500/100 ảnh | Paper và loader hiện có |
+| Dataset | CIFAR-100 fine labels, RGB 32×32; train 50000 / test 10000; mỗi lớp 500/100 ảnh | Paper và loader hiện có |
 | Nguồn | HF `uoft-cs/cifar100`, revision `aadb3af77e9048adbea6b47c21a81e47dd092ae5` | Đã chạy smoke; tải/cache tự động |
 | Chia lớp | `class_order = np.random.default_rng(seed).permutation(100)` | Quy ước nhóm đã kiểm; lưu permutation thực tế |
 | Nhãn toàn cục | Vị trí trong class_order, cùng mapping cho train/test | Base 0..49; phase 1..5 lần lượt 50..59,...,90..99 |
@@ -60,10 +60,10 @@ Schedule/SGD/batch chính lấy từ paper; shortcut, seed, thống kê normaliz
 | Backbone | ResNet-32 CIFAR của nhóm: n=5, kênh 16/32/64, shortcut option A, feature 64 |
 | Lớp train / head BP | 50 lớp base / FC50 logits, CrossEntropyLoss, không label smoothing |
 | Epochs | **160** |
-| Optimizer | SGD, learning_rate0.1, momentum 0.9, weight_decay0.0005, Nesterov=False |
-| Scheduler | MultiStepLR milestones[80,120], gamma 0.1; step sau mỗi epoch |
-| LR theo cách gọi hiện tại | Epoch 1..80:0.1; 81..120:0.01; 121..160:0.001; log LR thực tế |
-| Batch / workers / threads | Train 128; eval 256; num_workers0; torch/BLAS threads 4 |
+| Optimizer | SGD, learning_rate 0.1, momentum 0.9, weight_decay 0.0005, Nesterov=False |
+| Scheduler | MultiStepLR milestones [80, 120], gamma 0.1; step sau mỗi epoch |
+| LR theo cách gọi hiện tại | Epoch 1..80: 0.1; 81..120: 0.01; 121..160: 0.001; log LR thực tế |
+| Batch / workers / threads | Train 128; eval 256; num_workers 0; torch/BLAS threads 4 |
 | Augmentation BP | Zero padding 4 → random crop 32; horizontal flip p=0.5; rồi normalize |
 | ARaBT/incremental/test | Không crop/flip ngẫu nhiên; cùng normalize đã freeze |
 | Dtype / thiết bị | CNN float32 trên một GPU; analytic NumPy float64 trên CPU |
@@ -79,7 +79,7 @@ Lưu ý nguồn: paper mục 4.1 ghi crop/flip/normalize cho BP. README tác gi�
 - Không thêm L2 normalization của feature, softmax hay head theo task. Dự đoán là argmax trên **tất cả lớp đã thấy**.
 - Objective: `||Y-HW||_F^2 + gamma*||W||_F^2`, dạng **sum**, gamma 0.1 của R1 chỉ cộng khi khởi tạo. Không scale gamma theo số ảnh/minibatch hay cộng lại ở từng batch.
 - Base analytic: xử lý đủ 25000 ảnh base sạch. Benchmark cần tích lũy thống kê theo batch hoặc cách giải tương đương đã kiểm, tránh giữ H25000×8000 chỉ để khởi tạo.
-- Mỗi phase mới:5000 ảnh, batch analytic 128, batch cuối 8 ảnh;40 minibatch. Cột W tăng theo lớp, không tăng theo số batch. R luôn 8000×8000, W cuối 8000×100.
+- Mỗi phase mới: 5000 ảnh, batch analytic 128, batch cuối 8 ảnh; 40 minibatch. Cột W tăng theo lớp, không tăng theo số batch. R luôn 8000×8000, W cuối 8000×100.
 - No-FE của R2: dùng **F64 trực tiếp làm H**, không random projection 64→64 để gọi là bỏ FE. Dùng cùng backbone/normalization/gamma0.1 và quy tắc đánh giá.
 - Ba hàng gamma của R2 phải dùng **chính một FE matrix** trong cùng seed. Giữ dataset/order/checkpoint/dtype cố định; chỉ đổi gamma. No-FE giữ nguyên F64 của checkpoint đó.
 - Benchmark chính không giữ feature lịch sử để giải joint mỗi phase. Joint oracle dùng ở verification/R3 riêng; field không được kiểm phải ghi `not_run`/null, không điền 0 như thể đã so khớp.
@@ -126,6 +126,6 @@ Hai epoch của run blhw74ff mất tổng 34,3874 giây cho BP; ngoại suy tuy�
 | G5: metric export | A0..AK/B0..BK đầy đủ, số mẫu đúng; tính A-bar/F theo metrics; không lấy final thay A-bar | Đã xuất metric_summary vào JSON/W&B; test công thức và chuỗi partial đạt |
 | G6: profile/provenance | Source/checkpoint hashes, môi trường/tài nguyên, version Kaggle và public W&B | Đã có analytic/BP5/CUDA; R1 đủ 42/43/44 với 160 epochs/d8000/K5, Ā 65,1196 ± 0,6104% (n=3, ddof=1), [manifest tổng hợp](../reports/R1-C100-K5-3SEEDS-provenance.json). Cả 3 run Finished/công khai; R2 đã đủ 4 hàng/3 seeds; R3 đã đủ 9 timing runs/54 so sánh joint |
 
-**Cập nhật thực nghiệm 06/11:** R1 đã đủ 42/43/44, mỗi seed train base mới 160 epochs/d8000/K5 với source/recipe giữ v1.0. Ā 65,1196 ± 0,6104%, final 56,1300 ± 0,5575%, F_base8,3067 ± 0,6201pp (mean±sample_SD, n=3, ddof=1). [Báo cáo](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json)/[manifest tổng hợp](../reports/R1-C100-K5-3SEEDS-provenance.json). R2 nghiệm thu 07/11/2026:9 analytic runs mới và 3 baseline R1 tái dùng,4/5 hàng Table 2, mỗi hàng 3 seeds ([báo cáo](../reports/R2_CIFAR100_K5_20261107.md), [manifest](../reports/R2-C100-K5-provenance.json)). Cả 9 run mới Finished/công khai, checkpoint/FE/context giữ đúng từng seed, không train thêm base. R3 nghiệm thu 07/11/2026: checkpoint 160 seed 42/d1024/gamma0.1, batch 32/128/512 × 3 timing repeats,54 phase comparisons đạt joint và 0 argmax khác. [Báo cáo](../reports/R3_CIFAR100_K5_BATCH_20261107.md) · [Kế hoạch đo chốt trước run](R3_KE_HOACH_DO.md). Timing/RSS chỉ cho analytic CPU 4 threads, CNN/evaluation/oracle/IO/log nằm ngoài;1 seed khác với 3 timing repeats. Ba bộ R1/R2/R3 đã có đủ kết quả trong kế hoạch; đã có [đối chiếu tác giả](../reports/AUTHOR_CODE_COMPARISON_20261107.md); còn sản phẩm nộp. Đây là cập nhật trạng thái, không sửa thiết kế/gamma/seed sau khi thấy score. Các manifest analytic/BP5/seed riêng giữ lịch sử; cập nhật trạng thái không đổi protocol v1.0.
+**Cập nhật thực nghiệm 06/11:** R1 đã đủ 42/43/44, mỗi seed train base mới 160 epochs/d8000/K5 với source/recipe giữ v1.0. Ā 65,1196 ± 0,6104%, final 56,1300 ± 0,5575%, F_base 8,3067 ± 0,6201pp (mean±sample_SD, n=3, ddof=1). [Báo cáo](../reports/R1_CIFAR100_K5_3SEEDS_20261106.md)/[summary](../reports/r1_cifar100_k5_summary.json)/[manifest tổng hợp](../reports/R1-C100-K5-3SEEDS-provenance.json). R2 nghiệm thu 07/11/2026: 9 analytic runs mới và 3 baseline R1 tái dùng, 4/5 hàng Table 2, mỗi hàng 3 seeds ([báo cáo](../reports/R2_CIFAR100_K5_20261107.md), [manifest](../reports/R2-C100-K5-provenance.json)). Cả 9 run mới Finished/công khai, checkpoint/FE/context giữ đúng từng seed, không train thêm base. R3 nghiệm thu 07/11/2026: checkpoint 160 seed 42/d1024/gamma 0.1, batch 32/128/512 × 3 timing repeats, 54 phase comparisons đạt joint và 0 argmax khác. [Báo cáo](../reports/R3_CIFAR100_K5_BATCH_20261107.md) · [Kế hoạch đo chốt trước run](R3_KE_HOACH_DO.md). Timing/RSS chỉ cho analytic CPU 4 threads, CNN/evaluation/oracle/IO/log nằm ngoài; 1 seed khác với 3 timing repeats. Ba bộ R1/R2/R3 đã có đủ kết quả trong kế hoạch; đã có [đối chiếu tác giả](../reports/AUTHOR_CODE_COMPARISON_20261107.md). Các manifest analytic/BP5/seed riêng giữ lịch sử; cập nhật trạng thái không đổi protocol v1.0.
 
 Mỗi kết quả benchmark phải lưu config, protocol/class_order, normalization, checkpoint/state, per-phase JSON và summary metrics; README ghép đúng source/JSON/version/W&B cùng lượt. Xuất UTF-8/LF, tính SHA-256 trên bytes công bố. [metrics.md](metrics.md) là định nghĩa duy nhất của các metric dùng trong bảng/deck.

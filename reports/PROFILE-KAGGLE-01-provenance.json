@@ -68,11 +68,11 @@
       "proof_export": "passed",
       "cuda_gate_and_stale_readiness_check": "passed"
     },
-    "kaggle_execution": "not_started_by_assistant; browser control unavailable"
+    "kaggle_execution": "not_started_at_review_time; pending execution"
   },
   "user_reported_gpu_quota": {
     "hours": 26,
     "date": "2026-11-04",
-    "source": "Sang reply in this conversation; not account API measurement"
+    "source": "Reported before BP5 run; not account API measurement"
   }
 }

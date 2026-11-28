@@ -27,10 +27,10 @@ Base A0 được đo sau analytic re-alignment. Accuracy của FC head trong BP 
 
 - Field hiện có: `base_accuracy_pct`. Đây vẫn là classifier phân loại trong toàn bộ C_k lớp.
 - `new_class_accuracy_pct = N_k` chỉ đo nhóm lớp mới **của phase k**, không phải tất cả lớp ngoài base. Ở phase 0 ghi null.
-- Metric chính nhóm chốt: **`base_forgetting_pp = B_0 - B_K`**; dương là giảm khả năng nhận diện base, nhỏ hơn tốt hơn. Giữ giá trị âm nếu base cải thiện; không abs, không clamp0.
+- Metric chính nhóm chốt: **`base_forgetting_pp = B_0 - B_K`**; dương là giảm khả năng nhận diện base, nhỏ hơn tốt hơn. Giữ giá trị âm nếu base cải thiện; không `abs`, không `clamp 0`.
 - Lưu thêm **`base_accuracy_delta_pp = B_K - B_0`**; âm là giảm. Hai field phải đối dấu.
 
-[Paper mục 4.2, trang PDF 7](https://proceedings.neurips.cc/paper_files/paper/2022/file/4b74a42fc81fc7ee252f6bcb6e26c8be-Paper-Conference.pdf#page=7) in F=B_K−B_0, nhưng Table 1 và phần diễn giải trang9 trình bày forgetting giảm chất lượng bằng số dương và nói F>0. Có bất nhất dấu ở nguồn. Nhóm giữ **cả hai field**, và khi đối chiếu cột F=9,00 của Table 1 dùng **độ giảm `base_forgetting_pp`**, ghi rõ quy ước trong chú thích bảng. Không nói độ giảm là nguyên xi công thức đã in ở mục 4.2.
+[Paper mục 4.2, trang PDF 7](https://proceedings.neurips.cc/paper_files/paper/2022/file/4b74a42fc81fc7ee252f6bcb6e26c8be-Paper-Conference.pdf#page=7) in F=B_K−B_0, nhưng Table 1 và phần diễn giải trang 9 trình bày forgetting giảm chất lượng bằng số dương và nói F>0. Có bất nhất dấu ở nguồn. Nhóm giữ **cả hai field**, và khi đối chiếu cột F=9,00 của Table 1 dùng **độ giảm `base_forgetting_pp`**, ghi rõ quy ước trong chú thích bảng. Không nói độ giảm là nguyên xi công thức đã in ở mục 4.2.
 
 Đây là forgetting của **nhóm base**, không phải average forgetting của toàn bộ task cũ theo ma trận accuracy từng task. JSON hiện chỉ có B_k và accuracy của task mới tại thời điểm nó xuất hiện; chưa đủ để suy ra forgetting của mọi nhóm cũ. Muốn metric đó phải thu ma trận a[k,j] và chốt định nghĩa riêng.
 
@@ -49,7 +49,7 @@ Nguồn: [JSON CIFAR-KAGGLE-02](../reports/cifar100_kaggle_full5_results.json), 
 | 4 | 90 | 23.3111 | 26.5800 | 9000 |
 | 5 | 100 | 22.0500 | 25.5600 | 10000 |
 
-Tính từ JSON chưa làm tròn: **A-bar=26,91046296296%**, **A_final=22,05%**, **F_base=7,90pp**, **base delta=−7,90pp**. Một seed nên SD giữa seeds là null, không điền 0. Không lấy A_final22,05% so với A-bar 66,30% của paper; không dùng ví dụ smoke làm dòng benchmark.
+Tính từ JSON chưa làm tròn: **A-bar = 26,91046296296%**, **A_final = 22,05%**, **F_base = 7,90 pp**, **base delta = −7,90 pp**. Một seed nên SD giữa seeds là null, không điền 0. Không lấy A_final 22,05% so với A-bar 66,30% của paper; không dùng ví dụ smoke làm dòng benchmark.
 
 ## 5. Tổng hợp các seed và so với paper
 
@@ -76,7 +76,7 @@ Với oracle joint dùng đúng feature map, gamma, dữ liệu, precision và m
 - So W/R/score bằng `rtol=1e-6`, `atol=1e-8`; R3 yêu cầu argmax disagreements=0 ở từng phase. Nếu lỗi, lưu failure và dữ liệu chẩn đoán, không đổi tolerance sau khi thấy kết quả.
 - `eps64` chỉ bảo vệ tỷ số báo cáo nếu norm bằng 0; không phải regularization gamma và không thay điều kiện allclose.
 
-R3 reset R/W cho từng batch-size/repeat, dùng cùng checkpoint 160/seed42, cùng FE1024/gamma0.1 và sample order. Joint oracle/cache historical features chỉ phục vụ kiểm chứng và nằm **ngoài thời gian analytic được so sánh**. Incremental update chỉ nhận batch hiện tại và trạng thái; log cache/oracle riêng khi báo memory.
+R3 reset R/W cho từng batch-size/repeat, dùng cùng checkpoint 160 / seed 42, cùng FE 1024 / gamma 0.1 và sample order. Joint oracle/cache historical features chỉ phục vụ kiểm chứng và nằm **ngoài thời gian analytic được so sánh**. Incremental update chỉ nhận batch hiện tại và trạng thái; log cache/oracle riêng khi báo memory.
 
 Ở mode benchmark không chạy oracle, các error/disagreement fields phải null với `joint_reference_status="not_run"`; không ghi 0 để ám chỉ đã so khớp. `checks` và verification_passed phải dựa trên những điều kiện bắt buộc của mode đã khai báo, không gọi check chưa chạy là passed. Đường benchmark đã được triển khai trong `src/streaming.py`; `src/metrics.py` xuất `metric_summary` vào JSON/W&B. Smoke vẫn chạy oracle. Chuỗi chưa đủ K ghi `average_incremental_accuracy_pct=null`, dùng `partial_average_accuracy_pct` riêng và `complete_protocol=false`; xem [hướng dẫn](RESUME_BENCHMARK_PROFILE.md).
 
@@ -111,6 +111,6 @@ Summary dẫn tới JSON gốc bằng checksum, giữ config/source/version/atte
 
 Đây là **ví dụ summary suy ra của smoke**, không phải file mới đã được runner xuất. `mode` benchmark/ablation/r3 phải có định danh và provenance riêng; không đổi tên run 2 epochs thành benchmark.
 
-Một summary hoàn chỉnh chỉ được xuất khi source report status complete, verification true, đủ phase 0..K, đúng số lớp/test/shape, các A/B hữu hạn trong[0,100] và tracking thật của thí nghiệm đã hoàn tất. Root/latest/progress/results phải cùng attempt ID khi chọn artifact của pipeline mới. Run thiếu điểm thì báo partial; không tính average K đầy đủ từ các điểm còn lại.
+Một summary hoàn chỉnh chỉ được xuất khi source report status complete, verification true, đủ phase 0..K, đúng số lớp/test/shape, các A/B hữu hạn trong [0, 100] và tracking thật của thí nghiệm đã hoàn tất. Root/latest/progress/results phải cùng attempt ID khi chọn artifact của pipeline mới. Run thiếu điểm thì báo partial; không tính average K đầy đủ từ các điểm còn lại.
 
-Định dạng bảng/deck: phase accuracies 2 chữ số thập phân, A-bar/F2 chữ số, relative numerical error dạng khoa học; giữ JSON đầy đủ precision. Mọi số nhóm có W&B link và source/result checksum. Số paper có nguồn/table/setting; các sai khác class order, normalization, shortcut, FE initialization và environment dẫn lại [protocol](protocol_chot.md).
+Định dạng bảng/deck: phase accuracies 2 chữ số thập phân, A-bar / F 2 chữ số, relative numerical error dạng khoa học; giữ JSON đầy đủ precision. Mọi số nhóm có W&B link và source/result checksum. Số paper có nguồn/table/setting; các sai khác class order, normalization, shortcut, FE initialization và environment dẫn lại [protocol](protocol_chot.md).
