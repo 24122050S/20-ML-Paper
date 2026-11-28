@@ -48,7 +48,7 @@
 - **Nội dung trên slide:**
   - **Bài báo gốc:** *ACIL: Analytic Class-Incremental Learning with Absolute Memorization and Privacy Protection* (Zhuang et al., NeurIPS 2022) [1]
   - **Môn học:** Nhập môn Máy học (Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM) — Báo cáo Giữa kỳ
-  - **Thành viên thực hiện:** Sang (Phương pháp, Analytic Head, R3), Vĩ (Dataset, Protocol, ResNet-32, R1), Phát (Metrics, Ablation R2, W&B, Tổng hợp) *(Ghi chú thực tế triển khai theo `docs/PHAN_CONG_NHOM.md`: Sang chủ trì chạy & tổng hợp hệ thống R1–R3 và đối chiếu tác giả)*
+  - **Thành viên thực hiện (Nhóm 3):** Nguyễn Hoàng Sang (`24122050` — Phương pháp, Analytic Head, R3), Trần Hoàng Minh Vĩ (`24122026` — Dataset, Protocol, ResNet-32, R1), Trần Đình Tấn Phát (`24122046` — Metrics, Ablation R2, W&B, Tổng hợp)
   - **Mã nguồn công khai:** `https://github.com/24122050S/20-ML-Paper`
   - **Theo dõi thực nghiệm công khai (W&B):** `https://wandb.ai/hsangg-2006/acil-reproduction`
 - **Footer IEEE:** `[1] H. Zhuang et al., "ACIL: Analytic class-incremental learning with absolute memorization and privacy protection," in Adv. Neural Inf. Process. Syst. (NeurIPS), vol. 35, pp. 11602–11614, 2022.`
@@ -635,7 +635,7 @@
 
 ### Slide 32 — Tổng kết Giữa kỳ & Kế hoạch Giai đoạn Cuối kỳ
 - **Tiêu đề trên slide:** Tổng kết kết quả Giữa kỳ trong Core Scope & Hai hướng phân tích tiếp theo cho Cuối kỳ
-- **Bố cục trực quan:** Trái: Tóm tắt các kết quả đã có bằng chứng kèm phạm vi giới hạn; Phải: Hai hướng phản biện & thực nghiệm dự kiến cho giai đoạn Poster Cuối kỳ (`docs/PHAN_CONG_NHOM.md`).
+- **Bố cục trực quan:** Trái: Tóm tắt các kết quả đã có bằng chứng kèm phạm vi giới hạn; Phải: Hai hướng phản biện & thực nghiệm cho giai đoạn Poster Cuối kỳ.
 - **Nội dung trên slide:**
   - **Các nội dung đã hoàn thành ở mốc Giữa kỳ:**
     - Đọc hiểu bài báo ACIL (phân tích phương pháp 5 lớp, chứng minh & điều kiện biên Định lý 3.1, đối chiếu 3 hướng tiền nhiệm, tự vẽ 2 sơ đồ + 5 biểu đồ kết quả).

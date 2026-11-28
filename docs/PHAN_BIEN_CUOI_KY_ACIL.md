@@ -228,7 +228,7 @@ Trong ACIL, chất lượng phân loại phụ thuộc mạnh vào việc chiế
 
 ## 4. Ma trận Nối Trực tiếp Lý thuyết $\leftrightarrow$ Thực nghiệm $\leftrightarrow$ Bố cục Poster A2
 
-Theo quy định của trang **Empirical Demonstration**, Poster cuối kỳ (`1 slide .pptx`, khổ dọc **Portrait A2: `420 × 594 mm`**) phải đặt lập luận lý thuyết nằm ngay cạnh bằng chứng thực nghiệm của từng vấn đề (*wired issue-by-issue*). Bảng dưới đây khóa trước cấu trúc ánh xạ 1–1 để nhóm chuyển thẳng sang bước viết code (`Ưu tiên 2–3`) và dựng Poster (`Ưu tiên 5`):
+Theo quy định của trang **Empirical Demonstration**, Poster cuối kỳ (`1 slide .pptx`, khổ dọc **Portrait A2: `420 × 594 mm`**) phải đặt lập luận lý thuyết nằm ngay cạnh bằng chứng thực nghiệm của từng vấn đề (*wired issue-by-issue*). Bảng dưới đây khóa cấu trúc ánh xạ 1–1 phục vụ triển khai thực nghiệm và dàn trang Poster A2:
 
 | Khu vực trên Poster A2 dọc | Phía Lý thuyết (*Critical Analysis*) | Phía Bằng chứng Thực nghiệm (*Empirical Demonstration*) | W&B Tag / Nguồn truy nguyên |
 |---|---|---|---|

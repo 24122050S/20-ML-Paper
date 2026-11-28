@@ -98,7 +98,7 @@ Tuân thủ cùng kỷ luật đo của `docs/R3_KE_HOACH_DO.md`:
 
 ### 4.1. Bảng ánh xạ Nhãn W&B và Đầu ra JSON
 
-| Nhánh thí nghiệm | Script điều phối | Tiền tố Run W&B | Bộ W&B Tags bắt buộc | Tệp tổng hợp dự kiến (sau khi chạy ở Ưu tiên 3) |
+| Nhánh thí nghiệm | Script điều phối | Tiền tố Run W&B | Bộ W&B Tags bắt buộc | Tệp tổng hợp kết quả |
 |---|---|---|---|---|
 | **`E1a`** (Base Ratio) | `scripts/e1_base_assumption_runner.py` | `E1a-c0_{10,20,30}-seed{s}` | `["final-empirics", "P1-base-assumption", "E1a-base-ratio", "seed{s}"]` | `reports/e1_base_assumption_summary.json` |
 | **`E1b`** (Superclass Shift) | `scripts/e1_base_assumption_runner.py` | `E1b-{mode}-seed{s}` | `["final-empirics", "P1-base-assumption", "E1b-superclass-shift", "{mode}", "seed{s}"]` | `reports/e1_base_assumption_summary.json` |

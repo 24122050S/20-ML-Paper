@@ -10,13 +10,13 @@ def build():
     notebook=nb.read(root/'notebooks/archive/05_profile_base_api_v3.ipynb',as_version=4)
     budget=json.loads((root/'reports/benchmark_seed42_budget.json').read_text(encoding='utf-8'))
     budget.pop('long_benchmark_started',None)  # Trạng thái lúc lập kế hoạch không phải trạng thái run tương lai.
-    notebook.cells[0].source='''# 06 — R1 CIFAR100/K5, seed42,160 epochs, d8000
+    notebook.cells[0].source='''# 06 — R1 CIFAR-100 / K5, seed 42, 160 epochs, d=8000
 
-Cấu hình chính đã chốt, không reuse checkpoint5 epochs. Test resume CUDA và hai profile đã được kiểm. Dự trù khoảng59 phút, chuẩn bị phiên2 giờ để còn hơn30% dự phòng; đây là ước lượng, không phải cam kết runtime.
+Cấu hình chính đã chốt, không reuse checkpoint 5 epochs. Test resume CUDA và hai profile đã được kiểm. Dự trù khoảng 59 phút, chuẩn bị phiên 2 giờ để còn hơn 30% dự phòng; đây là ước lượng, không phải cam kết runtime.
 
-Bật GPU T4/Internet. Source không cần Input. API runner dùng timeout7200 giây. W&B được ghi offline trong Output, sau đó trợ lý sync trên máy đã đăng nhập; không cần đưa key vào notebook hoặc bật secret cho lượt API.
+Bật GPU T4/Internet. Source không cần Input. API runner dùng timeout 7200 giây. W&B được ghi offline trong Output để đồng bộ sau khi chạy trên máy đã đăng nhập; không cần đưa key vào notebook hoặc bật secret cho lượt API.
 
-Chạy mới giữ CHECKPOINT=None, RESUME_CHECKPOINT=None, STOP_AFTER_EPOCH=None. Nếu training bị ngắt, chỉ dùng checkpoint v2 **cùng target160/config/runtime/source** để resume. Checkpoint5 epochs bị từ chối.
+Chạy mới giữ CHECKPOINT=None, RESUME_CHECKPOINT=None, STOP_AFTER_EPOCH=None. Nếu training bị ngắt, chỉ dùng checkpoint v2 **cùng target 160/config/runtime/source** để resume. Checkpoint 5 epochs bị từ chối.
 
 Cuối lượt: benchmark_seed42_ready.json, benchmark_seed42/attempts/<id>/base_checkpoint.pt, analytic_state.npz và wandb/offline-run... phải được giữ cùng version. Không coi lỗi/số liệu cũ là kết quả mới. Tạo file notebook này không tự khởi chạy benchmark.
 '''

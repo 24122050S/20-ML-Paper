@@ -8,13 +8,13 @@ import nbformat as nb
 def build():
     root = Path(__file__).resolve().parents[1]
     notebook = nb.read(root / 'notebooks/04_resume_benchmark_profile.ipynb', as_version=4)
-    notebook.cells[0].source = '''# 05 — Sang chạy thử BP5 trước benchmark
+    notebook.cells[0].source = '''# 05 — Chạy thử BP5 trước benchmark
 
 **Không cần sửa biến hoặc thêm Input.** Bật GPU T4, Internet và quyền dùng secret WANDB_API_KEY, rồi Save & Run All.
 
-Notebook đã đặt ACTION=profile_base, CHECKPOINT=None, RESUME_CHECKPOINT=None, STOP_AFTER_EPOCH=None. Chạy test resume CUDA, train base5 epochs từ đầu và một phase analytic d256. Đây chưa phải benchmark160 epochs.
+Notebook đã đặt ACTION=profile_base, CHECKPOINT=None, RESUME_CHECKPOINT=None, STOP_AFTER_EPOCH=None. Chạy test resume CUDA, train base 5 epochs từ đầu và một phase analytic d256. Đây chưa phải benchmark 160 epochs.
 
-Cuối lượt thành công, tải **profile_base_ready.json** ở Output và gửi cùng link version. File này gộp kết quả BP5, test CUDA và resource profile; trợ lý sẽ kiểm ngân sách và chuẩn bị lượt160 epochs. Không cần tự tính hoặc chọn checkpoint. Checkpoint2/5 epochs không dùng làm base160 epochs.
+Cuối lượt thành công, tải **profile_base_ready.json** ở Output và đối chiếu link version. File này gộp kết quả BP5, test CUDA và resource profile để kiểm tra ngân sách trước khi chạy 160 epochs. Checkpoint 2/5 epochs không dùng làm base 160 epochs.
 '''
     old = 'ACTION = "profile_analytic"  # profile_analytic / profile_base / benchmark'
     assert notebook.cells[1].source.count(old) == 1
@@ -116,8 +116,8 @@ try:
             "other_bp5_pipeline_seconds":max(0,report["seconds_this_run"]-bp_seconds),
             "note":"Component estimates only; full evaluation/feature extraction/artifact I/O and30% remaining-window reserve still need budgeting."},
         "long_benchmark_ready":False,"gpu_quota_reported_hours":26.0,"gpu_quota_reported_date":"2026-11-04",
-        "quota_note":"Sang reported26 GPU hours beforeBP5; compare measured runtime with quota and the session window before160 epochs.",
-        "next_step":"Send this JSON and saved Kaggle version; assistant checks quota/budget and prepares benchmark seed42."}
+        "quota_note":"26 GPU hours available before BP5; compare measured runtime with quota and the session window before 160 epochs.",
+        "next_step":"Inspect profile_base_ready.json and saved Kaggle version to verify quota/budget before benchmark seed42."}
     save_json(readiness,Path(report["output_dir"])/"profile_base_ready.json")
     save_json(readiness,next_report_path)
 except BaseException as error:
@@ -131,7 +131,7 @@ print("TẢI FILE NÀY:",next_report_path)
 print("BP5 seconds:",readiness["time_budget"]["bp5_seconds"])
 print("Peak memory:",readiness["memory"])
 print("CUDA resume:",TEST_PROOF["cuda_resume_passed"])
-print("BP5 COMPLETE — gửi profile_base_ready.json; trợ lý sẽ tính ngân sách và chuẩn bị benchmark.")
+print("BP5 COMPLETE — đã xuất profile_base_ready.json phục vụ kiểm tra ngân sách trước benchmark.")
 '''
     notebook.metadata['acil_preset'] = 'profile_base_5_epochs'
     target = root / 'notebooks/05_profile_base_ready.ipynb'

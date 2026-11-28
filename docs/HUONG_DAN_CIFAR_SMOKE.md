@@ -1,8 +1,8 @@
-# Sang tự chạy CIFAR-100: 50 base + 10 lớp mới
+# Hướng dẫn chạy CIFAR-100 smoke: 50 base + 10 lớp mới
 
 Phần Kaggle 03 dưới đây mô tả smoke đã có bằng chứng. **Source mới/resume/profile dùng [notebook 04 và hướng dẫn riêng](RESUME_BENCHMARK_PROFILE.md)**; hai notebook 02/03 giữ snapshot lịch sử.
 
-Bạn có thể thực hiện toàn bộ bước này một mình. Mục tiêu là nối pipeline ảnh với analytic head đã kiểm chứng, không chờ source của thành viên khác.
+Mục tiêu của script này là nối pipeline ảnh CIFAR-100 với analytic head đã kiểm chứng để chạy kiểm tra nhanh trước khi chạy benchmark 160 epochs.
 
 ## Ba quy ước đã chốt
 
@@ -35,7 +35,7 @@ python -B -m src.cifar_smoke
 
 Mặc định tải tự động CIFAR-100 từ Hugging Face theo revision cố định, cache trong `data/`, huấn luyện base mới. Root là `reports/local/cifar100_smoke/`; artifact đầy đủ nằm trong `attempts/<attempt_id>/`. Mã lượt gồm timestamp UTC và UUID. Local chưa bật tracking có `not_logged`, ID/URL null.
 
-Máy Sang đã có cache cũ tại `D:\ML_Paper\data`, có thể dùng lại dữ liệu để tránh tải lại:
+Nếu máy cá nhân đã có sẵn cache CIFAR-100 cục bộ (ví dụ `D:\ML_Paper\data`), truyền qua `--data-dir` để tránh tải lại:
 
 ```powershell
 python -B -m src.cifar_smoke --data-dir D:\ML_Paper\data --device cpu
@@ -68,7 +68,7 @@ Ctrl+C được ghi failed. Nếu kernel/process bị tắt cứng, Python khôn
 
 Hai epochs, expansion 256 và một phase giúp kiểm tra đường đi dữ liệu, gradient, save/load, freeze và cập nhật theo batch với tài nguyên nhỏ. Đây là lựa chọn kiểm tra pipeline; chưa kết luận tái lập accuracy của paper. Dùng backbone và dữ liệu thật vẫn không biến một smoke test thành benchmark.
 
-Mốc smoke đủ 5 phase (100 lớp) đã có [JSON](../reports/cifar100_kaggle_full5_results.json) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished, được đối chiếu ngày 04/11/2026. [Review](../reports/REVIEW_CIFAR_KAGGLE_FULL5_20261104.md) ghi cách kiểm và giới hạn metadata Kaggle. [Protocol](protocol_chot.md) và [metrics](metrics.md) đã chốt; tiếp theo cần đạt các gate resume, benchmark mode và profile d8000 trước run 160 epochs. Run notebook 02 Version 2 vẫn là mốc lịch sử riêng.
+Mốc smoke đủ 5 phase (100 lớp) đã có [JSON](../reports/cifar100_kaggle_full5_results.json), [manifest](../reports/CIFAR-KAGGLE-02-provenance.json) và [W&B blhw74ff](https://wandb.ai/hsangg-2006/acil-reproduction/runs/blhw74ff) finished, được đối chiếu ngày 04/11/2026. [Protocol](protocol_chot.md) và [metrics](metrics.md) đã chốt; tiếp theo cần đạt các gate resume, benchmark mode và profile d8000 trước run 160 epochs. Run notebook 02 Version 2 vẫn là mốc lịch sử riêng.
 
 Khi source/config/test đổi, chạy `python -m src.notebook_bundle` để tạo lại **notebook 04** trước khi upload. Generator chặn ghi đè 02/03 để giữ source bundle của bằng chứng cũ. [Hướng dẫn resume/profile04](RESUME_BENCHMARK_PROFILE.md) dùng cho bước tiếp theo; các biến `REUSE_CHECKPOINT` phía trên mô tả notebook 03 lịch sử, còn 04 dùng `CHECKPOINT`/`RESUME_CHECKPOINT`.
 
